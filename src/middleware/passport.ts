@@ -52,7 +52,8 @@ passport.use(
           email: profile.emails[0].value,
           password: null,
         });
-
+        console.log(newUser);
+        
         await newUser.save();
         console.log(newUser, "newUser");
         return done(null, newUser);

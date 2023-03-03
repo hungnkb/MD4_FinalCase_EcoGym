@@ -1,11 +1,16 @@
-import apiController from "../controllers/api.controller";
-import express from 'express';
+import authApiController from "../controllers/api/auth.api.controller";
+import express from "express";
+import walletApiController from "../controllers/api/wallet.api.controller";
 
 const apiRouter = express.Router();
 
 // apiRouter.get('/login', apiController.showLogin);
-apiRouter.post('/register', apiController.register);
-apiRouter.post('/login', apiController.login);
-apiRouter.get('/logout', apiController.logout);
+apiRouter.post("/register", authApiController.register);
+apiRouter.post("/login", authApiController.login);
+apiRouter.get("/logout", authApiController.logout);
+
+apiRouter.post("/wallet", walletApiController.createWallet);
+
+apiRouter.post("/category", walletApiController.createCategory);
 
 export default apiRouter;

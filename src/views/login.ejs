@@ -62,11 +62,13 @@
                     console.log(result.data.message);
                     if (result.data.message) {
                         Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: result.response.data.message,
-                            // footer: '<a href="">Why do I have this issue?</a>'
+                            position: 'center',
+                            icon: 'success',
+                            title: result.data.message,
+                            showConfirmButton: false,
+                            timer: 1500
                         }).then(() => {
+                            console.log(window.location.origin);
                             window.location.replace(
                                 window.location.origin
                             )

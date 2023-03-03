@@ -1,15 +1,14 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import User from "../schemas/User.model";
-import passport from "passport";
+import User from "../../schemas/User.model";
 import jwt from "jsonwebtoken";
-import validateRegister from "../middleware/validateRegister";
+import validateRegister from "../../middleware/validateRegister";
 import qs from "qs";
 
-class apiController {
+class authApiController {
   register = async (req: Request, res: Response): Promise<any> => {
     try {
-      let { email, password } = req.body;      
+      let { email, password } = req.body;
       let validateResult = validateRegister.check(email, password);
 
       if (validateResult === "bothValid") {
@@ -22,10 +21,8 @@ class apiController {
 
           // let newUser = new User({ email, password });
           // await newUser.save();
-          let newUser = await User.create({email, password})
-          res.status(200).json({ message: "Register success",
-          data: newUser
-        });
+          let newUser = await User.create({ email, password });
+          res.status(200).json({ message: "Register success", data: newUser });
         }
       } else {
         res.status(400).json({ message: validateResult });
@@ -37,7 +34,6 @@ class apiController {
 
   login = async (req: Request, res: Response) => {
     let { email, password } = req.body;
-    
     let user = await User.findOne({ email: email });
     if (user) {
       bcrypt.compare(password, user.password, (err, result) => {
@@ -57,8 +53,8 @@ class apiController {
           res.status(400).json({ message: "Wrong password, please try again" });
         }
       });
-    } else {
-      res.status(400).json({message: "Email is not exist, please try again"})
+
+      res.status(400).json({ message: "Email is not exist, please try again" });
     }
   };
 
@@ -69,4 +65,4 @@ class apiController {
   };
 }
 
-export default new apiController();
+export default new authApiController();
