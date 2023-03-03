@@ -6,6 +6,8 @@ import authorize from "src/middleware/authorize";
 
 const authRouter = express.Router();
 
+// User URL = /auth/...
+
 authRouter.get("/login", authController.showLogin);
 authRouter.get("/login/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -15,5 +17,7 @@ authRouter.get("/google/callback",
   authController.loginOverGoogle
 );
 authRouter.get("/register", authController.showRegister);
+
+
 
 export default authRouter;
