@@ -1,5 +1,4 @@
-import { Schema, model, ObjectId, Types } from "mongoose";
-import User from "./User.model";
+import { Schema, model } from "mongoose";
 
 interface IWallet {
     idUser: string,
@@ -18,4 +17,4 @@ const walletSchema = new Schema<IWallet>({
 
 const Wallet = model<IWallet>('Wallet', walletSchema);
 
-export {Wallet};
+export default Wallet;
