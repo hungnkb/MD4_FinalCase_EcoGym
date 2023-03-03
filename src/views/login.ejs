@@ -21,8 +21,8 @@
             <div class="col-6">
                 <form action="/api/login" method="post" id="login-form">
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Username</label>
-                        <input name="username" type="text" class="form-control" id="username"
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input name="email" type="email" class="form-control" id="email"
                             aria-describedby="emailHelp">
                     </div>
                     <div class="mb-3">
@@ -46,7 +46,7 @@
 
         <script>
             let form = document.querySelector('#login-form');
-            let username = form.querySelector('#username');
+            let email = form.querySelector('#email');
             let password = form.querySelector('#password');
             let handleSubmit = async event => {
                 event.preventDefault();
@@ -54,7 +54,7 @@
                     method: 'post',
                     url: 'http://localhost:3000/api/login',
                     data: {
-                        username: username.value,
+                        email: email.value,
                         password: password.value,
                     }
                 }).then(result => {
