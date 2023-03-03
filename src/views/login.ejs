@@ -22,8 +22,7 @@
                 <form action="/api/login" method="post" id="login-form">
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email</label>
-                        <input name="email" type="email" class="form-control" id="email"
-                            aria-describedby="emailHelp">
+                        <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp">
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Password</label>
@@ -44,6 +43,8 @@
 
     <%- include("layouts/b5script.ejs") %>
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <script>
             let form = document.querySelector('#login-form');
             let email = form.querySelector('#email');
@@ -58,13 +59,29 @@
                         password: password.value,
                     }
                 }).then(result => {
-                    if(result.data.message) {
-                        window.location.replace(
-                           window.location.origin
-                        )
+                    console.log(result.data.message);
+                    if (result.data.message) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: result.data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            console.log(window.location.origin);
+                            window.location.replace(
+                                window.location.origin
+                            )
+                        })
+
                     }
                 }).catch(error => {
-                    console.log(error.data);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: error.response.data.message,
+                        // footer: '<a href="">Why do I have this issue?</a>'
+                    })
                 });
             }
         </script>

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import passport from "passport";
 import bodyParser from "body-parser";
 import jwt from "jsonwebtoken";
-import { User } from "../schemas/User.model";
+import User from "../schemas/User.model";
 
 class authController {
   showLogin = async (req: Request, res: Response) => {
@@ -16,7 +16,6 @@ class authController {
   loginOverGoogle = async (req: Request, res: Response) => {
     let id = req["user"].id;
     let user = await User.findOne({ _id: id });
-
       let token = jwt.sign(
         {
           iss: "Book Store",

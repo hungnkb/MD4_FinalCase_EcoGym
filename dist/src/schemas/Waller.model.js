@@ -5,7 +5,7 @@ const walletSchema = new mongoose_1.Schema({
     idUser: String,
     walletName: String,
     icon: String,
-    totalMoneyLeft: Number
+    totalMoneyLeft: Number,
 });
 const Wallet = (0, mongoose_1.model)('Wallet', walletSchema);
 exports.default = Wallet;

@@ -1,16 +1,16 @@
 import { Schema, model } from "mongoose";
 
 interface IWallet {
-    idUser: String,
-    walletName: String,
-    icon: String,
-    totalMoneyLeft: Number
+    idUser: string,
+    walletName: string,
+    icon: string,
+    totalMoneyLeft: number,
 }
 const walletSchema = new Schema<IWallet>({
-    idUser: String,
+    idUser: String, 
     walletName: String,
     icon: String,
-    totalMoneyLeft: Number
+    totalMoneyLeft: Number,
 })
 
 const Wallet = model<IWallet>('Wallet', walletSchema);

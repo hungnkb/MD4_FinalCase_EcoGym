@@ -1,8 +1,9 @@
 import passport from "passport";
-import { User } from "../schemas/User.model";
+import User from "../schemas/User.model";
 import LocalStrategy from "passport-local";
 import GoogleStrategy from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
+import FacebookStrategy from "passport-facebook";
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -39,7 +40,6 @@ passport.use(
     },
     async (request, accessToken, refreshToken, profile, done) => {
       try {
-        // console.log(profile, "profile");
         let existingUser = await User.findOne({ "google.id": profile.id });
         if (existingUser) {
           return done(null, existingUser);
@@ -50,10 +50,11 @@ passport.use(
           google: {
             id: profile.id,
           },
-          username: profile.emails[0].value,
+          email: profile.emails[0].value,
           password: null,
         });
-
+        console.log(newUser);
+        
         await newUser.save();
         console.log(newUser, "newUser");
         return done(null, newUser);
@@ -63,5 +64,7 @@ passport.use(
     }
   )
 );
+
+
 
 export default passport;

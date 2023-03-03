@@ -24,10 +24,10 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 interface IFlow {
-    idUser: String;
-    moneyTrade: Number;
-    nameCategory: String;
-    desc: String;
+    idUser: string;
+    moneyTrade: number;
+    nameCategory: string;
+    desc: string;
     timeTrade: Date;
 }
 declare const Flow: import("mongoose").Model<IFlow, {}, {}, {}, any>;

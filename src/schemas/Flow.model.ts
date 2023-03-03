@@ -1,11 +1,11 @@
 import { Schema, model } from "mongoose";
 
 interface IFlow {
-    idUser: String,
-    moneyTrade: Number,
-    nameCategory: String,
-    desc: String,
-    timeTrade: Date
+    idUser: string,
+    moneyTrade: number,
+    nameCategory: string,
+    desc: string,
+    timeTrade: Date,
 }
 
 
