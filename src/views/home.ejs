@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("layouts/header.ejs") %>
+
+</head>
+
+<body>
+
+    <button type="button" onclick="logout()" class="btn btn-secondary">logout</button>
+
+    <h1>home</h1>
+
+
+    <%- include("layouts/b5script.ejs") %>
+
+
+
+</body>
+
+<script>
+    let logout = () => {
+        axios({
+            method: 'get',
+            url: 'http://localhost:3000/api/logout',
+        }).then(result => {
+            window.location.replace(
+                `http://${window.location.hostname}:${window.location.port}/auth/login`
+            )
+        })
+    }
+</script>
+
+</html>

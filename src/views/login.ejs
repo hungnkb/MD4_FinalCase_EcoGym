@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("layouts/header.ejs") %>
+
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="row mt-5" style="text-align: center;">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <h1>Login</h1>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <form action="/api/login" method="post" id="login-form">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Username</label>
+                        <input name="username" type="text" class="form-control" id="username"
+                            aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input name="password" type="password" class="form-control" id="password">
+                    </div>
+
+                    <div style="text-align: center;">
+                        <button onclick="handleSubmit(event)" type="submit" class="btn btn-primary">Login</button>
+                    </div>
+
+                </form>
+                <a class="button google" href="/auth/login/google">Sign in with Google</a>
+            </div>
+        </div>
+
+    </div>
+
+
+    <%- include("layouts/b5script.ejs") %>
+
+        <script>
+            let form = document.querySelector('#login-form');
+            let username = form.querySelector('#username');
+            let password = form.querySelector('#password');
+            let handleSubmit = async event => {
+                event.preventDefault();
+                await axios({
+                    method: 'post',
+                    url: 'http://localhost:3000/api/login',
+                    data: {
+                        username: username.value,
+                        password: password.value,
+                    }
+                }).then(result => {
+                    if(result.data.message) {
+                        window.location.replace(
+                           window.location.origin
+                        )
+                    }
+                }).catch(error => {
+                    console.log(error.data);
+                });
+            }
+        </script>
+
+</body>
+
+</html>

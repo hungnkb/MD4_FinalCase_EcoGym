@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<%- include("layouts/header.ejs") %>
+
+</head>
+
+<body>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-3"></div>
+            <form class="col-6" action="/book/create" method="post">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Title</label>
+                    <input name="title" type="text" class="form-control" id="titleId">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                    <input name="description" type="text" class="form-control" id="descriptionId" rows="3"></input>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Author</label>
+                    <input name="author" type="text" class="form-control" id="authorId" rows="3"></input>
+                </div>
+
+                <div style="text-align: center"> <button type="submit" class="btn btn-primary"">Submit</button></div>
+
+            </form>
+        </div>
+
+    </div>
+
+    <%- include("layouts/b5script.ejs") %>
+
+</body>
+
+</html>
