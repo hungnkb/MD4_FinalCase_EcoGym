@@ -10,7 +10,6 @@ import configViewEngine from './src/config/viewengine';
 dotenv.config();
 
 
-import walletRouters from "./src/routers/wallet.router";
 
 const app = express();
 const PORT = process.env.PORT || 8888;
@@ -38,11 +37,7 @@ app.use(cookieParser(process.env.USER_CODE_SECRET));
 
 route(app);
 
-app.use('/wallets',walletRouters);
 
-app.listen(PORT, () => {
-  console.log("Server is running on http://localhost:3000/wallets/list");
-})
 (async()=> {
   try {
     await connectDB();
