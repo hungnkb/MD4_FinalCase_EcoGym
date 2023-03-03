@@ -55,7 +55,7 @@ class apiController {
           res.status(400).json({ message: "Wrong password, please try again" });
         }
       });
-      
+
       res.status(400).json({ message: "Email is not exist, please try again" });
     }
   };
@@ -67,14 +67,19 @@ class apiController {
   };
 
   createWallet = async (req: Request, res: Response) => {
-    let {idUser, walletName: string, icon, totalMoneyLeft} = req.body;
+    let { idUser, walletName, icon, totalMoneyLeft } = req.body;
     let wallet = await Wallet.find({ walletName: walletName });
-    if(wallet) {
-      res.status(400).json('Wallet name is exist, please try again');
+    if (wallet) {
+      res.status(400).json("Wallet name is exist, please try again");
     } else {
-      
+      let newWallet = new Wallet(wallet);
+      let saveWallet = await newWallet.save();
+      if (saveWallet) {
+        res.status(200).json('Create wallet success');
+      } else {
+        res.status(400).json("Wallet name is exist, please try again");
+      }
     }
-
   };
 }
 
