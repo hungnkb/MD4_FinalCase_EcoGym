@@ -24,8 +24,8 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 interface IUser {
-    email: string;
-    password: string;
+    email: String;
+    password: String;
     role: {
         type: number;
         default: 2;
@@ -37,4 +37,4 @@ interface IUser {
     };
 }
 declare const User: import("mongoose").Model<IUser, {}, {}, {}, any>;
-export { User };
+export default User;

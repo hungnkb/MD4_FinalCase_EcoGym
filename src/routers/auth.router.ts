@@ -2,7 +2,8 @@ import authController from "../controllers/auth.controller";
 import express, { request } from "express";
 import passport from "../middleware/passport";
 import { Request, Response } from "express";
-import authorize from "src/middleware/authorize";
+import authorize from "../middleware/authorize";
+import apiController from "../controllers/api.controller";
 
 const authRouter = express.Router();
 
