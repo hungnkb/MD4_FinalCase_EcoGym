@@ -1,14 +1,11 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import User from "../schemas/User.model";
-import passport from "passport";
+import User from "../../schemas/User.model";
 import jwt from "jsonwebtoken";
-import validateRegister from "../middleware/validateRegister";
+import validateRegister from "../../middleware/validateRegister";
 import qs from "qs";
-import { Wallet } from "../schemas/Waller.model";
-import { Schema, SchemaType, Types } from "mongoose";
 
-class apiController {
+class authApiController {
   register = async (req: Request, res: Response): Promise<any> => {
     try {
       let { email, password } = req.body;
@@ -66,32 +63,6 @@ class apiController {
     let name = Object.keys(cookieObj)[0];
     res.clearCookie(name).status(200).json({ message: "logout success" });
   };
-
-  createWallet = async (req: Request, res: Response) => {
-    let idUser: string = req.body.idUser
-    let walletName: string = req.body.walletName;
-    let icon: number = req.body.icon;
-    let totalMoneyLeft: number = req.body.totalMoneyLeft;
-    let wallet = await Wallet.findOne({ walletName: walletName, idUser: idUser });
-    
-    if (wallet) {
-      res.status(400).json("Wallet name is exist, please try again");
-    } else {
-      let newWallet = new Wallet({idUser, walletName, icon, totalMoneyLeft});
-      console.log(newWallet);
-      
-      let saveWallet = await newWallet.save(); 
-      if (saveWallet) {
-        res.status(200).json("Create wallet success");
-      } else {
-        res.status(400).json("Wallet name is exist, please try again"); 
-      }
-    }
-  };
-
-  updateWallet = async (req: Request, res: Response) => {
-    
-  }
 }
 
-export default new apiController();
+export default new authApiController();

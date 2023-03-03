@@ -1,18 +1,18 @@
 import { Schema, model } from "mongoose";
 
 interface ICategory {
-    idUser: String,
-    categoryName: String,
-    desc: String
+    idUser: string,
+    categoryName: string,
+    description: string,
 }
 
 
 const categorySchema = new Schema<ICategory>({
     idUser: String,
     categoryName: String,
-    desc: String
+    description: String
 })
 
-const Category = model<ICategory>('Wallet', categorySchema);
+const Category = model<ICategory>('Category', categorySchema);
 
-export {Category};
+export default Category;

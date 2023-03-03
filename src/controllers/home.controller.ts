@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { Wallet } from "../schemas/Waller.model";
+import Wallet from "../schemas/Waller.model";
 import axios from "axios";
 
 class homeController {
