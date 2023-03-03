@@ -67,7 +67,7 @@ class apiController {
   };
 
   createWallet = async (req: Request, res: Response) => {
-    let {idUser, walletName: string, icon, totalMoneyLeft} = req.body;
+    let {idUser, walletName, icon, totalMoneyLeft} = req.body;
     let wallet = await Wallet.find({ walletName: walletName });
     if(wallet) {
       res.status(400).json('Wallet name is exist, please try again');
