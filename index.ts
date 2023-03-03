@@ -7,12 +7,12 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 mongoose.set('strictQuery', true);
-mongoose.connect('mongodb://127.0.0.1:27017/ecogym')
+mongoose.connect('mongodb+srv://hungnkb:1993hung@cluster0.zbfd8ti.mongodb.net/?retryWrites=true&w=majority')
   .then(() => console.log('DB Connected!'));
-
+ 
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
 app.use(bodyParser.urlencoded({ extended: true }));
