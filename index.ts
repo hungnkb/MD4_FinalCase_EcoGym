@@ -10,7 +10,7 @@ const app = express();
 const PORT = 3000;
 
 mongoose.set('strictQuery', true);
-mongoose.connect('mongodb://127.0.0.1:27017/dbtest')
+mongoose.connect('mongodb://127.0.0.1:27017/ecogym')
   .then(() => console.log('DB Connected!'));
 
 app.set('view engine', 'ejs');
@@ -26,5 +26,4 @@ route(app);
 
 app.listen(PORT, () => {
   console.log('Server is running at ' + PORT);
-  
 })
