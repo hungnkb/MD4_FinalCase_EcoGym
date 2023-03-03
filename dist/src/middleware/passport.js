@@ -14,7 +14,7 @@ passport_1.default.deserializeUser((user, done) => {
     done(null, user);
 });
 passport_1.default.use("local", new passport_local_1.default(async (username, password, done) => {
-    const user = await User_model_1.User.findOne({ username: username });
+    const user = await User_model_1.User.findOne({ email: username });
     if (!user) {
         return done(null, false);
     }

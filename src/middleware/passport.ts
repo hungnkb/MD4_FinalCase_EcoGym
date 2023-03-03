@@ -2,7 +2,7 @@ import passport from "passport";
 import { User } from "../schemas/User.model";
 import LocalStrategy from "passport-local";
 import GoogleStrategy from "passport-google-oauth20";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -15,7 +15,7 @@ passport.deserializeUser((user, done) => {
 passport.use(
   "local",
   new LocalStrategy(async (username, password, done) => {
-    const user = await User.findOne({ username: username });
+    const user = await User.findOne({ email: username });
     if (!user) {
       return done(null, false);
     } else {
