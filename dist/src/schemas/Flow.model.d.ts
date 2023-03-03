@@ -23,18 +23,12 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
-interface IUser {
-    email: String;
-    password: String;
-    role: {
-        type: number;
-        default: 2;
-    };
-    google: {
-        id: {
-            type: string;
-        };
-    };
+interface IFlow {
+    idUser: String;
+    moneyTrade: Number;
+    nameCategory: String;
+    desc: String;
+    timeTrade: Date;
 }
-declare const User: import("mongoose").Model<IUser, {}, {}, {}, any>;
-export default User;
+declare const Flow: import("mongoose").Model<IFlow, {}, {}, {}, any>;
+export { Flow };

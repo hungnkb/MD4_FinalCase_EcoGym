@@ -23,18 +23,10 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
-interface IUser {
-    email: String;
-    password: String;
-    role: {
-        type: number;
-        default: 2;
-    };
-    google: {
-        id: {
-            type: string;
-        };
-    };
+interface ICategory {
+    idUser: String;
+    categoryName: String;
+    desc: String;
 }
-declare const User: import("mongoose").Model<IUser, {}, {}, {}, any>;
-export default User;
+declare const Category: import("mongoose").Model<ICategory, {}, {}, {}, any>;
+export { Category };

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
-import { User } from "../schemas/User.model";
+import User from "../schemas/User.model";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import validateRegister from "../middleware/validateRegister";
@@ -20,9 +20,12 @@ class apiController {
           const salt = await bcrypt.genSaltSync(10);
           password = await bcrypt.hashSync(password, salt);
 
-          let newUser = new User({ email, password });
-          await newUser.save();
-          res.status(200).json({ message: "Register success" });
+          // let newUser = new User({ email, password });
+          // await newUser.save();
+          let newUser = await User.create({email, password})
+          res.status(200).json({ message: "Register success",
+          data: newUser
+        });
         }
       } else {
         res.status(400).json({ message: validateResult });

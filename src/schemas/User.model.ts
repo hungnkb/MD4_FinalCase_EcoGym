@@ -1,17 +1,19 @@
 import { Schema, model } from "mongoose";
 
 interface IUser {
-  email: string;
-  password: string;
-  role: { type: number; default: 2 };
+  // image: String,
+  email: String,
+  password: String,
+  role: { type: number; default: 2 },
   google: {
     id: {
       type: string;
-    };
-  };
+    }
+  },
 }
 
 const userSchema = new Schema<IUser>({
+  // image: String,
   email: String,
   password: String,
   role: { type: Number, default: 2 },
@@ -24,4 +26,4 @@ const userSchema = new Schema<IUser>({
 
 const User = model<IUser>("User", userSchema);
 
-export { User };
+export default User;
