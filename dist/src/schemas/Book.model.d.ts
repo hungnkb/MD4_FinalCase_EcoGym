@@ -23,18 +23,11 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
-interface IUser {
-    email: String;
-    password: String;
-    role: {
-        type: number;
-        default: 2;
-    };
-    google: {
-        id: {
-            type: string;
-        };
-    };
+interface IBook {
+    title: string;
+    description: string;
+    author: string;
+    keywords: object[];
 }
-declare const User: import("mongoose").Model<IUser, {}, {}, {}, any>;
-export default User;
+declare const Book: import("mongoose").Model<IBook, {}, {}, {}, any>;
+export { Book };

@@ -3,33 +3,50 @@
 
 <head>
     <%- include("layouts/header.ejs") %>
-
+    <title>EcoGYM</title>
 </head>
 
 <body>
-
-    <button type="button" onclick="logout()" class="btn btn-secondary">logout</button>
-
+    <header>
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <h2>EcoGym</h2>
+                <div class="collapse navbar-collapse ms-5" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Transactions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/report">Report</a>
+                        </li>
+                    </ul>
+                    
+                    <button type="button" onclick="logout()" class="btn btn-secondary">Log out</button>
+                </div>
+            </div>
+        </nav>
+    </header>
     <h1>home</h1>
 
-
+    <!-- script -->
     <%- include("layouts/b5script.ejs") %>
+    <script>
+        let logout = () => {
+            axios({
+                method: 'get',
+                url: 'http://localhost:3000/api/logout',
+            }).then(result => {
+                window.location.replace(
+                    `http://${window.location.hostname}:${window.location.port}/auth/login`
+                )
+            })
+        }
+    </script>
 
 
 
 </body>
 
-<script>
-    let logout = () => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:3000/api/logout',
-        }).then(result => {
-            window.location.replace(
-                `http://${window.location.hostname}:${window.location.port}/auth/login`
-            )
-        })
-    }
-</script>
+
 
 </html>

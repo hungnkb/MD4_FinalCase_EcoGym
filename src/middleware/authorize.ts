@@ -1,6 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response, NextFunction } from "express";
-import { User } from "../schemas/User.model";
+import User from "../schemas/User.model";
 import jwt from "jsonwebtoken";
 
 class Authorize {

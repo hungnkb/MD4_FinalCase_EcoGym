@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const User_model_1 = require("../schemas/User.model");
+const User_model_1 = __importDefault(require("../schemas/User.model"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const validateRegister_1 = __importDefault(require("../middleware/validateRegister"));
 const qs_1 = __importDefault(require("qs"));
@@ -15,16 +15,17 @@ class apiController {
                 let { email, password } = req.body;
                 let validateResult = validateRegister_1.default.check(email, password);
                 if (validateResult === "bothValid") {
-                    let isEmailExist = await User_model_1.User.findOne({ email: email });
+                    let isEmailExist = await User_model_1.default.findOne({ email: email });
                     if (isEmailExist) {
                         res.status(400).json({ message: "Register fail" });
                     }
                     else {
                         const salt = await bcrypt_1.default.genSaltSync(10);
                         password = await bcrypt_1.default.hashSync(password, salt);
-                        let newUser = new User_model_1.User({ email, password });
-                        await newUser.save();
-                        res.status(200).json({ message: "Register success" });
+                        let newUser = await User_model_1.default.create({ email, password });
+                        res.status(200).json({ message: "Register success",
+                            data: newUser
+                        });
                     }
                 }
                 else {
@@ -37,7 +38,7 @@ class apiController {
         };
         this.login = async (req, res) => {
             let { email, password } = req.body;
-            let user = await User_model_1.User.findOne({ email: email });
+            let user = await User_model_1.default.findOne({ email: email });
             if (user) {
                 bcrypt_1.default.compare(password, user.password, (err, result) => {
                     if (result) {
