@@ -4,23 +4,23 @@ import { User } from "../schemas/User.model";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import validateRegister from "../middleware/validateRegister";
-import qs from 'qs';
+import qs from "qs";
 
 class apiController {
   register = async (req: Request, res: Response): Promise<any> => {
     try {
-      let { username, password } = req.body;
-      let validateResult = validateRegister.check(username, password);
+      let { email, password } = req.body;      
+      let validateResult = validateRegister.check(email, password);
 
       if (validateResult === "bothValid") {
-        let isUsernameExist = await User.findOne({ username: username });
-        if (isUsernameExist) {
-          res.status(400).json({message: 'Register fail'});
+        let isEmailExist = await User.findOne({ email: email });
+        if (isEmailExist) {
+          res.status(400).json({ message: "Register fail" });
         } else {
           const salt = await bcrypt.genSaltSync(10);
           password = await bcrypt.hashSync(password, salt);
 
-          let newUser = new User({ username, password });
+          let newUser = new User({ email, password });
           await newUser.save();
           res.status(200).json({ message: "Register success" });
         }
@@ -33,8 +33,8 @@ class apiController {
   };
 
   login = async (req: Request, res: Response) => {
-    let { username, password } = req.body;
-    let user = await User.findOne({ username: username });
+    let { email, password } = req.body;
+    let user = await User.findOne({ email: email });
     if (user) {
       bcrypt.compare(password, user.password, (err, result) => {
         if (result) {
@@ -56,11 +56,11 @@ class apiController {
     }
   };
 
-  logout  = async (req: Request, res: Response) => {
+  logout = async (req: Request, res: Response) => {
     let cookieObj = qs.parse(req.headers.cookie);
     let name = Object.keys(cookieObj)[0];
-    res.clearCookie(name).status(200).json({message: 'logout success'});
-  }
+    res.clearCookie(name).status(200).json({ message: "logout success" });
+  };
 }
 
 export default new apiController();

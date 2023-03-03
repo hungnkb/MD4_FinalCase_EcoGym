@@ -12,17 +12,17 @@ class apiController {
     constructor() {
         this.register = async (req, res) => {
             try {
-                let { username, password } = req.body;
-                let validateResult = validateRegister_1.default.check(username, password);
+                let { email, password } = req.body;
+                let validateResult = validateRegister_1.default.check(email, password);
                 if (validateResult === "bothValid") {
-                    let isUsernameExist = await User_model_1.User.findOne({ username: username });
-                    if (isUsernameExist) {
-                        res.status(400).json({ message: 'Register fail' });
+                    let isEmailExist = await User_model_1.User.findOne({ email: email });
+                    if (isEmailExist) {
+                        res.status(400).json({ message: "Register fail" });
                     }
                     else {
                         const salt = await bcrypt_1.default.genSaltSync(10);
                         password = await bcrypt_1.default.hashSync(password, salt);
-                        let newUser = new User_model_1.User({ username, password });
+                        let newUser = new User_model_1.User({ email, password });
                         await newUser.save();
                         res.status(200).json({ message: "Register success" });
                     }
@@ -36,8 +36,8 @@ class apiController {
             }
         };
         this.login = async (req, res) => {
-            let { username, password } = req.body;
-            let user = await User_model_1.User.findOne({ username: username });
+            let { email, password } = req.body;
+            let user = await User_model_1.User.findOne({ email: email });
             if (user) {
                 bcrypt_1.default.compare(password, user.password, (err, result) => {
                     if (result) {
@@ -58,7 +58,7 @@ class apiController {
         this.logout = async (req, res) => {
             let cookieObj = qs_1.default.parse(req.headers.cookie);
             let name = Object.keys(cookieObj)[0];
-            res.clearCookie(name).status(200).json({ message: 'logout success' });
+            res.clearCookie(name).status(200).json({ message: "logout success" });
         };
     }
 }
