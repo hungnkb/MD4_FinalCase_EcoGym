@@ -24,8 +24,8 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 interface IUser {
-    email: String;
-    password: String;
+    email: string;
+    password: string;
     role: {
         type: number;
         default: 2;

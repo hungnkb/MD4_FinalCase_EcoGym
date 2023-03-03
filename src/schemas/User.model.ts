@@ -2,8 +2,8 @@ import { Schema, model } from "mongoose";
 
 interface IUser {
   // image: String,
-  email: String,
-  password: String,
+  email: string,
+  password: string,
   role: { type: number; default: 2 },
   google: {
     id: {

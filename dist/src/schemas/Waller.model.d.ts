@@ -24,10 +24,10 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 interface IWallet {
-    idUser: String;
-    walletName: String;
-    icon: String;
-    totalMoneyLeft: Number;
+    idUser: string;
+    walletName: string;
+    icon: string;
+    totalMoneyLeft: number;
 }
 declare const Wallet: import("mongoose").Model<IWallet, {}, {}, {}, any>;
 export { Wallet };

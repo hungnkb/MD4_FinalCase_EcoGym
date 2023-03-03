@@ -8,6 +8,7 @@ const User_model_1 = __importDefault(require("../schemas/User.model"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const validateRegister_1 = __importDefault(require("../middleware/validateRegister"));
 const qs_1 = __importDefault(require("qs"));
+const Waller_model_1 = require("../schemas/Waller.model");
 class apiController {
     constructor() {
         this.register = async (req, res) => {
@@ -23,9 +24,7 @@ class apiController {
                         const salt = await bcrypt_1.default.genSaltSync(10);
                         password = await bcrypt_1.default.hashSync(password, salt);
                         let newUser = await User_model_1.default.create({ email, password });
-                        res.status(200).json({ message: "Register success",
-                            data: newUser
-                        });
+                        res.status(200).json({ message: "Register success", data: newUser });
                     }
                 }
                 else {
@@ -63,6 +62,15 @@ class apiController {
             let cookieObj = qs_1.default.parse(req.headers.cookie);
             let name = Object.keys(cookieObj)[0];
             res.clearCookie(name).status(200).json({ message: "logout success" });
+        };
+        this.createWallet = async (req, res) => {
+            let { idUser, walletName: string, icon, totalMoneyLeft } = req.body;
+            let wallet = await Waller_model_1.Wallet.find({ walletName: walletName });
+            if (wallet) {
+                res.status(400).json('Wallet name is exist, please try again');
+            }
+            else {
+            }
         };
     }
 }

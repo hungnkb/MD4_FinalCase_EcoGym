@@ -46,6 +46,7 @@ passport_1.default.use(new passport_google_oauth20_1.default({
             email: profile.emails[0].value,
             password: null,
         });
+        console.log(newUser);
         await newUser.save();
         console.log(newUser, "newUser");
         return done(null, newUser);

@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
 
 interface IWallet {
-    idUser: String,
-    walletName: String,
-    icon: String,
-    totalMoneyLeft: Number
+    idUser: string,
+    walletName: string,
+    icon: string,
+    totalMoneyLeft: number
 }
 
 

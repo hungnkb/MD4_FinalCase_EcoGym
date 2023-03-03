@@ -30,8 +30,9 @@ class Authorize {
                 else {
                     let id = new Object(user.sub);
                     let userData = await User_model_1.default.findOne({ _id: id });
+                    console.log(userData);
                     let role = Number(userData.role);
-                    if (role === 2 || role === 1 || req.signedCookies.authorization === undefined) {
+                    if (role === 2 || role === 1 || req.signedCookies.authorization === null) {
                         next();
                     }
                     else {
@@ -41,8 +42,7 @@ class Authorize {
             }
         };
         this.guest = (req, res, next) => {
-            let role = req.body.role;
-            if (role !== 2 && role !== 1) {
+            if (req.signedCookies.authorization === undefined) {
                 next();
             }
             else {
