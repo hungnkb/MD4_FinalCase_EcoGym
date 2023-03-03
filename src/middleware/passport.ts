@@ -1,5 +1,5 @@
 import passport from "passport";
-import { User } from "../schemas/User.model";
+import User from "../schemas/User.model";
 import LocalStrategy from "passport-local";
 import GoogleStrategy from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
@@ -53,7 +53,8 @@ passport.use(
           email: profile.emails[0].value,
           password: null,
         });
-
+        console.log(newUser);
+        
         await newUser.save();
         console.log(newUser, "newUser");
         return done(null, newUser);

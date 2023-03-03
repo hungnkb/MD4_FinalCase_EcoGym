@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
-const User_model_1 = require("../schemas/User.model");
+const User_model_1 = __importDefault(require("../schemas/User.model"));
 const passport_local_1 = __importDefault(require("passport-local"));
 const passport_google_oauth20_1 = __importDefault(require("passport-google-oauth20"));
 passport_1.default.serializeUser((user, done) => {
@@ -14,7 +14,7 @@ passport_1.default.deserializeUser((user, done) => {
     done(null, user);
 });
 passport_1.default.use("local", new passport_local_1.default(async (username, password, done) => {
-    const user = await User_model_1.User.findOne({ email: username });
+    const user = await User_model_1.default.findOne({ email: username });
     if (!user) {
         return done(null, false);
     }
@@ -34,18 +34,19 @@ passport_1.default.use(new passport_google_oauth20_1.default({
     passReqToCallback: true,
 }, async (request, accessToken, refreshToken, profile, done) => {
     try {
-        let existingUser = await User_model_1.User.findOne({ "google.id": profile.id });
+        let existingUser = await User_model_1.default.findOne({ "google.id": profile.id });
         if (existingUser) {
             return done(null, existingUser);
         }
         console.log("Creating new user...");
-        const newUser = new User_model_1.User({
+        const newUser = new User_model_1.default({
             google: {
                 id: profile.id,
             },
             email: profile.emails[0].value,
             password: null,
         });
+        console.log(newUser);
         await newUser.save();
         console.log(newUser, "newUser");
         return done(null, newUser);

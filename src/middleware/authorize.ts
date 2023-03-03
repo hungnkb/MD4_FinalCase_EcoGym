@@ -1,6 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response, NextFunction } from "express";
-import { User } from "../schemas/User.model";
+import User from "../schemas/User.model";
 import jwt from "jsonwebtoken";
 
 class Authorize {
@@ -33,22 +33,24 @@ class Authorize {
           let id = new Object(user.sub);
   
           let userData = await User.findOne({ _id: id });
+          console.log(userData);
+          
           let role = Number(userData.role);
   
-          if (role === 2 || role === 1 || req.signedCookies.authorization === undefined) {
+          if (role === 2 || role === 1 || req.signedCookies.authorization === null) {
             next();
           } else {
             res.redirect("/");
           }
         }
      }
-    
+     
     
   };
 
-  guest = (req: Request, res: Response, next: NextFunction): void => {
-    let role = req.body.role;
-    if (role !== 2 && role !== 1) {
+  guest = (req: Request, res: Response, next: NextFunction): void => {    
+   
+    if (req.signedCookies.authorization === undefined) {
       next();
     } else {
       res.redirect("/");

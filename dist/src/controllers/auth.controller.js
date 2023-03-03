@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const User_model_1 = require("../schemas/User.model");
+const User_model_1 = __importDefault(require("../schemas/User.model"));
 class authController {
     constructor() {
         this.showLogin = async (req, res) => {
@@ -15,7 +15,7 @@ class authController {
         };
         this.loginOverGoogle = async (req, res) => {
             let id = req["user"].id;
-            let user = await User_model_1.User.findOne({ _id: id });
+            let user = await User_model_1.default.findOne({ _id: id });
             let token = jsonwebtoken_1.default.sign({
                 iss: "Book Store",
                 sub: id,
