@@ -29,10 +29,14 @@ class walletApiController {
   };
 
   createCategoryPackage = async (req: Request, res: Response) => {
+    // Create default Categories for new User
 
   }
 
   createNewCategory = async (req: Request, res: Response) => {
+
+    // User create new Category by themselves
+
     let idUser = req.body.idUser;
     let categoryName = req.body.categoryName;
     let categoryDescription = req.body.categoryDescription;
@@ -73,10 +77,6 @@ class walletApiController {
     }
   };
 
-  getDataByUser = async (req: Request, res: Response) => {
-    let idUser = req.body.idUser;
-
-  }
 }
 
 export default new walletApiController();
