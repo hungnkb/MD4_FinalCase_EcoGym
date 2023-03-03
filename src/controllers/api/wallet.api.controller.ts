@@ -53,6 +53,21 @@ class walletApiController {
       }
     }
   };
+
+  showCategoryByUser = async (req: Request, res: Response) => {
+    let idUser = req.body.idUser;
+    try {
+      await Category.find({ idUser: idUser })
+        .then((data) => {
+          res.status(200).json({ categoryList: data });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
 
 export default new walletApiController();
