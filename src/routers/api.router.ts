@@ -12,6 +12,6 @@ apiRouter.get("/logout", authApiController.logout);
 apiRouter.post("/wallet", walletApiController.createWallet);
 
 apiRouter.post("/category", walletApiController.createNewCategory);
-apiRouter.get("/user/:idUser", authApiController.showDataUser);
+apiRouter.get("/user/:idUser", authApiController.getDataUser);
 
 export default apiRouter;

@@ -66,13 +66,16 @@ class authApiController {
     res.clearCookie(name).status(200).json({ message: "logout success" });
   };
 
-  showDataUser = async (req: Request, res: Response) => {
+  getDataUser = async (req: Request, res: Response) => {
+    // Get all Info + Wallets + Categories + Flows of User by idUser which is get from params
+    // URL: http://localhost:3000/api/user/<idUser>
     let idUser = req.params.idUser;
     try {
       let wallets = await Wallet.find({ idUser: idUser });
       let categories = await Category.find({ idUser: idUser });
+      let info = await User.find({idUser: idUser});
       if (wallets && categories) {
-        res.status(200).json({wallets, categories})
+        res.status(200).json({info, wallets, categories})
       } 
     } catch (error) {
       console.log(error);
