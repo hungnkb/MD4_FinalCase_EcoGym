@@ -1,0 +1,1 @@
+{"version":3,"file":"Waller.model.js","sourceRoot":"","sources":["../../../src/schemas/Waller.model.ts"],"names":[],"mappings":";;;AAAA,uCAAyC;AAUzC,MAAM,YAAY,GAAG,IAAI,iBAAM,CAAU;IACrC,MAAM,EAAE,MAAM;IACd,UAAU,EAAE,MAAM;IAClB,IAAI,EAAE,MAAM;IACZ,cAAc,EAAE,MAAM;CACzB,CAAC,CAAA;AAEF,MAAM,MAAM,GAAG,IAAA,gBAAK,EAAU,QAAQ,EAAE,YAAY,CAAC,CAAC;AAE9C,wBAAM"}

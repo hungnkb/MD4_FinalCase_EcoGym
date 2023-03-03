@@ -50,9 +50,12 @@ class apiController {
                         res.status(200).json({ message: "Login success", user, token });
                     }
                     else {
-                        res.status(400).json({ message: "wrong password" });
+                        res.status(400).json({ message: "Wrong password, please try again" });
                     }
                 });
+            }
+            else {
+                res.status(400).json({ message: "Email is not exist, please try again" });
             }
         };
         this.logout = async (req, res) => {

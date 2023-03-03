@@ -3,6 +3,7 @@ import { User } from "../schemas/User.model";
 import LocalStrategy from "passport-local";
 import GoogleStrategy from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
+import FacebookStrategy from "passport-facebook";
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -62,5 +63,7 @@ passport.use(
     }
   )
 );
+
+
 
 export default passport;

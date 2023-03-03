@@ -9,15 +9,15 @@ const authRouter = express.Router();
 // User URL = /auth/...
 
 authRouter.get("/login", authController.showLogin);
-authRouter.get("/login/google",
+authRouter.get(
+  "/login/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
-authRouter.get("/google/callback",
+authRouter.get(
+  "/google/callback",
   passport.authenticate("google", { session: false }),
   authController.loginOverGoogle
 );
 authRouter.get("/register", authController.showRegister);
-
-
 
 export default authRouter;

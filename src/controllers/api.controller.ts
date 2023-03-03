@@ -34,6 +34,7 @@ class apiController {
 
   login = async (req: Request, res: Response) => {
     let { email, password } = req.body;
+    
     let user = await User.findOne({ email: email });
     if (user) {
       bcrypt.compare(password, user.password, (err, result) => {
@@ -50,9 +51,11 @@ class apiController {
           res.cookie("authorization", "Bearer " + token, { signed: true });
           res.status(200).json({ message: "Login success", user, token });
         } else {
-          res.status(400).json({ message: "wrong password" });
+          res.status(400).json({ message: "Wrong password, please try again" });
         }
       });
+    } else {
+      res.status(400).json({message: "Email is not exist, please try again"})
     }
   };
 

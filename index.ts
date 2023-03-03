@@ -5,6 +5,7 @@ import route from './src/routers';
 import passport from 'passport';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import session from 'express-session'
 
 const app = express();
 const PORT = process.env.PORT || 3000;
