@@ -4,6 +4,8 @@ import User from "../../schemas/User.model";
 import jwt from "jsonwebtoken";
 import validateRegister from "../../middleware/validateRegister";
 import qs from "qs";
+import Wallet from "../../schemas/Waller.model";
+import Category from "../../schemas/Category.model";
 
 class authApiController {
   register = async (req: Request, res: Response): Promise<any> => {
@@ -62,6 +64,20 @@ class authApiController {
     let cookieObj = qs.parse(req.headers.cookie);
     let name = Object.keys(cookieObj)[0];
     res.clearCookie(name).status(200).json({ message: "logout success" });
+  };
+
+  showDataUser = async (req: Request, res: Response) => {
+    let idUser = req.params.idUser;
+    try {
+      let wallets = await Wallet.find({ idUser: idUser });
+      let categories = await Category.find({ idUser: idUser });
+      if (wallets && categories) {
+        res.status(200).json({wallets, categories})
+      } 
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({message: 'Fail'})
+    }
   };
 }
 

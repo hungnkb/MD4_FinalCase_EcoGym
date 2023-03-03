@@ -28,7 +28,11 @@ class walletApiController {
     }
   };
 
-  createCategory = async (req: Request, res: Response) => {
+  createCategoryPackage = async (req: Request, res: Response) => {
+
+  }
+
+  createNewCategory = async (req: Request, res: Response) => {
     let idUser = req.body.idUser;
     let categoryName = req.body.categoryName;
     let categoryDescription = req.body.categoryDescription;
@@ -68,6 +72,11 @@ class walletApiController {
       console.log(error);
     }
   };
+
+  getDataByUser = async (req: Request, res: Response) => {
+    let idUser = req.body.idUser;
+
+  }
 }
 
 export default new walletApiController();
