@@ -13,7 +13,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 mongoose_1.default.set('strictQuery', true);
-mongoose_1.default.connect('mongodb://127.0.0.1:27017/ecogym')
+mongoose_1.default.connect('mongodb+srv://hungnkb:1993hung@cluster0.zbfd8ti.mongodb.net/?retryWrites=true&w=majority')
     .then(() => console.log('DB Connected!'));
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
