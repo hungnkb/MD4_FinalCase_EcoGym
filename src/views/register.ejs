@@ -19,16 +19,16 @@
             <div class="col-6">
                 <form id="form-auth" action="/api/register" method="post">
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Username</label>
-                        <input onfocus="removeValidate(event)" onblur="validateUsernamePassword(event)" name="username"
-                            type="text" class="form-control" id="username" aria-describedby="emailHelp">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input onfocus="removeValidate(event)" onblur="validateEmailPassword(event)" name="email"
+                            type="email" class="form-control" id="email" aria-describedby="emailHelp">
                         <div class="invalid-feedback">
-                            Username is at least 6-20 words without special symbols
+                            Email example: abc@xyz.com
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input onfocus="removeValidate(event)" onblur="validateUsernamePassword(event)" name="password"
+                        <input onfocus="removeValidate(event)" onblur="validateEmailPassword(event)" name="password"
                             type="password" class="form-control" id="password">
                         <div class="invalid-feedback">
                             Password includes at least: 8 words, 1 UPPERCASE, 1 lowercase, 1 special symbol (!@#$?%^&*-)
@@ -52,21 +52,21 @@
 
         <script>
             let form = document.querySelector('#form-auth');
-            let username = form.querySelector('#username');
+            let email = form.querySelector('#email');
             let password = form.querySelector('#password');
 
             let handleSubmit = async (event) => {
                 event.preventDefault();
 
-                let resultValidateUsername = await checkUsername(username.value);
+                let resultValidateEmail = await checkEmail(email.value);
                 let resultValidatePassword = await checkPassword(password.value);
 
-                if (resultValidateUsername === 'is-valid' && resultValidatePassword === 'is-valid') {
+                if (resultValidateEmail === 'is-valid' && resultValidatePassword === 'is-valid') {
                     axios({
                         method: form.method,
                         url: form.action,
                         data: {
-                            username: username.value,
+                            email: email.value,
                             password: password.value,
                         }
                     }).then(result => {
@@ -87,19 +87,19 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: 'Username is exist, please try again',
+                    text: 'Email is exist, please try again',
                     // footer: '<a href="">Why do I have this issue?</a>'
                 })
             })
                 } else {
-                validateUsernamePassword(event);
+                validateEmailPassword(event);
             }
             }
 
-            let checkUsername = (username) => {
+            let checkEmail = (email) => {
                 return new Promise((resolve, reject) => {
-                    let regexp = new RegExp(/\w{6,20}$/);
-                    let validate = regexp.test(username);
+                    let regexp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
+                    let validate = regexp.test(email);
                     if (validate) {
                         resolve('is-valid');
                     } else {
@@ -120,14 +120,14 @@
                 })
             }
 
-            let validateUsernamePassword = async (event) => {
+            let validateEmailPassword = async (event) => {
                 let obj = event.target.value;
-                if (event.target.id === 'username') {
-                    let result = await checkUsername(obj);
+                if (event.target.id === 'email') {
+                    let result = await checkEmail(obj);
                     if (result === 'is-valid') {
-                        document.querySelector('#username').className = 'is-valid form-control';
+                        document.querySelector('#email').className = 'is-valid form-control';
                     } else {
-                        document.querySelector('#username').className = 'is-invalid form-control';
+                        document.querySelector('#email').className = 'is-invalid form-control';
                     }
                 } else {
                     let result = await checkPassword(obj);

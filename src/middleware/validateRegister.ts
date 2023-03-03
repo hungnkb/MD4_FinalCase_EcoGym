@@ -1,6 +1,6 @@
 class validateRegister {
   check = (username: string, password: string): string => {
-    let regexpUsername = new RegExp(/\w{6,20}$/);
+    let regexpUsername = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
     let regexpPassword = new RegExp(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-1])(?=.*[!@#$%^?&*-])[a-zA-Z\d!@#$?%^&*-].{8,}$/
     );

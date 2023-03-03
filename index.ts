@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 mongoose.set('strictQuery', true);
 mongoose.connect('mongodb+srv://hungnkb:1993hung@cluster0.zbfd8ti.mongodb.net/?retryWrites=true&w=majority')
   .then(() => console.log('DB Connected!'));
-
+ 
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,8 +26,5 @@ route(app);
 
 app.listen(PORT, () => {
   console.log('Server is running at ' + PORT);
-  
 })
 
-
-//npm run start:dev
