@@ -43,7 +43,7 @@ passport_1.default.use(new passport_google_oauth20_1.default({
             google: {
                 id: profile.id,
             },
-            username: profile.emails[0].value,
+            email: profile.emails[0].value,
             password: null,
         });
         await newUser.save();
