@@ -1,4 +1,2 @@
-declare class WalletRouter {
-}
-declare const _default: WalletRouter;
-export default _default;
+declare const walletRoutes: import("express-serve-static-core").Router;
+export default walletRoutes;

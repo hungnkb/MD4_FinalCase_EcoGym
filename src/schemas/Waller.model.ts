@@ -6,8 +6,6 @@ interface IWallet {
     icon: String,
     totalMoneyLeft: Number
 }
-
-
 const walletSchema = new Schema<IWallet>({
     idUser: String,
     walletName: String,
@@ -17,4 +15,4 @@ const walletSchema = new Schema<IWallet>({
 
 const Wallet = model<IWallet>('Wallet', walletSchema);
 
-export {Wallet};
+export default Wallet;
