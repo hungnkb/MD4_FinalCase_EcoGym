@@ -11,9 +11,9 @@ const passport_1 = __importDefault(require("passport"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 mongoose_1.default.set('strictQuery', true);
-mongoose_1.default.connect('mongodb://127.0.0.1:27017/ecogym')
+mongoose_1.default.connect('mongodb+srv://hungnkb:1993hung@cluster0.zbfd8ti.mongodb.net/?retryWrites=true&w=majority')
     .then(() => console.log('DB Connected!'));
 app.set('view engine', 'ejs');
 app.set('views', 'src/views');
@@ -24,6 +24,6 @@ dotenv_1.default.config();
 app.use((0, cookie_parser_1.default)(process.env.USER_CODE_SECRET));
 (0, routers_1.default)(app);
 app.listen(PORT, () => {
-    console.log('Server is running on http://localhost:3000/auth/register ');
+    console.log('Server is running at ' + PORT);
 });
 //# sourceMappingURL=index.js.map
