@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { Wallet } from "../schemas/Waller.model";
-import axios from 'axios';
+import axios from "axios";
 
 class homeController {
   showHome = async (req: Request, res: Response) => {
@@ -11,12 +11,21 @@ class homeController {
     let wallets = await Wallet.find({ idUser: id });
     if (wallets.length === 0) {
       axios({
-        method: 'post',
-        url: '/api/wallet',
+        method: "post",
+        url: "/api/wallet",
         data: {
-          
-        }
-      });
+          idUser: id,
+          walletName: "1st Wallet",
+          icon: 1,
+          totalMoneyLeft: 0,
+        },
+      })
+        .then(wallet => {
+          res.send({wallet});
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
 
     res.render("home");

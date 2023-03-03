@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import validateRegister from "../middleware/validateRegister";
 import qs from "qs";
 import { Wallet } from "../schemas/Waller.model";
+import { Schema, SchemaType, Types } from "mongoose";
 
 class apiController {
   register = async (req: Request, res: Response): Promise<any> => {
@@ -67,20 +68,30 @@ class apiController {
   };
 
   createWallet = async (req: Request, res: Response) => {
-    let { idUser, walletName, icon, totalMoneyLeft } = req.body;
-    let wallet = await Wallet.find({ walletName: walletName });
+    let idUser: string = req.body.idUser
+    let walletName: string = req.body.walletName;
+    let icon: number = req.body.icon;
+    let totalMoneyLeft: number = req.body.totalMoneyLeft;
+    let wallet = await Wallet.findOne({ walletName: walletName, idUser: idUser });
+    
     if (wallet) {
       res.status(400).json("Wallet name is exist, please try again");
     } else {
-      let newWallet = new Wallet(wallet);
-      let saveWallet = await newWallet.save();
+      let newWallet = new Wallet({idUser, walletName, icon, totalMoneyLeft});
+      console.log(newWallet);
+      
+      let saveWallet = await newWallet.save(); 
       if (saveWallet) {
-        res.status(200).json('Create wallet success');
+        res.status(200).json("Create wallet success");
       } else {
-        res.status(400).json("Wallet name is exist, please try again");
+        res.status(400).json("Wallet name is exist, please try again"); 
       }
     }
   };
+
+  updateWallet = async (req: Request, res: Response) => {
+    
+  }
 }
 
 export default new apiController();
