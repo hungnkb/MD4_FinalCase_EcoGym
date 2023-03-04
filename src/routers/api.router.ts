@@ -1,6 +1,7 @@
 import authApiController from "../controllers/api/auth.api.controller";
 import express from "express";
 import walletApiController from "../controllers/api/wallet.api.controller";
+import categoryApiController from "src/controllers/api/category.api.controller";
 
 const apiRouter = express.Router();
 
@@ -11,8 +12,12 @@ apiRouter.get("/logout", authApiController.logout);
 
 apiRouter.post("/wallet", walletApiController.createWallet);
 
-apiRouter.post("/category", walletApiController.createNewCategory);
+apiRouter.post("/category", categoryApiController .createNewCategory);
+apiRouter.get("/category", categoryApiController .showCategoryByUser);
+apiRouter.get("/category/:idUser", categoryApiController .showCategoryByUser);
+
+apiRouter.get("/user/", authApiController.getDataUser);
 apiRouter.get("/user/:idUser", authApiController.getDataUser);
-apiRouter.get("/transaction", )
+
 
 export default apiRouter;
