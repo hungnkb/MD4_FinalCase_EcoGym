@@ -4,6 +4,7 @@ import Wallet from "../schemas/Waller.model";
 import axios from "axios";
 import walletApiController from "./api/wallet.api.controller";
 import token from "./user.controller";
+import categoryApiController from "./api/category.api.controller";
 
 class homeController {
   showHome = async (req: Request, res: Response) => {
@@ -12,7 +13,7 @@ class homeController {
     let wallets = await Wallet.find({ idUser: id });
     // create new Category package for new User
     try {
-      await walletApiController.createCategoryPackage(req, res);
+      await categoryApiController.createCategoryPackage(req, res);
       
     } catch (error) {
       console.log(error);
