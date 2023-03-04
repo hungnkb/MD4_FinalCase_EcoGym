@@ -2,14 +2,14 @@ import { Schema, model } from "mongoose";
 
 interface ICategory {
     idUser: string,
-    categoryList: Object,
+    categoryList: string[],
     description: string,
 }
 
 
 const categorySchema = new Schema<ICategory>({
     idUser: String,
-    categoryList: Object,
+    categoryList: Array,
     description: String
 })
 
