@@ -1,13 +1,14 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import mongoose from 'mongoose';
-import route from './src/routers';
+import route from "./src/routers/index"
 import passport from 'passport';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import connectDB from './src/config/connectDB';
 import configViewEngine from './src/config/viewengine';
 dotenv.config();
+import profileRoutes from './src/routers/profile.router';
 
 
 
@@ -31,6 +32,8 @@ configViewEngine(app)
 // config res.body
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+
 
 app.use(passport.initialize());
 app.use(cookieParser(process.env.USER_CODE_SECRET));
