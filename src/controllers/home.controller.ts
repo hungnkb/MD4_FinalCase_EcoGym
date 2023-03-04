@@ -4,6 +4,8 @@ import Wallet from "../schemas/Waller.model";
 import axios from "axios";
 import walletApiController from "./api/wallet.api.controller";
 import token from "./user.controller";
+import Transaction from '../schemas/Transaction';
+import { Logger } from "mongodb";
 
 class homeController {
   showHome = async (req: Request, res: Response) => {
@@ -13,12 +15,9 @@ class homeController {
     // create new Category package for new User
     try {
       await walletApiController.createCategoryPackage(req, res);
-      
     } catch (error) {
       console.log(error);
     }
-     
-
     // if User has no wallet => create new wallet default
     if (wallets.length === 0) {
       axios({
@@ -38,8 +37,24 @@ class homeController {
           console.log(error);
         });
     }
-    res.render("home");
+    // test get list trans
+    let listTrans;
+     axios({
+      method: "get",
+      url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
+      headers: {'X-Requested-With': 'XMLHttpRequest'}
+    })
+      .then(result => {
+        listTrans = result.data;
+        // console.log(listTrans);
+        return  res.send({listTrans})
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    res.render("home", {wallets: wallets, listTrans: listTrans});
   };
+  
 }
 
 export default new homeController();
