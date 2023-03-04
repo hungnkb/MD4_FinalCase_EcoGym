@@ -113,6 +113,9 @@ class CategoryApiController {
   };
 
   updateCategory = async (req: Request, res: Response) => {
+    // check if category exist -> update/edit
+    // Frontend have to send current "nameCategory" and "newNameCategory"
+
     let id = token.getIdUser(req, res);
     let idUser = req.body.idUser || req.params.idUser || id;
     let nameCategory: string = req.body.categoryName;
