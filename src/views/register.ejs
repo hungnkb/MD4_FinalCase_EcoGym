@@ -34,14 +34,14 @@
                             Password includes at least: 8 words, 1 UPPERCASE, 1 lowercase, 1 special symbol (!@#$?%^&*-)
                         </div>
                     </div>
-                    <!-- <div class="mb-3">
+                    <div class="mb-3">
                         <label for="rePassword" class="form-label">Re-enter Password</label>
                         <input onfocus="removeValidate(event)" onblur="checkRePassword(event)" name="rePassword"
                             type="password" class="form-control" id="rePassword">
                         <div class="invalid-feedback">
                             Passwords are not same. Please try again
                         </div>
-                    </div> -->
+                    </div>
 
                     <div style="text-align: center;">
                         <button onclick="handleSubmit(event)" type="submit" class="btn btn-primary">Apply</button>
@@ -68,9 +68,9 @@
 
                 let resultValidateEmail = await checkEmail(email.value);
                 let resultValidatePassword = await checkPassword(password.value);
-                let resultCheckRePassword = document.querySelector('#rePassword')
+                let resultCheckRePassword = document.querySelector('#rePassword');
 
-                if (resultValidateEmail === 'is-valid' && resultValidatePassword === 'is-valid') {
+                if (resultValidateEmail === 'is-valid' && resultValidatePassword === 'is-valid' && resultCheckRePassword.className === 'is-valid form-control') {
                     axios({
                         method: form.method,
                         url: form.action,
@@ -101,7 +101,12 @@
                 })
             })
                 } else {
-                validateEmailPassword(event);
+                    if (resultCheckRePassword.className === 'is-invalid form-control') {
+                        checkRePassword(event);
+                    } else {
+                        console.log(123);
+                        validateEmailPassword(event);
+                    }
             }
             }
 
@@ -129,15 +134,15 @@
                 })
             }
 
-            // let checkRePassword = (event) => {
-            //         let password = document.querySelector('#password');
-            //         let obj = event.target.value;
-            //         if (obj === password.value) {
-            //             document.querySelector('#rePassword').className = 'is-valid form-control'
-            //         } else {
-            //             document.querySelector('#rePassword').className = 'is-invalid form-control'
-            //         }
-            // }
+            let checkRePassword = (event) => {
+                    let password = document.querySelector('#password');
+                    let obj = event.target.value;
+                    if (obj === password.value) {
+                        document.querySelector('#rePassword').className = 'is-valid form-control'
+                    } else {
+                        document.querySelector('#rePassword').className = 'is-invalid form-control'
+                    }
+            }
 
             let validateEmailPassword = async (event) => {
                 let obj = event.target.value;
