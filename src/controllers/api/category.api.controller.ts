@@ -1,6 +1,6 @@
-import {Request, Response} from 'express';
-import Category from 'src/schemas/Category.model';
-import token from '../user.controller';
+import { Request, Response } from "express";
+import Category from "../../schemas/Category.model";
+import token from "../user.controller";
 
 class CategoryApiController {
   createCategoryPackage = async (req: Request, res: Response) => {
@@ -115,7 +115,36 @@ class CategoryApiController {
   updateCategory = async (req: Request, res: Response) => {
     let id = token.getIdUser(req, res);
     let idUser = req.body.idUser || req.params.idUser || id;
-    let nameCategory = req.body.nameCategory;
+    let nameCategory: string = req.body.categoryName;
+    let newNameCategory: string = req.body.newCategoryName;
+
+    let categoryByUserId = await Category.findOne({ idUser: idUser });
+    let categoryListArr = Object.values(categoryByUserId.categoryList);
+    let doneCategory = false;
+
+    for (let i = 0; i < categoryListArr.length; i++) {
+      if (nameCategory == categoryListArr[i]) {
+        categoryListArr[i] = newNameCategory;
+        doneCategory = true;
+        break;
+      }
+    }
+
+    if (doneCategory) {
+      await Category.findOneAndUpdate(
+        { idUser: idUser },
+        { categoryList: categoryListArr },
+        { new: true }
+      )
+        .then((result) => {
+          res.status(200).json({ message: "Update success", result });
+        })
+        .catch((error) => {
+          res.status(400).json({ message: "Update fail" });
+        });
+    } else {
+      res.status(400).json({ message: "Update fail" });
+    }
   };
 }
 
