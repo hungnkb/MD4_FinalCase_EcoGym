@@ -33,7 +33,6 @@ class Authorize {
           let id = new Object(user.sub);
   
           let userData = await User.findOne({ _id: id });
-          console.log(userData);
           
           let role = Number(userData.role);
   

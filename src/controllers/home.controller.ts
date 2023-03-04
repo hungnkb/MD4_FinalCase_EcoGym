@@ -2,20 +2,28 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import Wallet from "../schemas/Waller.model";
 import axios from "axios";
+import walletApiController from "./api/wallet.api.controller";
+import token from "./user.controller";
 
 class homeController {
   showHome = async (req: Request, res: Response) => {
     // check User has wallet or not
-    let token = req.signedCookies.authorization.split(" ")[1];
-    let user = jwt.verify(token, process.env.USER_CODE_SECRET);
-    let id = new Object(user.sub);
+    let id = token.getIdUser(req, res);
     let wallets = await Wallet.find({ idUser: id });
+    // create new Category package for new User
+    try {
+      await walletApiController.createCategoryPackage(req, res);
+      
+    } catch (error) {
+      console.log(error);
+    }
+     
 
     // if User has no wallet => create new wallet default
     if (wallets.length === 0) {
       axios({
         method: "post",
-        url: "/api/wallet",
+        url: `http://localhost:${process.env.PORT}/api/wallet`,
         data: {
           idUser: id,
           walletName: "1st Wallet",
@@ -23,10 +31,10 @@ class homeController {
           totalMoneyLeft: 0,
         },
       })
-        .then(wallet => {
-          res.send({wallet});
+        .then((wallet) => {
+          res.send({ wallet });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     }

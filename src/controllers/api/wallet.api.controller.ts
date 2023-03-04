@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Wallet from "../../schemas/Waller.model";
 import Category from "../../schemas/Category.model";
-import token from "../user.controller"
+import token from "../user.controller";
 
 class walletApiController {
   createWallet = async (req: Request, res: Response) => {
@@ -19,7 +19,6 @@ class walletApiController {
       res.status(400).json("Wallet name is exist, please try again");
     } else {
       let newWallet = new Wallet({ idUser, walletName, icon, totalMoneyLeft });
-      console.log(newWallet);
 
       let saveWallet = await newWallet.save();
       if (saveWallet) {
@@ -32,11 +31,58 @@ class walletApiController {
 
   createCategoryPackage = async (req: Request, res: Response) => {
     // Create default Categories for new User
-
-  }
+    let idUser = token.getIdUser(req, res);
+    try {
+      let categoryList = await Category.find({ idUser: idUser });
+      
+      if (categoryList.length === 0) {
+        
+        let categoryPackage = [
+          "Food & Beverage",
+          "Transportation",
+          "Rentals",
+          "Water Bill",
+          "Phone Bill",
+          "Electricity Bill",
+          "Gas Bill",
+          "Television Bill",
+          "Internet Bill",
+          "Other Utility Bill",
+          "Vehicle Maintenance",
+          "Medical Check Up",
+          "Insurances",
+          "Education",
+          "Houseware",
+          "Personal Items",
+          "Pets",
+          "Home Servicesm",
+          "Other Expense",
+          "Fitness",
+          "Makeup",
+          "Gifts & Donations",
+          "Streaming Service",
+          "Fun Money",
+          "Investment",
+          "Pay Interest",
+          "Outgoing Transfer",
+        ];
+        
+        for (let i = 0; i < categoryPackage.length; i++) {
+          let categories = new Category({idUser: idUser, categoryName: categoryPackage[i]})
+          
+          try {
+            await categories.save();
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   createNewCategory = async (req: Request, res: Response) => {
-
     // User create new Category by themselves
     let id = token.getIdUser(req, res);
     let idUser = req.body.idUser || id;
@@ -79,7 +125,6 @@ class walletApiController {
       console.log(error);
     }
   };
-
 }
 
 export default new walletApiController();
