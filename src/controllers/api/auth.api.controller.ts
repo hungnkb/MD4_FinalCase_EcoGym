@@ -6,9 +6,7 @@ import validateRegister from "../../middleware/validateRegister";
 import qs from "qs";
 import Wallet from "../../schemas/Waller.model";
 import Category from "../../schemas/Category.model";
-import Flow from "../../schemas/Flow.model";
-import walletApiController from "./wallet.api.controller";
-import token from '../user.controller'
+import token from "../user.controller";
 
 class authApiController {
   register = async (req: Request, res: Response): Promise<any> => {

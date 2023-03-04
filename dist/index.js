@@ -16,8 +16,6 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 8888;
 mongoose_1.default.set('strictQuery', true);
-mongoose_1.default.connect('mongodb+srv://viethenry183081:VietHenry1803@cluster0.fvl1iwm.mongodb.net/ecogym')
-    .then(() => console.log('DB Connected!'));
 app.set('view engine', 'ejs');
 app.set('views', './src/views');
 (0, viewengine_1.default)(app);

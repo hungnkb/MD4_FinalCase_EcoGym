@@ -38,7 +38,6 @@ class homeController {
           console.log(error);
         });
     }
-
     res.render("home");
   };
 }
