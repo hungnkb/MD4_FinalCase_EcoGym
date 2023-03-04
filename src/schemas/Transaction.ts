@@ -1,7 +1,8 @@
 import { Schema, model } from "mongoose";
 
-interface IFlow {
+interface ITransaction {
     idUser: string,
+    nameWallet: string,
     moneyTrade: number,
     nameCategory: string,
     desc: string,
@@ -9,14 +10,15 @@ interface IFlow {
 }
 
 
-const flowSchema = new Schema<IFlow>({
+const transactionSchema = new Schema<ITransaction>({
     idUser: String,
+    nameWallet: String,
     moneyTrade: Number,
     nameCategory: String,
     desc: String,
     timeTrade: Date
 })
 
-const Flow = model<IFlow>('Wallet', flowSchema);
+const Transaction = model<ITransaction>('Transaction', transactionSchema);
 
-export {Flow};
+export default Transaction;

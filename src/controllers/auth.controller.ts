@@ -29,6 +29,8 @@ class authController {
       res.redirect('/');
     };
 
+   
+
   };
 
 export default new authController();
