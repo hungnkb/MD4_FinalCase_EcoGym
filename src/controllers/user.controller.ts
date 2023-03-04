@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 
 class token {
-  getIdUser = (req: Request, res: Response): Object => {
+  getIdUser = (req: Request, res: Response): string => {
     try {
       let token = req.signedCookies.authorization.split(" ")[1];
       let user = jwt.verify(token, process.env.USER_CODE_SECRET);

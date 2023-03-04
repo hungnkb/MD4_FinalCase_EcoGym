@@ -25,7 +25,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 interface ICategory {
     idUser: string;
-    categoryName: string;
+    categoryList: string[];
     description: string;
 }
 declare const Category: import("mongoose").Model<ICategory, {}, {}, {}, any>;
