@@ -19,4 +19,4 @@ const flowSchema = new Schema<IFlow>({
 
 const Flow = model<IFlow>('Wallet', flowSchema);
 
-export {Flow};
+export default new Flow();
