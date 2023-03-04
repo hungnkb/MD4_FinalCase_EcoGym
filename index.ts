@@ -15,10 +15,6 @@ const app = express();
 const PORT = process.env.PORT || 8888;
 
 mongoose.set('strictQuery', true);
-
-
-mongoose.connect('mongodb+srv://viethenry183081:VietHenry1803@cluster0.fvl1iwm.mongodb.net/ecogym')
-  .then(() => console.log('DB Connected!'));
  
 app.set('view engine', 'ejs');
 app.set('views', './src/views');

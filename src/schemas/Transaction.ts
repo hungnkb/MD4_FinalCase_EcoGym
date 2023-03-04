@@ -9,7 +9,6 @@ interface ITransaction {
     timeTrade: Date,
 }
 
-
 const transactionSchema = new Schema<ITransaction>({
     idUser: String,
     nameWallet: String,

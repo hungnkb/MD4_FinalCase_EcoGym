@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import Transaction from "../../schemas/Transaction";
-import transactionController from "../transaction.controller";
+import token from "../user.controller"
 class transactionApiController{
     // GET
     showCreateTransaction = async(req: Request, res:Response) => {
-        let idUser = await transactionController.getIdUser;
-        const allTransaction = await Transaction.find({idUser: idUser});
+        let id = await token.getIdUser(req, res);
+        const allTransaction = await Transaction.find({idUser: id});
         if (allTransaction.length === 0) {
             res.send("You don't have a trade yet")
         }
@@ -17,9 +17,7 @@ class transactionApiController{
     }
     // POST
     createTransaction = async (req: Request, res:Response) => {
-        let token = req.signedCookies.authorization.split(" ")[1];
-        let user = jwt.verify(token, process.env.USER_CODE_SECRET);
-        let id = new Object(user.sub);
+        let id = await token.getIdUser(req, res);
         let {nameWaller, moneyTrade, nameCategory, desc, timeTrade} = req.body;
         let newTransaction = await Transaction.create({idUser: id, nameWaller: nameWaller, moneyTrade: moneyTrade, nameCategory: nameCategory, desc: desc, timeTrade: timeTrade})
         res.status(200).json({
@@ -29,7 +27,7 @@ class transactionApiController{
     }
     // PUT
     updateTransaction = async (req: Request, res:Response) => {
-        let id = transactionController.getIdUser;
+        let id = await token.getIdUser(req, res);
         let {nameWaller, moneyTrade, nameCategory, desc, timeTrade} = req.body;
         const opts = { runValidators: true };
         const transUpdated = await Transaction.updateOne(

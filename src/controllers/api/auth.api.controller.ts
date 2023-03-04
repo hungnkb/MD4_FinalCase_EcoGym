@@ -36,27 +36,36 @@ class authApiController {
 
   login = async (req: Request, res: Response) => {
     let { email, password } = req.body;
-    let user = await User.findOne({ email: email });
-    if (user) {
-      bcrypt.compare(password, user.password, (err, result) => {
-        if (result) {
-          let token = jwt.sign(
-            {
-              iss: "Book Store",
-              sub: user.id,
-              iat: new Date().getTime(),
-            },
-            process.env.USER_CODE_SECRET,
-            { expiresIn: 604800000 }
-          );
-          res.cookie("authorization", "Bearer " + token, { signed: true });
-          res.status(200).json({ message: "Login success", user, token });
-        } else {
-          res.status(400).json({ message: "Wrong password, please try again" });
-        }
-      });
 
-      res.status(400).json({ message: "Email is not exist, please try again" });
+    try {
+      let user = await User.findOne({ email: email });
+      if (user != null) {
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (result) {
+            let token = jwt.sign(
+              {
+                iss: "Book Store",
+                sub: user.id,
+                iat: new Date().getTime(),
+              },
+              process.env.USER_CODE_SECRET,
+              { expiresIn: 604800000 }
+            );
+            res.cookie("authorization", "Bearer " + token, { signed: true });
+            res.status(200).json({ message: "Login success", user, token });
+          } else {
+            res
+              .status(400)
+              .json({ message: "Wrong password, please try again" });
+          }
+        });
+      } else {
+        res
+          .status(400)
+          .json({ message: "Email is not exist, please try again" });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -73,13 +82,13 @@ class authApiController {
     try {
       let wallets = await Wallet.find({ idUser: idUser });
       let categories = await Category.find({ idUser: idUser });
-      let info = await User.find({idUser: idUser});
+      let info = await User.find({ idUser: idUser });
       if (wallets && categories) {
-        res.status(200).json({info, wallets, categories})
-      } 
+        res.status(200).json({ info, wallets, categories });
+      }
     } catch (error) {
       console.log(error);
-      res.status(400).json({message: 'Fail'})
+      res.status(400).json({ message: "Fail" });
     }
   };
 }

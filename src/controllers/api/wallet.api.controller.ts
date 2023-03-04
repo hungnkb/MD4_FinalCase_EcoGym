@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import Wallet from "../../schemas/Waller.model";
 import Category from "../../schemas/Category.model";
+import token from "../user.controller"
 
 class walletApiController {
   createWallet = async (req: Request, res: Response) => {
-    let idUser: string = req.body.idUser;
+    let id = token.getIdUser(req, res);
+    let idUser = req.body.idUser || id;
     let walletName: string = req.body.walletName;
     let icon: number = req.body.icon;
     let totalMoneyLeft: number = req.body.totalMoneyLeft;
@@ -35,7 +37,8 @@ class walletApiController {
 
   createNewCategory = async (req: Request, res: Response) => {
     // User create new Category by themselves
-    let idUser = req.body.idUser;
+    let id = token.getIdUser(req, res);
+    let idUser = req.body.idUser || id;
     let categoryName = req.body.categoryName;
     let categoryDescription = req.body.categoryDescription;
 
@@ -61,7 +64,8 @@ class walletApiController {
   };
 
   showCategoryByUser = async (req: Request, res: Response) => {
-    let idUser = req.body.idUser;
+    let id = token.getIdUser(req, res);
+    let idUser = req.body.idUser || id;
     try {
       await Category.find({ idUser: idUser })
         .then((data) => {
