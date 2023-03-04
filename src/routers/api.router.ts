@@ -13,5 +13,6 @@ apiRouter.post("/wallet", walletApiController.createWallet);
 
 apiRouter.post("/category", walletApiController.createNewCategory);
 apiRouter.get("/user/:idUser", authApiController.getDataUser);
+apiRouter.get("/transaction", )
 
 export default apiRouter;

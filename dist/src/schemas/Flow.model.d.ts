@@ -30,5 +30,7 @@ interface IFlow {
     desc: string;
     timeTrade: Date;
 }
-declare const Flow: import("mongoose").Model<IFlow, {}, {}, {}, any>;
-export { Flow };
+declare const _default: import("mongoose").Document<unknown, any, IFlow> & Omit<IFlow & {
+    _id: import("mongoose").Types.ObjectId;
+}, never>;
+export default _default;

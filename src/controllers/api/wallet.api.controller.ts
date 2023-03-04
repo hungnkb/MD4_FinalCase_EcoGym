@@ -30,7 +30,7 @@ class walletApiController {
 
   createCategoryPackage = async (req: Request, res: Response) => {
     // Create default Categories for new User
-
+    
   }
 
   createNewCategory = async (req: Request, res: Response) => {
