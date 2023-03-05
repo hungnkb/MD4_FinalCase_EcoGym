@@ -190,6 +190,8 @@
                 </script>
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script>
+
+                    // set default nameCategory input in Add transaction modal
                     let categoryPickDefault = (event) => {
                         let category = event.target.value;
                         document.querySelector('#categoryNameList').innerHTML = `
@@ -201,7 +203,7 @@
                         `
                     }
 
-                    // check category income/outcome then render nameCategory input
+                    // check category income/outcome then render nameCategory input in Add transaction modal
                     let categoryPick = event => {
                         let category = event.target.value;
                         if (category == 'incomeCategory') {
