@@ -10,6 +10,7 @@ class homeController {
   showHome = async (req: Request, res: Response) => {
     // check User has wallet or not
     let id = token.getIdUser(req, res);
+
     let wallets = await Wallet.find({ idUser: id });
     // create new Category package for new User
     try {
@@ -24,6 +25,15 @@ class homeController {
       url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
     })
 
+    let userDataAll = await axios({
+      method: "get",
+      url: `http://localhost:${process.env.PORT}/api/user/${id}`,
+    })
+
+    // get all User's data: userDataAll.data
+    // example: get all categories -> userDataAll.data.categories[0].categoryList
+    let categories = userDataAll.data.categories[0].categoryList;
+    
     if (wallets.length === 0) { 
       let firstWallet = await axios({
         method: "post",
@@ -39,9 +49,9 @@ class homeController {
         method: "get",
         url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
       })
-      res.render('home', {wallets: firstWallet.data.data, listTrans: listTrans.data})
+      res.render('home', {wallets: firstWallet.data.data, listTrans: listTrans.data, categories})
     } else {
-      res.render('home', {wallets, listTrans: listTrans.data})
+      res.render('home', {wallets, listTrans: listTrans.data, categories})
     }
   };
   
