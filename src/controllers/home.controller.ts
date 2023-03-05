@@ -5,7 +5,8 @@ import axios from "axios";
 import walletApiController from "./api/wallet.api.controller";
 import token from "./user.controller";
 import categoryApiController from "./api/category.api.controller";
-
+import transactionController from "./transaction.controller";
+import Transaction from "../schemas/Transaction";
 class homeController {
   showHome = async (req: Request, res: Response) => {
     // check User has wallet or not
@@ -15,7 +16,6 @@ class homeController {
     // create new Category package for new User
     try {
       await categoryApiController.createCategoryPackage(req, res);
-      
     } catch (error) {
       console.log(error);
     }

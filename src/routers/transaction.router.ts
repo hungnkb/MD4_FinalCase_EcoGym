@@ -9,5 +9,5 @@ transactionRouter.post("/create", transactionApiController.postTransaction)
 // transactionRouter.put("/update/", transactionApiController.updateTransaction)
 // transactionRouter.get("/delete/:id", transactionController.getDelete)
 // transactionRouter.delete("/delete/", transactionApiController.deleteTransaction)
-transactionRouter.get("/get-list-trans", transactionController.getListTrans)
+
 export default transactionRouter;
