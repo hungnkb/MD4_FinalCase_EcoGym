@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("layouts/header.ejs") %>
+    <title>Create new transaction</title>
+</head>
+
+<body>
+    <h1 class="text-center">Create new Transaction</h1>
+    <section class="container">
+        <form action="/transaction/create" method="post">
+            <label for="wallet">Choose a wallet</label>
+            <select class="form-select" name="wallet" id="wallet">
+                <option value="Wallet's name">Wallet's name</option>
+                <% wallets.forEach(wallet => { %>
+                <option value="<%= wallet.walletName%>"><%= wallet.walletName%></option>
+                <% }) %>
+            </select>
+            <label for="moneyTrade">Money trade</label>
+            <input type="text" name="moneyTrade" id="moneyTrade">
+            <label for="moneyTrade">Money trade</label>
+            <input type="text" name="moneyTrade" id="moneyTrade">
+            <label for="category">Choose a category</label>
+            <select class="form-select" name="category" id="category">
+                <option value="Category's name">Category's name</option>
+                <% categories.forEach(category => { %>
+                <option value="<%= category.categoryName%>"><%= category.categoryName%></option>
+                <% }) %>
+            </select>
+
+        </form>
+
+    </section>
+    <%- include("layouts/b5script.ejs") %>
+</body>
+
+</html>

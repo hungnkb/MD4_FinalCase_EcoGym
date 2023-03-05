@@ -1,10 +1,15 @@
 import { Request, Response } from "express";
 import Transaction from "../../schemas/Transaction";
 import token from "../user.controller"
+import Wallet from "../../schemas/Waller.model";
+import Category from "../../schemas/Category.model";
 class transactionApiController{
     // GET
     getTransaction = async(req: Request, res:Response) => {
-        res.render('createTransaction')
+        let id = token.getIdUser(req, res);
+        let wallets = await Wallet.find({idUser: id});
+        let categories = await Category.find({idUser: id});
+        res.render('createTransaction', {wallets, categories})
     }
     // POST    
     postTransaction = async (req: Request, res:Response) => {

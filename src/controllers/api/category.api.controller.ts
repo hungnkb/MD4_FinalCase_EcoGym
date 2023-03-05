@@ -10,7 +10,13 @@ class CategoryApiController {
       let categoryList = await Category.find({ idUser: idUser });
 
       if (categoryList.length === 0) {
-        let categoryPackage = [
+        let incomeCategory = [
+          "Collect Interest",
+          "Salary",
+          "Other Income",
+          "Incoming Transfer",
+        ];
+        let outcomeCategory = [
           "Food & Beverage",
           "Transportation",
           "Rentals",
@@ -42,7 +48,10 @@ class CategoryApiController {
 
         let categories = new Category({
           idUser: idUser,
-          categoryList: categoryPackage,
+          categoryList: {
+            incomeCategory: incomeCategory,
+            outcomeCategory: outcomeCategory,
+          },
         });
 
         try {
@@ -59,37 +68,64 @@ class CategoryApiController {
   createNewCategory = async (req: Request, res: Response) => {
     let id = token.getIdUser(req, res);
     let idUser = req.body.idUser || id;
-
-    let categoryName = req.body.categoryName;
-    let categoryDescription = req.body.categoryDescription;
+    let { categoryName, category, categoryDescription } = req.body;
 
     let categoryByUser = await Category.findOne({ idUser: idUser });
-    let categoryList = Object.values(categoryByUser.categoryList);
+    let isCategoryNameExist = false;
+    if (category === "incomeCategory") {
+      category = categoryByUser.categoryList.incomeCategory;
+      let outcomeCategory = categoryByUser.categoryList.outcomeCategory
 
-    // check if Category Name is exist with idUser
-
-    let isCategoryExist = false;
-    for (let i = 0; i < categoryList.length; i++) {
-      if (categoryName == categoryList[i]) {
-        isCategoryExist = true;
-        break;
+      for (let i = 0; i < category.length; i++) {
+        if (category[i] == categoryName) {
+          isCategoryNameExist = true;
+          break;
+        }
       }
-    }
-
-    if (isCategoryExist) {
-      res.status(400).json("Category is exist, please try again");
-    } else {
-      categoryList.push(categoryName);
-      let newCategoryList = { ...categoryList };
-      try {
-        let doneCreateCategory = await Category.updateOne(
+      if (isCategoryNameExist) {
+        res
+          .status(400)
+          .json({ message: "Category name is exist, please try again" });
+      } else {
+        category.push(categoryName);
+        await Category.findOneAndUpdate(
           { idUser: idUser },
-          { categoryList: newCategoryList }
-        );
-        res.status(200).json({ message: "Create category success" });
-      } catch {
-        res.status(400).json({ message: "Create category fail" });
+          { categoryList: { incomeCategory: category, outcomeCategory: outcomeCategory } },
+          { new: true }
+        ).then (newCategory => {
+            res.status(200).json({message: 'Create category success', newCategory})
+        }).catch(err => {
+            console.log(err);
+        });
       }
+    } else {
+        category = categoryByUser.categoryList.outcomeCategory;
+        let incomeCategory = categoryByUser.categoryList.incomeCategory
+  
+        for (let i = 0; i < category.length; i++) {
+          if (category[i] == categoryName) {
+            isCategoryNameExist = true;
+            break;
+          }
+        }
+        if (isCategoryNameExist) {
+          res
+            .status(400)
+            .json({ message: "Category name is exist, please try again" });
+        } else {
+          category.push(categoryName);
+          await Category.findOneAndUpdate(
+            { idUser: idUser },
+            { categoryList: { incomeCategory: incomeCategory, outcomeCategory: category } },
+            { new: true }
+          ).then (newCategory => {
+              res.status(200).json({message: 'Create category success', newCategory})
+          }).catch(err => {
+              console.log(err);
+          });
+        }
+
+      
     }
   };
 
@@ -112,43 +148,43 @@ class CategoryApiController {
     }
   };
 
-  updateCategory = async (req: Request, res: Response) => {
-    // check if category exist -> update/edit
-    // Frontend have to send current "nameCategory" and "newNameCategory"
+  //   updateCategory = async (req: Request, res: Response) => {
+  //     // check if category exist -> update/edit
+  //     // Frontend have to send current "nameCategory" and "newNameCategory"
 
-    let id = token.getIdUser(req, res);
-    let idUser = req.body.idUser || req.params.idUser || id;
-    let nameCategory: string = req.body.categoryName;
-    let newNameCategory: string = req.body.newCategoryName;
+  //     let id = token.getIdUser(req, res);
+  //     let idUser = req.body.idUser || req.params.idUser || id;
+  //     let nameCategory: string = req.body.categoryName;
+  //     let newNameCategory: string = req.body.newCategoryName;
 
-    let categoryByUserId = await Category.findOne({ idUser: idUser });
-    let categoryListArr = Object.values(categoryByUserId.categoryList);
-    let doneCategory = false;
+  //     let categoryByUserId = await Category.findOne({ idUser: idUser });
+  //     let categoryListArr = Object.values(categoryByUserId.categoryList);
+  //     let doneCategory = false;
 
-    for (let i = 0; i < categoryListArr.length; i++) {
-      if (nameCategory == categoryListArr[i]) {
-        categoryListArr[i] = newNameCategory;
-        doneCategory = true;
-        break;
-      }
-    }
+  //     for (let i = 0; i < categoryListArr.length; i++) {
+  //       if (nameCategory == categoryListArr[i]) {
+  //         categoryListArr[i] = newNameCategory;
+  //         doneCategory = true;
+  //         break;
+  //       }
+  //     }
 
-    if (doneCategory) {
-      await Category.findOneAndUpdate(
-        { idUser: idUser },
-        { categoryList: categoryListArr },
-        { new: true }
-      )
-        .then((result) => {
-          res.status(200).json({ message: "Update success", result });
-        })
-        .catch((error) => {
-          res.status(400).json({ message: "Update fail" });
-        });
-    } else {
-      res.status(400).json({ message: "Update fail" });
-    }
-  };
+  //     if (doneCategory) {
+  //       await Category.findOneAndUpdate(
+  //         { idUser: idUser },
+  //         { categoryList: categoryListArr },
+  //         { new: true }
+  //       )
+  //         .then((result) => {
+  //           res.status(200).json({ message: "Update success", result });
+  //         })
+  //         .catch((error) => {
+  //           res.status(400).json({ message: "Update fail" });
+  //         });
+  //     } else {
+  //       res.status(400).json({ message: "Update fail" });
+  //     }
+  //   };
 }
 
 export default new CategoryApiController();

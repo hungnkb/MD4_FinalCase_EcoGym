@@ -10,14 +10,5 @@ class transactionController {
     // getDelete = async(req:Request, res: Response) => {
     //     res.render("delete-trans")
     // }
-    getListTrans = async(req:Request, res: Response, id) => {
-        let listTrans = await Transaction.find({idUser: id})
-        if (listTrans.length > 0) {
-            res.send({listTrans})
-        } else {
-            res.send("Bạn chưa có giao dịch nào")
-        }
-        
-    }
 }
 export default new transactionController()
