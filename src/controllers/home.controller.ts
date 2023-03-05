@@ -33,6 +33,7 @@ class homeController {
     // get all User's data: userDataAll.data
     // example: get all categories -> userDataAll.data.categories[0].categoryList
     let categories = userDataAll.data.categories[0].categoryList;
+    console.log(wallets);
     
     if (wallets.length === 0) { 
       let firstWallet = await axios({
@@ -49,7 +50,8 @@ class homeController {
         method: "get",
         url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
       })
-      res.render('home', {wallets: firstWallet.data.data, listTrans: listTrans.data, categories})
+      wallets = await Wallet.find({ idUser: id });
+      res.render('home', {wallets: wallets, listTrans: listTrans.data, categories})
     } else {
       res.render('home', {wallets, listTrans: listTrans.data, categories})
     }
