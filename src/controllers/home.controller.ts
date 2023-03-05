@@ -24,9 +24,7 @@ class homeController {
       url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
     })
 
-    if (wallets.length === 0) {
-      console.log(111);
-      
+    if (wallets.length === 0) { 
       let firstWallet = await axios({
         method: "post",
         url: `http://localhost:${process.env.PORT}/api/wallet`,
@@ -41,7 +39,7 @@ class homeController {
         method: "get",
         url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
       })
-      res.render('home', {wallets: firstWallet, listTrans: listTrans.data})
+      res.render('home', {wallets: firstWallet.data.data, listTrans: listTrans.data})
     } else {
       res.render('home', {wallets, listTrans: listTrans.data})
     }
