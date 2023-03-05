@@ -19,8 +19,11 @@ class homeController {
       console.log(error);
     }
     // if User has no wallet => create new wallet default
+
     if (wallets.length === 0) {
-      axios({
+      console.log(111);
+      
+      let firstWallet = await axios({
         method: "post",
         url: `http://localhost:${process.env.PORT}/api/wallet`,
         data: {
@@ -30,29 +33,16 @@ class homeController {
           totalMoneyLeft: 0,
         },
       })
-        .then((wallet) => {
-          res.send({ wallet });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      console.log(firstWallet);
+      
     }
-    // test get list trans
-    let listTrans;
-     axios({
+    let listTrans = await axios({
       method: "get",
       url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
-      headers: {'X-Requested-With': 'XMLHttpRequest'}
     })
-      .then(result => {
-        listTrans = result.data;
-        // console.log(listTrans);
-        return  res.send({listTrans})
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    res.render("home", {wallets: wallets, listTrans: listTrans});
+
+    res.render('home', {wallets, listTrans: listTrans.data})
+
   };
   
 }
