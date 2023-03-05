@@ -11,7 +11,7 @@ class homeController {
   showHome = async (req: Request, res: Response) => {
     // check User has wallet or not
     let id = token.getIdUser(req, res);
-    let listTrans = await Transaction.find({idUser: id});
+
     let wallets = await Wallet.find({ idUser: id });
     // create new Category package for new User
     try {
@@ -20,8 +20,23 @@ class homeController {
       console.log(error);
     }
     // if User has no wallet => create new wallet default
-    if (wallets.length === 0) {
-      axios({
+    let listTrans = await axios({
+      method: "get",
+      url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
+    })
+
+    let userDataAll = await axios({
+      method: "get",
+      url: `http://localhost:${process.env.PORT}/api/user/${id}`,
+    })
+
+    // get all User's data: userDataAll.data
+    // example: get all categories -> userDataAll.data.categories[0].categoryList
+    let categories = userDataAll.data.categories[0].categoryList;
+    console.log(wallets);
+    
+    if (wallets.length === 0) { 
+      let firstWallet = await axios({
         method: "post",
         url: `http://localhost:${process.env.PORT}/api/wallet`,
         data: {
@@ -31,18 +46,14 @@ class homeController {
           totalMoneyLeft: 0,
         },
       })
-        .then((wallet) => {
-          return { wallet };
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    if (listTrans.length === 0) {
-      let mess = "Bạn chưa có giao dịch";
-      res.render("home", {wallets: wallets, mess, listTrans: "abc"});
+      let listTrans = await axios({
+        method: "get",
+        url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
+      })
+      wallets = await Wallet.find({ idUser: id });
+      res.render('home', {wallets: wallets, listTrans: listTrans.data, categories})
     } else {
-      res.render("home", {wallets: wallets, listTrans: listTrans});
+      res.render('home', {wallets, listTrans: listTrans.data, categories})
     }
   };
   

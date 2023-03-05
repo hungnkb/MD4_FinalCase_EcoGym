@@ -3,7 +3,7 @@
 
 <head>
     <%- include("layouts/header.ejs") %>
-    <title>EcoGYM</title>
+        <title>EcoGYM</title>
 </head>
 
 <body>
@@ -14,7 +14,8 @@
                 <div class="collapse navbar-collapse ms-5" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Transactions</a>
+                            <a class="nav-link active" aria-current="page" href="" onclick="categoryPickDefault(event)"
+                                data-bs-toggle="modal" data-bs-target="#transactions">Add Transactions</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="/report">Report</a>
@@ -27,118 +28,259 @@
         </nav>
     </header>
     <%= wallets %>
-    <%= listTrans %>
-    <%= mess %>
-    <section class="body-page container d-flex justify-content-center">
-        <section class="transactions mt-5" style="width: 900px">
-            <div>
-                <ul class="nav nav-tabs d-flex justify-content-evenly">
-                    <li class="nav-item">
-                        <a class="nav-link link-trans" aria-current="page" href="#week">This week</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link-trans active" href="#today">Today</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link-trans" href="#month">This month</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link-trans disabled">This year</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="flow">
-                <div class="inflow d-flex justify-content-between">
-                    <p>Inflow</p>
-                    <p class="money-in">40000</p>
-                </div>
-                <div class="outflow d-flex justify-content-between">
-                    <p>Outflow</p>
-                    <p class="money-out">40000</p>
-                </div>
-                <hr style="width: 50%; margin-left: 50%;">
-                <div class="outflow d-flex justify-content-end">
-                    <p class="money-out">40000</p>
-                </div>
-            </div>
-            <div id="week" class="trans-content mt-3 d-none">1</div>
-            <div id="today" class="trans-content mt-3">
-                <div class="trans-item mb-2 p-3"
-                    style="border-top: 2px solid grey; background-color: rgb(226, 226, 226);">
-                    <div class="trans-category mt-2 d-flex justify-content-between">
-                        <h3 class="trans-category-name">Cafe</h3>
-                        <div class="trans-btn">
-                            <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="submit" class="btn btn-danger">Delete</button>
+        <%= listTrans %>
+            <section class="body-page container d-flex justify-content-center">
+                <section class="transactions mt-5" style="width: 900px">
+                    <div>
+                        <ul class="nav nav-tabs d-flex justify-content-evenly">
+                            <li class="nav-item">
+                                <a class="nav-link link-trans" aria-current="page" href="#week">This week</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-trans active" href="#today">Today</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-trans" href="#month">This month</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link-trans disabled">This year</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="flow">
+                        <div class="inflow d-flex justify-content-between">
+                            <p>Inflow</p>
+                            <p class="money-in">40000</p>
+                        </div>
+                        <div class="outflow d-flex justify-content-between">
+                            <p>Outflow</p>
+                            <p class="money-out">40000</p>
+                        </div>
+                        <hr style="width: 50%; margin-left: 50%;">
+                        <div class="outflow d-flex justify-content-end">
+                            <p class="money-out">40000</p>
                         </div>
                     </div>
-                    <div class="trans-info">
-                        <div class="trans-info-top d-flex justify-content-between mt-2">
-                            <p class="trans-time">04/03/2023</p>
-                            <h5 class="money">-20000</h5>
+                    <div id="week" class="trans-content mt-3 d-none">1</div>
+                    <div id="today" class="trans-content mt-3">
+                        <div class="trans-item mb-2 p-3"
+                            style="border-top: 2px solid grey; background-color: rgb(226, 226, 226);">
+                            <div class="trans-category mt-2 d-flex justify-content-between">
+                                <h3 class="trans-category-name">Cafe</h3>
+                                <div class="trans-btn">
+                                    <button type="button" class="btn btn-primary">Edit</button>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </div>
+                            </div>
+                            <div class="trans-info">
+                                <div class="trans-info-top d-flex justify-content-between mt-2">
+                                    <p class="trans-time">04/03/2023</p>
+                                    <h5 class="money">-20000</h5>
+                                </div>
+                                <div class="trans-info-bot d-flex justify-content-start mt-2">
+                                    <p class="trans-desc">đen đá không đường</p>
+
+                                </div>
+                            </div>
                         </div>
-                        <div class="trans-info-bot d-flex justify-content-start mt-2">
-                            <p class="trans-desc">đen đá không đường</p>
+                    </div>
+                    <div id="month" class=" trans-content mt-3 d-none">3</div>
+
+                </section>
+
+                <!-- Transactions Modal -->
+                <div class="modal fade" id="transactions" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Transaction</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form action="/api/transaction" method="post" id="form-transaction">
+                                <div class="modal-body">
+                                    <label class="form-label">Wallet</label>
+                                    <select class="form-select mb-3" aria-label="Default select example" id="wallet">
+                                        <% wallets.forEach(w=> { %>
+                                            <option value="<%=w.walletName%>">
+                                                <%=w.walletName%>
+                                            </option>
+                                            <% }) %>
+                                                <option value=""></option>
+                                    </select>
+                                    <label class="form-label">Category</label>
+                                    <select id="category" class="form-select mb-3" aria-label="Default select example"
+                                        onfocus="categoryPick(event)" onchange="categoryPick(event)" id="category">
+                                        <option value="incomeCategory">Income</option>
+                                        <option value="outcomeCategory">Outcome</option>
+                                    </select>
+                                    <label class="form-label">Detail</label>
+                                    <div id="categoryNameList">
+
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Amount</label>
+                                        <input required name="amount" type="number" class="form-control" id="amount">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlTextarea1" class="form-label">Date</label>
+                                        <input required name="date" type="date" class="form-control" id="date">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button onclick="submitTransaction(event)" type="button"
+                                        class="btn btn-primary">Save
+                                        changes</button>
+                                </div>
+                            </form>
 
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="month" class=" trans-content mt-3 d-none">3</div>
-            <button class="btn"><a href="/transaction/create">Add Transaction</a></button>
-        </section>
-
-
-    </section>
-    <!-- <select class="form-select" aria-label="Default select example">
+            </section>
+            <!-- <select class="form-select" aria-label="Default select example">
         <option selected>Wallet</option>
         <option value="1">One</option>
         <option value="2">Two</option>
         <option value="3">Three</option>
       </select> -->
 
-    <!-- script -->
-    <%- include("layouts/b5script.ejs") %>
-    <script>
-        // active class transaction
-        let transContents = document.querySelectorAll(".trans-content");
-        let btnLinks = document.querySelectorAll(".link-trans");
-        function addDnoneClass(listContent) {
-            listContent.forEach(content => {
-                content.classList.add("d-none")
-            })
-        }
-        function removeActiveClass(listBtn) {
-            listBtn.forEach(btn => {
-                btn.classList.remove("active");
-            })
-        }
-        function activeTrans() {
-            for (let i = 0; i < btnLinks.length; i++) {
-                btnLinks[i].addEventListener('click', () => {
-                    addDnoneClass(transContents)
-                    removeActiveClass(btnLinks)
-                    btnLinks[i].classList.add("active");
-                    transContents[i].classList.remove("d-none")
-                })
-            }
-        }
-        activeTrans()
-        // logout
-        let logout = () => {
-            axios({
-                method: 'get',
-                url: 'http://localhost:3000/api/logout',
-            }).then(result => {
-                window.location.replace(
-                    `http://${window.location.hostname}:${window.location.port}/auth/login`
-                )
-            })
-        }
-    </script>
+            <!-- script -->
+            <%- include("layouts/b5script.ejs") %>
+                <script>
+                    // active class transaction
+                    let transContents = document.querySelectorAll(".trans-content");
+                    let btnLinks = document.querySelectorAll(".link-trans");
+                    function addDnoneClass(listContent) {
+                        listContent.forEach(content => {
+                            content.classList.add("d-none")
+                        })
+                    }
+                    function removeActiveClass(listBtn) {
+                        listBtn.forEach(btn => {
+                            btn.classList.remove("active");
+                        })
+                    }
+                    function activeTrans() {
+                        for (let i = 0; i < btnLinks.length; i++) {
+                            btnLinks[i].addEventListener('click', () => {
+                                addDnoneClass(transContents)
+                                removeActiveClass(btnLinks)
+                                btnLinks[i].classList.add("active");
+                                transContents[i].classList.remove("d-none")
+                            })
+                        }
+                    }
+                    activeTrans()
+                    // logout
+                    let logout = () => {
+                        axios({
+                            method: 'get',
+                            url: 'http://localhost:3000/api/logout',
+                        }).then(result => {
+                            window.location.replace(
+                                `http://${window.location.hostname}:${window.location.port}/auth/login`
+                            )
+                        })
+                    }
+                </script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+
+                    // set default nameCategory input in Add transaction modal
+                    let categoryPickDefault = (event) => {
+                        let category = event.target.value;
+                        document.querySelector('#categoryNameList').innerHTML = `
+                        <select id="categoryName" class="form-select mb-3" aria-label="Default select example">
+                                    <% categories.incomeCategory.forEach(ic => { %>
+                                        <option value="<%= ic %>"><%= ic %></option>
+                                    <% }) %>
+                                </select>
+                        `
+                    }
+
+                    // check category income/outcome then render nameCategory input in Add transaction modal
+                    let categoryPick = event => {
+                        let category = event.target.value;
+                        if (category == 'incomeCategory') {
+                            document.querySelector('#categoryNameList').innerHTML = `
+                        <select id="categoryName" class="form-select mb-3" aria-label="Default select example">
+                                    <% categories.incomeCategory.forEach(ic => { %>
+                                        <option value="<%= ic %>"><%= ic %></option>
+                                    <% }) %>
+                                </select>
+                        `
+                        } else {
+
+                            document.querySelector('#categoryNameList').innerHTML = `
+                        <select id="categoryName" class="form-select mb-3" aria-label="Default select example">
+                                    <% categories.outcomeCategory.forEach(ic => { %>
+                                        <option value="<%= ic %>"><%= ic %></option>
+                                    <% }) %>
+                                </select>
+                        `
+                        }
+                    }
+
+                    // send data-form
+                    let submitTransaction = (event) => {
+                        let form = document.querySelector('#form-transaction');
+                        let nameWallet = form.querySelector('#wallet');
+                        let moneyTrade = form.querySelector('#amount');
+                        let nameCategory = form.querySelector('#categoryName');
+                        let timeTrade = form.querySelector('#date');
+                        let category = form.querySelector('#category')
+                        event.preventDefault();
+
+                        // check if required inputs are filled then send data through API. 
+                        // URL and Method are given from form-transaction attribute
+                        if (moneyTrade.value && timeTrade.value && nameCategory && category) {
+                            axios({
+                                method: form.method,
+                                url: form.action,
+                                data: {
+                                    nameWallet: nameWallet.value,
+                                    moneyTrade: moneyTrade.value,
+                                    nameCategory: nameCategory.value,
+                                    timeTrade: timeTrade.value,
+                                    category: category.value,
+                                }
+                            }).then(result => {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: 'Add transaction success',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(result => {
+                                    window.location.replace(
+                                        `http://${window.location.hostname}:${window.location.port}/`
+                                    )
+                                }).catch(error => {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Please fill all field before save changes',
+                                        // footer: '<a href="">Why do I have this issue?</a>'
+                                    })
+                                })
+                            })
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Please fill all field before save changes',
+                                // footer: '<a href="">Why do I have this issue?</a>'
+                            })
+                        }
+                    }
+                </script>
 
 </body>
-
-
 
 </html>

@@ -80,7 +80,9 @@ class authApiController {
   getDataUser = async (req: Request, res: Response) => {
     // Get all Info + Wallets + Categories + Flows of User by idUser which is get from params
     // URL: http://localhost:3000/api/user/<idUser>
+   
     let idUser = req.params.idUser || token.getIdUser(req, res);
+
     try {
       let wallets = await Wallet.find({ idUser: idUser });
       let categories = await Category.find({ idUser: idUser });

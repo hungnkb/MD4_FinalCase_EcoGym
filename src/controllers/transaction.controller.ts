@@ -1,7 +1,7 @@
 import express from "express";
 import { Request, Response } from "express";
-import token from "./user.controller"
-import Transaction from '../schemas/Transaction';
+import token from "./user.controller";
+import Transaction from "../schemas/Transaction";
 
 class transactionController {
     // getUpdate = async(req:Request, res: Response) => {
@@ -11,4 +11,4 @@ class transactionController {
     //     res.render("delete-trans")
     // }
 }
-export default new transactionController()
+export default new transactionController();
