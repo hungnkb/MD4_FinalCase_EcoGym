@@ -4,8 +4,8 @@ const mongoose_1 = require("mongoose");
 const categorySchema = new mongoose_1.Schema({
     idUser: String,
     categoryName: String,
-    description: String
+    status: String
 });
-const Category = (0, mongoose_1.model)('Category', categorySchema);
+const Category = (0, mongoose_1.model)("Category", categorySchema);
 exports.default = Category;
 //# sourceMappingURL=Category.model.js.map

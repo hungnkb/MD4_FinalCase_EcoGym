@@ -26,7 +26,7 @@
 interface ICategory {
     idUser: string;
     categoryName: string;
-    description: string;
+    status: string;
 }
 declare const Category: import("mongoose").Model<ICategory, {}, {}, {}, any>;
 export default Category;

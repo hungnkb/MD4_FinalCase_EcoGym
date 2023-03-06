@@ -10,16 +10,11 @@ import configViewEngine from './src/config/viewengine';
 dotenv.config();
 
 
-import walletRouters from "./src/routers/wallet.router";
 
 const app = express();
 const PORT = process.env.PORT || 8888;
 
 mongoose.set('strictQuery', true);
-
-
-mongoose.connect('mongodb+srv://viethenry183081:VietHenry1803@cluster0.fvl1iwm.mongodb.net/ecogym')
-  .then(() => console.log('DB Connected!'));
  
 app.set('view engine', 'ejs');
 app.set('views', './src/views');
@@ -38,11 +33,7 @@ app.use(cookieParser(process.env.USER_CODE_SECRET));
 
 route(app);
 
-app.use('/wallets',walletRouters);
 
-app.listen(PORT, () => {
-  console.log("Server is running on http://localhost:3000/wallets/list");
-})
 (async()=> {
   try {
     await connectDB();
