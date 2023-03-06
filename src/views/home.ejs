@@ -22,7 +22,8 @@
                                 <li class="nav-item dropdown">
                                     <select class="form-control custom-select" style="border: none" id="walletInHome"
                                         onfocus="totalMoneyByWallet(event)" onchange="totalMoneyByWallet(event)">
-                                        <option class="walletName" value="all-wallet" selected="selected">All wallet</option>
+                                        <option class="walletName" value="all-wallet" selected="selected">All wallet
+                                        </option>
                                         <% wallets.forEach( (wallet) => { %>
                                         <option class="walletName" value="<%= wallet.walletName%>">
                                             <%= wallet.walletName%></option>
@@ -56,11 +57,10 @@
             </div>
         </nav>
     </header>
-    <%= wallets %>
-    <%= listTrans %>
-    <section class="body-page container d-flex justify-content-center flex-column">
-        <button type="button" style="width: 100%;" class="btn btn-primary" data-toggle="modal"
-            data-target="#exampleModalCenter">
+
+    <main class="body-page container d-flex justify-content-center flex-column">
+        <button onclick="categoryPickDefault(event)" type="button" style="width: 100%;" class="btn btn-primary"
+            data-toggle="modal" data-target="#exampleModalCenter">
             Add new Transaction
         </button>
         <!-- Modal add new transaction -->
@@ -77,7 +77,7 @@
                     <form action="/api/transaction" method="post" id="form-transaction">
                         <div class="modal-body">
                             <label class="form-label">Wallet</label>
-                            <select class="custom-select mb-3" aria-label="Default select example" id="wallet">
+                            <select class="custom-select mb-3" id="wallet">
                                 <% wallets.forEach(w=> { %>
                                 <option value="<%=w.walletName%>">
                                     <%=w.walletName%>
@@ -86,8 +86,8 @@
                                 <option value=""></option>
                             </select>
                             <label class="form-label">Category</label>
-                            <select id="category" class="custom-select mb-3" aria-label="Default select example"
-                                onfocus="categoryPick(event)" onchange="categoryPick(event)" id="category">
+                            <select id="category" class="custom-select mb-3" onfocus="categoryPick(event)"
+                                onchange="categoryPick(event)" id="category">
                                 <option value="incomeCategory">Income</option>
                                 <option value="outcomeCategory">Outcome</option>
                             </select>
@@ -97,21 +97,22 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Amount</label>
+                                <label class="form-label">Amount</label>
                                 <input required name="amount" type="number" class="form-control" id="amount">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlTextarea1" class="form-label">Date</label>
+                                <label class="form-label">Date</label>
                                 <input required name="date" type="date" class="form-control" id="date">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                                <label class="form-label">Description</label>
                                 <input required type="text" class="form-control" id="desc">
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Add</button>
+                            <button type="submit" onclick="submitTransaction(event)"
+                                class="btn btn-primary">Add</button>
                         </div>
                     </form>
                 </div>
@@ -173,19 +174,8 @@
             <div id="month" class=" trans-content mt-3 d-none">3</div>
         </section>
 
-        <!-- Transactions Modal -->
-        <div class="modal fade" id="transactions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
 
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    </section>
+    </main>
 
 
     <!-- script -->
@@ -235,7 +225,6 @@
         // set default nameCategory input in Add transaction modal
         let categoryPickDefault = (event) => {
             let category = event.target.value;
-            console.log(category);
             document.querySelector('#categoryNameList').innerHTML = `
                         <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
@@ -297,17 +286,18 @@
         // send data-form
         let submitTransaction = (event) => {
             let form = document.querySelector('#form-transaction');
-            let nameWallet = form.querySelector('#wallet');
-            let moneyTrade = form.querySelector('#amount');
-            let nameCategory = form.querySelector('#categoryName');
-            let timeTrade = form.querySelector('#date');
-            let status = form.querySelector('#category');
-            let desc = form.querySelector('#desc');
+            let nameWallet = document.querySelector('#wallet');
+            let moneyTrade = document.querySelector('#amount');
+            let nameCategory = document.querySelector('#categoryName');
+            let timeTrade = document.querySelector('#date');
+            let status = document.querySelector('#category');
+            let desc = document.querySelector('#desc');
             event.preventDefault();
 
             // check if required inputs are filled then send data through API. 
             // URL and Method are given from form-transaction attribute
-            if (moneyTrade.value && timeTrade.value && nameCategory && status) {
+            if (moneyTrade.value && timeTrade.value && nameCategory.value && status.value) {
+
                 axios({
                     method: form.method,
                     url: form.action,
