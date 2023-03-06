@@ -24,7 +24,7 @@ apiRouter.get("/category/:idUser", categoryApiController.showCategoryByUser);
 apiRouter.get("/user/", authApiController.getDataUser);
 apiRouter.get("/user/:idUser", authApiController.getDataUser);
 apiRouter.get("/transaction", transactionApiController.getTransaction);
-apiRouter.post("transaction", transactionApiController.postTransaction);
+apiRouter.post("/transaction", transactionApiController.postTransaction);
 
 
 export default apiRouter;
