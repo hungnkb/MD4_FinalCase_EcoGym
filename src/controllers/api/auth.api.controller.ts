@@ -4,7 +4,7 @@ import User from "../../schemas/User.model";
 import jwt from "jsonwebtoken";
 import validateRegister from "../../middleware/validateRegister";
 import qs from "qs";
-import Wallet from "../../schemas/Waller.model";
+import Wallet from "../../schemas/Wallet.model";
 import Category from "../../schemas/Category.model";
 import token from "../user.controller";
 
@@ -25,7 +25,7 @@ class authApiController {
           // let newUser = new User({ email, password });
           // await newUser.save();
           let newUser = await User.create({ email, password });
-      
+
           res.status(200).json({ message: "Register success", data: newUser });
         }
       } else {
@@ -80,7 +80,7 @@ class authApiController {
   getDataUser = async (req: Request, res: Response) => {
     // Get all Info + Wallets + Categories + Flows of User by idUser which is get from params
     // URL: http://localhost:3000/api/user/<idUser>
-   
+
     let idUser = req.params.idUser || token.getIdUser(req, res);
 
     try {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Wallet from "../../schemas/Waller.model";
+import Wallet from "../../schemas/Wallet.model";
 import Category from "../../schemas/Category.model";
 import token from "../user.controller";
 
@@ -23,14 +23,14 @@ class walletApiController {
       let saveWallet = await newWallet.save();
 
       if (saveWallet) {
-        res.status(200).json({message: "Create wallet success", data: saveWallet});
+        res
+          .status(200)
+          .json({ message: "Create wallet success", data: saveWallet });
       } else {
         res.status(400).json("Wallet name is exist, please try again");
       }
     }
   };
-
-  
 }
 
 export default new walletApiController();
