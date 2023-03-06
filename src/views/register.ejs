@@ -3,195 +3,75 @@
 
 <head>
     <%- include("layouts/header.ejs") %>
+    <title>EcoGYM Register</title>
+    <link rel="stylesheet" href="../../style/register.css">
 </head>
 
-<style>
-    body {
-        font-family: "Karla", sans-serif;
-        background-color: #d0d0ce;
-        min-height: 100vh;
-    }
-
-    .brand-wrapper {
-        margin-bottom: 19px;
-    }
-
-    .brand-wrapper .logo {
-        height: 37px;
-    }
-
-    .login-card {
-        border: 0;
-        border-radius: 27.5px;
-        box-shadow: 0 10px 30px 0 rgba(172, 168, 168, 0.43);
-        overflow: hidden;
-    }
-
-    .login-card-img {
-        border-radius: 0;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        -o-object-fit: cover;
-        object-fit: cover;
-    }
-
-    .login-card .card-body {
-        padding: 85px 60px 60px;
-    }
-
-    @media (max-width: 422px) {
-        .login-card .card-body {
-            padding: 35px 24px;
-        }
-    }
-
-    .login-card-description {
-        font-size: 25px;
-        color: #000;
-        font-weight: normal;
-        margin-bottom: 23px;
-    }
-
-    .login-card form {
-        max-width: 326px;
-    }
-
-    .login-card .form-control {
-        border: 1px solid #d5dae2;
-        padding: 15px 25px;
-        margin-bottom: 20px;
-        min-height: 45px;
-        font-size: 13px;
-        line-height: 15;
-        font-weight: normal;
-    }
-
-    .login-card .form-control::-webkit-input-placeholder {
-        color: #919aa3;
-    }
-
-    .login-card .form-control::-moz-placeholder {
-        color: #919aa3;
-    }
-
-    .login-card .form-control:-ms-input-placeholder {
-        color: #919aa3;
-    }
-
-    .login-card .form-control::-ms-input-placeholder {
-        color: #919aa3;
-    }
-
-    .login-card .form-control::placeholder {
-        color: #919aa3;
-    }
-
-    .login-card .login-btn {
-        padding: 13px 20px 12px;
-        background-color: #000;
-        border-radius: 4px;
-        font-size: 17px;
-        font-weight: bold;
-        line-height: 20px;
-        color: #fff;
-        margin-bottom: 24px;
-    }
-
-    .login-card .login-btn:hover {
-        border: 1px solid #000;
-        background-color: transparent;
-        color: #000;
-    }
-
-    .login-card .forgot-password-link {
-        font-size: 14px;
-        color: #919aa3;
-        margin-bottom: 12px;
-    }
-
-    .login-card-footer-text {
-        font-size: 16px;
-        color: #0d2366;
-        margin-bottom: 60px;
-    }
-
-    @media (max-width: 767px) {
-        .login-card-footer-text {
-            margin-bottom: 24px;
-        }
-    }
-
-    .login-card-footer-nav a {
-        font-size: 14px;
-        color: #919aa3;
-    }
-
-    /*# sourceMappingURL=login.css.map */
-
-</style>
-
 <body>
-<main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
-    <div class="container">
-        <div class="card login-card">
-            <div class="row no-gutters">
-                <div class="col-md-5">
-                    <img src="/images/login.jpg" alt="login" class="login-card-img">
-                </div>
-                <div class="col-md-7">
-                    <div class="card-body">
-                        <div class="brand-wrapper">
-                            <img src="/images/logo.svg" alt="logo" class="logo">
-                        </div>
-                        <div class="container">
-                            <div class="row mt-5" style="text-align: center;">
-                                <div class="col-3"></div>
-                                <div class="col-6">
-                                    <h1>Register</h1>
-                                </div>
+    <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <div class="container">
+            <div class="card login-card">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="../../images/login.jpg" alt="login" class="login-card-img">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <div class="brand-wrapper">
+                                <h2 class="m-0 p-0"><i style="color: green"><b>E</b>co</i><i
+                                        style="color: orange">GYM</i></h2>
+                                <i style="font-family: monospace; font-size: 16px;">Smart financial management</i>
                             </div>
-                            <div class="row mt-5">
-                                <div class="col-3"></div>
-                                <div class="col-6">
-                                    <form id="form-auth" action="/api/register" method="post">
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">Email</label>
-                                            <input onfocus="removeValidate(event)" onblur="validateEmailPassword(event)"
-                                                   name="email"
-                                                   type="email" class="form-control" id="email"
-                                                   aria-describedby="emailHelp">
-                                            <div class="invalid-feedback">
-                                                Email example: abc@xyz.com
+                            <div class="container">
+                                <div class="row mt-5" style="text-align: center;">
+                                    <div class="col-3"></div>
+                                    <div class="col-6">
+                                        <h1>Register</h1>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3"></div>
+                                    <div class="col-6">
+                                        <form id="form-auth" action="/api/register" method="post">
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input onfocus="removeValidate(event)"
+                                                    onblur="validateEmailPassword(event)" name="email" type="email"
+                                                    class="form-control" id="email" aria-describedby="emailHelp">
+                                                <div class="invalid-feedback">
+                                                    Email example: abc@xyz.com
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="password" class="form-label">Password</label>
-                                            <input onfocus="removeValidate(event)" onblur="validateEmailPassword(event)"
-                                                   name="password"
-                                                   type="password" class="form-control" id="password">
-                                            <div class="invalid-feedback">
-                                                Password includes at least: 8 words, 1 UPPERCASE, 1 lowercase, 1 special
-                                                symbol (!@#$?%^&*-)
+                                            <div class="mb-3">
+                                                <label for="password" class="form-label">Password</label>
+                                                <input onfocus="removeValidate(event)"
+                                                    onblur="validateEmailPassword(event)" name="password"
+                                                    type="password" class="form-control" id="password">
+                                                <div class="invalid-feedback">
+                                                    Password includes at least: 8 words, 1 UPPERCASE, 1 lowercase, 1
+                                                    special
+                                                    symbol (!@#$?%^&*-)
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="rePassword" class="form-label">Re-enter Password</label>
-                                            <input onfocus="removeValidate(event)" onblur="checkRePassword(event)"
-                                                   name="rePassword"
-                                                   type="password" class="form-control" id="rePassword">
-                                            <div class="invalid-feedback">
-                                                Passwords are not same. Please try again
+                                            <div class="mb-3">
+                                                <label for="rePassword" class="form-label">Re-enter Password</label>
+                                                <input onfocus="removeValidate(event)" onblur="checkRePassword(event)"
+                                                    name="rePassword" type="password" class="form-control"
+                                                    id="rePassword">
+                                                <div class="invalid-feedback">
+                                                    Passwords are not same. Please try again
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div style="text-align: center;">
-                                            <button onclick="handleSubmit(event)" type="submit" class="btn btn-primary">
-                                                Apply
-                                            </button>
-                                        </div>
+                                            <div style="text-align: center;">
+                                                <button onclick="handleSubmit(event)" type="submit"
+                                                    class="btn btn-block login-btn mb-4">
+                                                    Register
+                                                </button>
+                                            </div>
 
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -199,123 +79,124 @@
                 </div>
             </div>
         </div>
+    </main>
 
 
-        <%- include("layouts/b5script.ejs") %>
+    <%- include("layouts/b5script.ejs") %>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <script>
-            let form = document.querySelector('#form-auth');
-            let email = form.querySelector('#email');
-            let password = form.querySelector('#password');
+    <script>
+        let form = document.querySelector('#form-auth');
+        let email = form.querySelector('#email');
+        let password = form.querySelector('#password');
 
-            let handleSubmit = async (event) => {
-                event.preventDefault();
+        let handleSubmit = async (event) => {
+            event.preventDefault();
 
-                let resultValidateEmail = await checkEmail(email.value);
-                let resultValidatePassword = await checkPassword(password.value);
-                let resultCheckRePassword = document.querySelector('#rePassword');
+            let resultValidateEmail = await checkEmail(email.value);
+            let resultValidatePassword = await checkPassword(password.value);
+            let resultCheckRePassword = document.querySelector('#rePassword');
 
-                if (resultValidateEmail === 'is-valid' && resultValidatePassword === 'is-valid' && resultCheckRePassword.className === 'is-valid form-control') {
-                    axios({
-                        method: form.method,
-                        url: form.action,
-                        data: {
-                            email: email.value,
-                            password: password.value,
-                        }
-                    }).then(result => {
-                        if (result.data.message) {
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: 'Register success',
-                                showConfirmButton: false,
-                                timer: 1500
-                            }).then((result) => {
-                                window.location.replace(
-                                    `http://${window.location.hostname}:${window.location.port}/auth/login`
-                                )
-                            })
-                        }
-                    }).catch(err => {
+            if (resultValidateEmail === 'is-valid' && resultValidatePassword === 'is-valid' && resultCheckRePassword.className === 'is-valid form-control') {
+                axios({
+                    method: form.method,
+                    url: form.action,
+                    data: {
+                        email: email.value,
+                        password: password.value,
+                    }
+                }).then(result => {
+                    if (result.data.message) {
                         Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Email is exist, please try again',
-                            // footer: '<a href="">Why do I have this issue?</a>'
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Register success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then((result) => {
+                            window.location.replace(
+                                `http://${window.location.hostname}:${window.location.port}/auth/login`
+                            )
                         })
+                    }
+                }).catch(err => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Email is exist, please try again',
+                        // footer: '<a href="">Why do I have this issue?</a>'
                     })
-                } else {
-                    if (resultCheckRePassword.className === 'is-invalid form-control') {
-                        checkRePassword(event);
-                    } else {
-                        console.log(123);
-                        validateEmailPassword(event);
-                    }
-                }
-            }
-
-            let checkEmail = (email) => {
-                return new Promise((resolve, reject) => {
-                    let regexp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
-                    let validate = regexp.test(email);
-                    if (validate) {
-                        resolve('is-valid');
-                    } else {
-                        resolve('is-invalid');
-                    }
                 })
-            }
-
-            let checkPassword = (password) => {
-                return new Promise((resolve, reject) => {
-                    let regexp = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-1])(?=.*[!@#$%^?&*-])[a-zA-Z\d!@#$?%^&*-].{8,}$/);
-                    let validate = regexp.test(password);
-                    if (validate) {
-                        resolve('is-valid');
-                    } else {
-                        resolve('is-invalid');
-                    }
-                })
-            }
-
-            let checkRePassword = (event) => {
-                let password = document.querySelector('#password');
-                let obj = event.target.value;
-                if (obj === password.value) {
-                    document.querySelector('#rePassword').className = 'is-valid form-control'
+            } else {
+                if (resultCheckRePassword.className === 'is-invalid form-control') {
+                    checkRePassword(event);
                 } else {
-                    document.querySelector('#rePassword').className = 'is-invalid form-control'
+                    console.log(123);
+                    validateEmailPassword(event);
                 }
             }
+        }
 
-            let validateEmailPassword = async (event) => {
-                let obj = event.target.value;
-                if (event.target.id === 'email') {
-                    let result = await checkEmail(obj);
-                    if (result === 'is-valid') {
-                        document.querySelector('#email').className = 'is-valid form-control';
-                    } else {
-                        document.querySelector('#email').className = 'is-invalid form-control';
-                    }
+        let checkEmail = (email) => {
+            return new Promise((resolve, reject) => {
+                let regexp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/);
+                let validate = regexp.test(email);
+                if (validate) {
+                    resolve('is-valid');
                 } else {
-                    let result = await checkPassword(obj);
-                    if (result === 'is-valid') {
-                        document.querySelector('#password').className = 'is-valid form-control';
-                    } else {
-                        document.querySelector('#password').className = 'is-invalid form-control';
-                    }
+                    resolve('is-invalid');
+                }
+            })
+        }
+
+        let checkPassword = (password) => {
+            return new Promise((resolve, reject) => {
+                let regexp = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-1])(?=.*[!@#$%^?&*-])[a-zA-Z\d!@#$?%^&*-].{8,}$/);
+                let validate = regexp.test(password);
+                if (validate) {
+                    resolve('is-valid');
+                } else {
+                    resolve('is-invalid');
+                }
+            })
+        }
+
+        let checkRePassword = (event) => {
+            let password = document.querySelector('#password');
+            let obj = event.target.value;
+            if (obj === password.value) {
+                document.querySelector('#rePassword').className = 'is-valid form-control'
+            } else {
+                document.querySelector('#rePassword').className = 'is-invalid form-control'
+            }
+        }
+
+        let validateEmailPassword = async (event) => {
+            let obj = event.target.value;
+            if (event.target.id === 'email') {
+                let result = await checkEmail(obj);
+                if (result === 'is-valid') {
+                    document.querySelector('#email').className = 'is-valid form-control';
+                } else {
+                    document.querySelector('#email').className = 'is-invalid form-control';
+                }
+            } else {
+                let result = await checkPassword(obj);
+                if (result === 'is-valid') {
+                    document.querySelector('#password').className = 'is-valid form-control';
+                } else {
+                    document.querySelector('#password').className = 'is-invalid form-control';
                 }
             }
+        }
 
-            let removeValidate = (event) => {
-                event.target.className = 'form-control';
-            }
+        let removeValidate = (event) => {
+            event.target.className = 'form-control';
+        }
 
 
-        </script>
+    </script>
 
 </body>
 

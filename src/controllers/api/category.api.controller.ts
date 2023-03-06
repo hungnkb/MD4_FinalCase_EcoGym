@@ -25,13 +25,12 @@ class CategoryApiController {
 
   showCategoryByUser = async (req: Request, res: Response) => {
     let id = token.getIdUser(req, res);
-    let idUser = req.body.idUser || req.params.idUser || id;
+    let idUser = req.body.idUser || req.params.idUser || id || "null";
 
     try {
       await Category.find({ idUser: idUser })
           .then((data) => {
             console.log(data);
-
             res.status(200).json({ categoryList: data });
           })
           .catch((error) => {

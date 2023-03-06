@@ -3,171 +3,148 @@
 
 <head>
     <%- include("layouts/header.ejs") %>
+    <title>EcoGYM Login</title>
+    <link rel="stylesheet" href="../../style/register.css">
 
 </head>
-<style>
-    body {
-        font-family: "Karla", sans-serif;
-        background-color: #d0d0ce;
-        min-height: 100vh; }
 
-    .brand-wrapper {
-        margin-bottom: 19px; }
-    .brand-wrapper .logo {
-        height: 37px; }
-
-    .login-card {
-        border: 0;
-        border-radius: 27.5px;
-        box-shadow: 0 10px 30px 0 rgba(172, 168, 168, 0.43);
-        overflow: hidden; }
-    .login-card-img {
-        border-radius: 0;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        -o-object-fit: cover;
-        object-fit: cover; }
-    .login-card .card-body {
-        padding: 85px 60px 60px; }
-    @media (max-width: 422px) {
-        .login-card .card-body {
-            padding: 35px 24px; } }
-    .login-card-description {
-        font-size: 25px;
-        color: #000;
-        font-weight: normal;
-        margin-bottom: 23px; }
-    .login-card form {
-        max-width: 326px; }
-    .login-card .form-control {
-        border: 1px solid #d5dae2;
-        padding: 15px 25px;
-        margin-bottom: 20px;
-        min-height: 45px;
-        font-size: 13px;
-        line-height: 15;
-        font-weight: normal; }
-    .login-card .form-control::-webkit-input-placeholder {
-        color: #919aa3; }
-    .login-card .form-control::-moz-placeholder {
-        color: #919aa3; }
-    .login-card .form-control:-ms-input-placeholder {
-        color: #919aa3; }
-    .login-card .form-control::-ms-input-placeholder {
-        color: #919aa3; }
-    .login-card .form-control::placeholder {
-        color: #919aa3; }
-    .login-card .login-btn {
-        padding: 13px 20px 12px;
-        background-color: #000;
-        border-radius: 4px;
-        font-size: 17px;
-        font-weight: bold;
-        line-height: 20px;
-        color: #fff;
-        margin-bottom: 24px; }
-    .login-card .login-btn:hover {
-        border: 1px solid #000;
-        background-color: transparent;
-        color: #000; }
-    .login-card .forgot-password-link {
-        font-size: 14px;
-        color: #919aa3;
-        margin-bottom: 12px; }
-    .login-card-footer-text {
-        font-size: 16px;
-        color: #0d2366;
-        margin-bottom: 60px; }
-    @media (max-width: 767px) {
-        .login-card-footer-text {
-            margin-bottom: 24px; } }
-    .login-card-footer-nav a {
-        font-size: 14px;
-        color: #919aa3; }
-
-    /*# sourceMappingURL=login.css.map */
-
-</style>
 
 <body>
-
-<main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
-    <div class="container">
-        <div class="card login-card">
-            <div class="row no-gutters">
-                <div class="col-md-5">
-                    <img src="/images/login.jpg" alt="login" class="login-card-img">
-                </div>
-                <div class="col-md-7">
-                    <div class="card-body">
-                        <div class="brand-wrapper">
-                            <img src="/images/logo.svg" alt="logo" class="logo">
+    <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <div class="container">
+            <div class="card login-card">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="../../images/login.jpg" alt="login" class="login-card-img">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <div class="brand-wrapper">
+                                <h2 class="m-0 p-0"><i style="color: green"><b>E</b>co</i><i
+                                        style="color: orange">GYM</i></h2>
+                                <i style="font-family: monospace; font-size: 16px;">Smart financial management</i>
+                            </div>
+                            <div class="container">
+                                <div class="row mt-5" style="text-align: center;">
+                                    <div class="col-3"></div>
+                                    <div class="col-6">
+                                        <h1>Register</h1>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3"></div>
+                                    <div class="col-6">
+                                        <form action="/api/login" method="post">
+                                            <div class="form-group">
+                                                <label for="email" class="sr-only">Email</label>
+                                                <input type="email" name="email" id="email" class="form-control"
+                                                    placeholder="Email address">
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label for="password" class="sr-only">Password</label>
+                                                <input type="password" name="password" id="password"
+                                                    class="form-control" placeholder="***********">
+                                            </div>
+                                            <input onclick="handleSubmit()" name="login" id="login"
+                                                class="btn btn-block login-btn mb-4" type="button" value="Login">
+                                        </form>
+                                        <button class="btn btn-block login-btn mb-4">
+                                            <a class="button google" id="login-google" href="/auth/login/google"
+                                                style="text-decoration: none; color: white;">Sign in with
+                                                Google</a></button>
+                                        <p class="login-card-footer-text text-reset">Don't have an account? <a
+                                                href="/auth/register" style="color: orange;">Register here</a></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <p class="login-card-description">Login</p>
-                        <form action="/api/login" method="post">
-                            <div class="form-group">
-                                <label for="email" class="sr-only">Email</label>
-                                <input type="email" name="email" id="email" class="form-control" placeholder="Email address">
-                            </div>
-                            <div class="form-group mb-4">
-                                <label for="password" class="sr-only">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" placeholder="***********">
-                            </div>
-                            <input onclick="handleSubmit()" name="login" id="login" class="btn btn-block login-btn mb-4" type="button" value="Login">
-                        </form>
-                        <a class="button google" href="/auth/login/google">Sign in with Google</a><br>
-                        <p class="login-card-footer-text">Don't have an account? <a href="/auth/register" class="text-reset">Register here</a></p>
-
                     </div>
                 </div>
             </div>
         </div>
+    </main>
+    <!-- <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <div class="container">
+            <div class="card login-card">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="../../images/login.jpg" alt="login" class="login-card-img">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <div class="brand-wrapper">
+                                <h2 class="m-0 p-0"><i style="color: green"><b>E</b>co</i><i
+                                        style="color: orange">GYM</i></h2>
+                                <i style="font-family: monospace; font-size: 16px;">Smart financial management</i>
+                            </div>
+                            <p class="login-card-description">Login</p>
+                            <form action="/api/login" method="post">
+                                <div class="form-group">
+                                    <label for="email" class="sr-only">Email</label>
+                                    <input type="email" name="email" id="email" class="form-control"
+                                        placeholder="Email address">
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label for="password" class="sr-only">Password</label>
+                                    <input type="password" name="password" id="password" class="form-control"
+                                        placeholder="***********">
+                                </div>
+                                <input onclick="handleSubmit()" name="login" id="login"
+                                    class="btn btn-block login-btn mb-4" type="button" value="Login">
+                            </form>
+                            <a class="button google" href="/auth/login/google">Sign in with Google</a><br>
+                            <p class="login-card-footer-text">Don't have an account? <a href="/auth/register"
+                                    class="text-reset">Register here</a></p>
 
-    </div>
-</main>
-<script>
-    let form = document.querySelector('#login-form');
-    let email = document.querySelector('#email');
-    let password = document.querySelector('#password');
-    let handleSubmit = async () => {
-        await axios({
-            method: 'post',
-            url: 'http://localhost:3000/api/login',
-            data: {
-                email: email.value,
-                password: password.value,
-            }
-        }).then(result => {
-            console.log(`1`)
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: result.data.message,
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                console.log(window.location.origin);
-                console.log(window.location)
-                window.location.replace(
-                    'http://localhost:3000/'
-                )
-            })
-        }).catch(error => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error.response.data.message,
-                // footer: '<a href="">Why do I have this issue?</a>'
-            })
-        });
-    }
-</script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main> -->
+    <script>
+        let form = document.querySelector('#login-form');
+        let email = document.querySelector('#email');
+        let password = document.querySelector('#password');
+        let handleSubmit = async () => {
+            await axios({
+                method: 'post',
+                url: 'http://localhost:3000/api/login',
+                data: {
+                    email: email.value,
+                    password: password.value,
+                }
+            }).then(result => {
+                console.log(`1`)
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: result.data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    console.log(window.location.origin);
+                    console.log(window.location)
+                    window.location.replace(
+                        'http://localhost:3000/'
+                    )
+                })
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.response.data.message,
+                    // footer: '<a href="">Why do I have this issue?</a>'
+                })
+            });
+        }
+    </script>
 
 
     <%- include("layouts/b5script.ejs") %>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 

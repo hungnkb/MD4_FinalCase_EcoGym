@@ -28,7 +28,6 @@ class transactionApiController {
     let id = await token.getIdUser(req, res);
 
     let { nameWallet, moneyTrade, status, nameCategory, desc, timeTrade } = req.body;
-    console.log(req.body);
     
 
     let newTransaction = await Transaction.create({
