@@ -1,21 +1,24 @@
-import express from "express";
-import { Request, Response } from "express";
-import token from "./user.controller";
-import Transaction from "../schemas/Transaction";
+import Wallet from "../schemas/Wallet.model";
 
 class transactionController {
-  // getUpdate = async(req:Request, res: Response) => {
-  //     res.render("update-trans")
-  // }
-  // getDelete = async(req:Request, res: Response) => {
-  //     res.render("delete-trans")
-  // }
-  getListTrans = async (req: Request, res: Response, id) => {
-    let listTrans = await Transaction.find({ idUser: id });
-    if (listTrans.length > 0) {
-      res.send({ listTrans });
+  sumTotal = async (id: string, nameWallet: string, status: string, moneyTrade: number) => {
+    
+    let wallet = await Wallet.findOne({ idUser: id, walletName: nameWallet });
+    let totalMoneyLeft = wallet.totalMoneyLeft;
+    if (status == "income") {
+      totalMoneyLeft = totalMoneyLeft + moneyTrade;
     } else {
-      res.send("Bạn chưa có giao dịch nào");
+      totalMoneyLeft = totalMoneyLeft - moneyTrade;
+    }
+
+    try {
+      let updateTotalMoneyLeft = await Wallet.findOneAndUpdate(
+          { idUser: id },
+          { $set: { totalMoneyLeft: totalMoneyLeft } },
+          { new: true }
+      );
+    } catch (err) {
+      console.log(err);
     }
   };
 }

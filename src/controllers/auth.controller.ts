@@ -16,7 +16,7 @@ class authController {
   loginOverGoogle = async (req: Request, res: Response) => {
     let id = req["user"].id;
     let user = await User.findOne({ _id: id });
-      let token = jwt.sign(
+    let token = jwt.sign(
         {
           iss: "Book Store",
           sub: id,
@@ -24,13 +24,13 @@ class authController {
         },
         process.env.USER_CODE_SECRET,
         { expiresIn: 604800000 }
-      );
-      res.cookie("authorization", "Bearer " + token, { signed: true });
-      res.redirect('/');
-    };
-
-   
-
+    );
+    res.cookie("authorization", "Bearer " + token, { signed: true });
+    res.redirect('/');
   };
+
+
+
+};
 
 export default new authController();

@@ -3,7 +3,7 @@ import token from "../user.controller";
 
 class Statics {
   getStatics(req: Request, res: Response) {
-    
+
   }
 }
 
