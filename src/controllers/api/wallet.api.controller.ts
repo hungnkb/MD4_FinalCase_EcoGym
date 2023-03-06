@@ -31,6 +31,20 @@ class walletApiController {
       }
     }
   };
+
+  getWalletInfo = async (req: Request, res: Response) => {
+    try {
+      let id = token.getIdUser(req, res);
+      let wallets = await Wallet.find({idUser: id})
+      if (wallets) {
+        res.status(200).json({wallets: wallets});
+      } else {
+        res.status(400).json({error: 1});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 export default new walletApiController();

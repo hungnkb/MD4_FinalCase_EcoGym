@@ -3,7 +3,7 @@
 
 <head>
     <%- include("layouts/header.ejs") %>
-    <title>EcoGYM</title>
+        <title>EcoGYM</title>
 </head>
 
 <body>
@@ -24,17 +24,18 @@
                                         onfocus="totalMoneyByWallet(event)" onchange="totalMoneyByWallet(event)">
                                         <option class="walletName" value="all-wallet" selected="selected">All wallet
                                         </option>
-                                        <% wallets.forEach( (wallet) => { %>
-                                        <option class="walletName" value="<%= wallet.walletName%>">
-                                            <%= wallet.walletName%></option>
-                                        <% }) %>
+                                        <% wallets.forEach( (wallet)=> { %>
+                                            <option class="walletName" value="<%= wallet.walletName%>">
+                                                <%= wallet.walletName%>
+                                            </option>
+                                            <% }) %>
                                     </select>
                                 </li>
 
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <p class="mt-2" id="totalMoney" style="color: green">20 000</p>
+                            <p class="mt-2" id="totalMoney" style="color: green"><%=totalMoney%></p>
                         </li>
                     </ul>
                 </div>
@@ -79,11 +80,11 @@
                             <label class="form-label">Wallet</label>
                             <select class="custom-select mb-3" id="wallet">
                                 <% wallets.forEach(w=> { %>
-                                <option value="<%=w.walletName%>">
-                                    <%=w.walletName%>
-                                </option>
-                                <% }) %>
-                                <option value=""></option>
+                                    <option value="<%=w.walletName%>">
+                                        <%=w.walletName%>
+                                    </option>
+                                    <% }) %>
+                                        <option value=""></option>
                             </select>
                             <label class="form-label">Category</label>
                             <select id="category" class="custom-select mb-3" onfocus="categoryPick(event)"
@@ -180,52 +181,51 @@
 
     <!-- script -->
     <%- include("layouts/b5script.ejs") %>
-    <script src="/javascript/home.js"></script>
-    <script>
-        // active class transaction
-        let transContents = document.querySelectorAll(".trans-content");
-        let btnLinks = document.querySelectorAll(".link-trans");
-        function addDnoneClass(listContent) {
-            listContent.forEach(content => {
-                content.classList.add("d-none")
-            })
-        }
-        function removeActiveClass(listBtn) {
-            listBtn.forEach(btn => {
-                btn.classList.remove("active");
-            })
-        }
-        function activeTrans() {
-            for (let i = 0; i < btnLinks.length; i++) {
-                btnLinks[i].addEventListener('click', () => {
-                    addDnoneClass(transContents)
-                    removeActiveClass(btnLinks)
-                    btnLinks[i].classList.add("active");
-                    transContents[i].classList.remove("d-none")
+        <script>
+            // active class transaction
+            let transContents = document.querySelectorAll(".trans-content");
+            let btnLinks = document.querySelectorAll(".link-trans");
+            function addDnoneClass(listContent) {
+                listContent.forEach(content => {
+                    content.classList.add("d-none")
                 })
             }
-        }
-        activeTrans()
-        // logout
+            function removeActiveClass(listBtn) {
+                listBtn.forEach(btn => {
+                    btn.classList.remove("active");
+                })
+            }
+            function activeTrans() {
+                for (let i = 0; i < btnLinks.length; i++) {
+                    btnLinks[i].addEventListener('click', () => {
+                        addDnoneClass(transContents)
+                        removeActiveClass(btnLinks)
+                        btnLinks[i].classList.add("active");
+                        transContents[i].classList.remove("d-none")
+                    })
+                }
+            }
+            activeTrans()
+            // logout
 
-        let logout = () => {
-            console.log("123");
-            axios({
-                method: 'get',
-                url: 'http://localhost:3000/api/logout',
-            }).then(result => {
-                window.location.replace(
-                    `http://${window.location.hostname}:${window.location.port}/auth/login`
-                )
-            })
-        }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        // set default nameCategory input in Add transaction modal
-        let categoryPickDefault = (event) => {
-            let category = event.target.value;
-            document.querySelector('#categoryNameList').innerHTML = `
+            let logout = () => {
+                console.log("123");
+                axios({
+                    method: 'get',
+                    url: 'http://localhost:3000/api/logout',
+                }).then(result => {
+                    window.location.replace(
+                        `http://${window.location.hostname}:${window.location.port}/auth/login`
+                    )
+                })
+            }
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            // set default nameCategory input in Add transaction modal
+            let categoryPickDefault = (event) => {
+                let category = event.target.value;
+                document.querySelector('#categoryNameList').innerHTML = `
                         <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
                                         <% if (ic.status ==="income") {%>
@@ -241,13 +241,13 @@
                                     <% }) %>
                                 </select>
                         `
-        }
+            }
 
-        // check category income/outcome then render nameCategory input in Add transaction modal
-        let categoryPick = event => {
-            let category = event.target.value;
-            if (category == 'incomeCategory') {
-                document.querySelector('#categoryNameList').innerHTML = `
+            // check category income/outcome then render nameCategory input in Add transaction modal
+            let categoryPick = event => {
+                let category = event.target.value;
+                if (category == 'incomeCategory') {
+                    document.querySelector('#categoryNameList').innerHTML = `
                 <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
                                         <% if (ic.status ==="income") {%>
@@ -263,8 +263,8 @@
                                     <% }) %>
                                 </select>
                         `
-            } else {
-                document.querySelector('#categoryNameList').innerHTML = `
+                } else {
+                    document.querySelector('#categoryNameList').innerHTML = `
                 <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
                                         <% if (ic.status ==="outcome") {%>
@@ -280,66 +280,93 @@
                                     <% }) %>
                                 </select>
                         `
+                }
             }
-        }
 
-        // send data-form
-        let submitTransaction = (event) => {
-            let form = document.querySelector('#form-transaction');
-            let nameWallet = document.querySelector('#wallet');
-            let moneyTrade = document.querySelector('#amount');
-            let nameCategory = document.querySelector('#categoryName');
-            let timeTrade = document.querySelector('#date');
-            let status = document.querySelector('#category');
-            let desc = document.querySelector('#desc');
-            event.preventDefault();
+            // send data-form
+            let submitTransaction = (event) => {
+                let form = document.querySelector('#form-transaction');
+                let nameWallet = document.querySelector('#wallet');
+                let moneyTrade = document.querySelector('#amount');
+                let nameCategory = document.querySelector('#categoryName');
+                let timeTrade = document.querySelector('#date');
+                let status = document.querySelector('#category');
+                let desc = document.querySelector('#desc');
+                event.preventDefault();
 
-            // check if required inputs are filled then send data through API. 
-            // URL and Method are given from form-transaction attribute
-            if (moneyTrade.value && timeTrade.value && nameCategory.value && status.value) {
+                // check if required inputs are filled then send data through API. 
+                // URL and Method are given from form-transaction attribute
+                if (moneyTrade.value && timeTrade.value && nameCategory.value && status.value) {
 
-                axios({
-                    method: form.method,
-                    url: form.action,
-                    data: {
-                        nameWallet: nameWallet.value,
-                        moneyTrade: moneyTrade.value,
-                        nameCategory: nameCategory.value,
-                        timeTrade: timeTrade.value,
-                        status: status.value,
-                        desc: desc.value
-                    }
-                }).then(result => {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Add transaction success',
-                        showConfirmButton: false,
-                        timer: 1500
+                    axios({
+                        method: form.method,
+                        url: form.action,
+                        data: {
+                            nameWallet: nameWallet.value,
+                            moneyTrade: moneyTrade.value,
+                            nameCategory: nameCategory.value,
+                            timeTrade: timeTrade.value,
+                            status: status.value,
+                            desc: desc.value
+                        }
                     }).then(result => {
-                        window.location.replace(
-                            `http://${window.location.hostname}:${window.location.port}/`
-                        )
-                    }).catch(error => {
                         Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Please fill all field before save changes',
-                            // footer: '<a href="">Why do I have this issue?</a>'
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Add transaction success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(result => {
+                            window.location.replace(
+                                `http://${window.location.hostname}:${window.location.port}/`
+                            )
+                        }).catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Please fill all field before save changes',
+                                // footer: '<a href="">Why do I have this issue?</a>'
+                            })
                         })
                     })
-                })
 
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please fill all field before save changes',
-                    // footer: '<a href="">Why do I have this issue?</a>'
-                })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill all field before save changes',
+                        // footer: '<a href="">Why do I have this issue?</a>'
+                    })
+                }
             }
-        }
-    </script>
+
+            const totalMoneyByWallet = (event) => {
+                event.preventDefault();
+                axios({
+                    method: 'get',
+                    url: 'http://localhost:3000/api/wallet',
+                })
+                    .then(function (result) {
+                        let wallets = result.data.wallets;
+                        let walletName = event.target;
+                        let totalMoney = 0;
+                        if (walletName == 'all-wallet') {
+                            for (let i = 0; i< wallets.length; i++) {
+                                totalMoney += wallets[i].totalMoneyLeft;
+                            }
+                            document.querySelector('#totalMoney').innerHTML = totalMoney;
+                        } else {
+                            for (let i = 0; i< wallets.length; i++) {
+                                if (wallets[i].walletName == walletName) {
+                                    document.querySelector('#totalMoney').innerHTML = wallets[i].totalMoneyLeft;
+                                }
+                            }
+                        }
+                    });
+
+
+            }
+        </script>
 </body>
 
 </html>
