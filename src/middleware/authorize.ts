@@ -30,10 +30,8 @@ class Authorize {
             if (user.exp <= dateNow) {
                 res.redirect("/auth/login");
             } else {
-                let id = new Object(user.sub);
-
-                let userData = await User.findOne({ _id: id });
-
+                let id = user.sub
+                let userData = await User.findById({_id: id});
                 let role = Number(userData.role);
 
                 if (role === 2 || role === 1 || req.signedCookies.authorization === null) {
