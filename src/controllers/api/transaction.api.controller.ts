@@ -27,6 +27,7 @@ class transactionApiController {
   postTransaction = async (req: Request, res: Response) => {
     let id = await token.getIdUser(req, res);
     let { nameWallet, moneyTrade, status, nameCategory, desc, timeTrade } = req.body;
+    console.log(req.body);
     
     let newTransaction = await Transaction.create({
       idUser: id,
@@ -38,7 +39,7 @@ class transactionApiController {
       timeTrade: timeTrade,
     });
     console.log(id);
-    
+    console.log(nameWallet, moneyTrade, status, nameCategory, desc, timeTrade);
     // update total money left in Wallet
     try {
       if (newTransaction) {
@@ -82,7 +83,6 @@ class transactionApiController {
   deleteTransaction = async (req: Request, res: Response) => {
     let id = req.params._id;
     let transaction = await Transaction.findOne({_id: id});
-    console.log(transaction);
     
     // let deleteTrans = await Transaction.deleteOne({ _id: id }).exec();
 
