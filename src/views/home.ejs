@@ -22,7 +22,7 @@
                                 <li class="nav-item dropdown">
                                     <select class="form-control custom-select" style="border: none" id="walletInHome"
                                         onfocus="totalMoneyByWallet(event)" onchange="totalMoneyByWallet(event)">
-                                        <option class="walletName" value="all-wallet" selected>All wallet</option>
+                                        <option class="walletName" value="all-wallet" selected="selected">All wallet</option>
                                         <% wallets.forEach( (wallet) => { %>
                                         <option class="walletName" value="<%= wallet.walletName%>">
                                             <%= wallet.walletName%></option>
