@@ -43,8 +43,6 @@ class Authorize {
           }
         }
      }
-     
-    
   };
 
   guest = (req: Request, res: Response, next: NextFunction): void => {    

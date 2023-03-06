@@ -9,8 +9,12 @@ const route = (app) => {
   app.use("/", homeRouter);
   app.use("/auth", authRouter);
   app.use("/api", apiRouter);
+
   app.use('/profile', profileRoutes);
   app.use("/transaction", transactionRouter);
+
+  // app.use("/transaction", transactionRouter);
+
 };
 
 export default route;

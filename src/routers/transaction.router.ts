@@ -1,7 +1,13 @@
 import express from 'express';
 import transactionApiController from '../controllers/api/transaction.api.controller';
-const transactionRouter = express.Router();
+import transactionController from '../controllers/transaction.controller';
 
-transactionRouter.post("/create", transactionApiController.createTransaction)
-transactionRouter.put("/update/:id", transactionApiController.createTransaction)
+const transactionRouter = express.Router();
+transactionRouter.get("/create", transactionApiController.getTransaction)
+transactionRouter.post("/create", transactionApiController.postTransaction)
+// transactionRouter.get("/update/:id", transactionController.getUpdate)
+// transactionRouter.put("/update/", transactionApiController.updateTransaction)
+// transactionRouter.get("/delete/:id", transactionController.getDelete)
+// transactionRouter.delete("/delete/", transactionApiController.deleteTransaction)
+
 export default transactionRouter;

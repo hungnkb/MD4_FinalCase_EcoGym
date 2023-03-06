@@ -114,7 +114,7 @@
                                 <label for="password" class="sr-only">Password</label>
                                 <input type="password" name="password" id="password" class="form-control" placeholder="***********">
                             </div>
-                            <input onclick="handleSubmit(event)" name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Login">
+                            <input onclick="handleSubmit()" name="login" id="login" class="btn btn-block login-btn mb-4" type="button" value="Login">
                         </form>
                         <a class="button google" href="/auth/login/google">Sign in with Google</a><br>
                         <p class="login-card-footer-text">Don't have an account? <a href="/auth/register" class="text-reset">Register here</a></p>
@@ -126,52 +126,50 @@
 
     </div>
 </main>
+<script>
+    let form = document.querySelector('#login-form');
+    let email = document.querySelector('#email');
+    let password = document.querySelector('#password');
+    let handleSubmit = async () => {
+        await axios({
+            method: 'post',
+            url: 'http://localhost:3000/api/login',
+            data: {
+                email: email.value,
+                password: password.value,
+            }
+        }).then(result => {
+            console.log(`1`)
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: result.data.message,
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                console.log(window.location.origin);
+                console.log(window.location)
+                window.location.replace(
+                    'http://localhost:3000/'
+                )
+            })
+        }).catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.response.data.message,
+                // footer: '<a href="">Why do I have this issue?</a>'
+            })
+        });
+    }
+</script>
 
 
     <%- include("layouts/b5script.ejs") %>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <script>
-            let form = document.querySelector('#login-form');
-            let email = form.querySelector('#email');
-            let password = form.querySelector('#password');
-            let handleSubmit = async event => {
-                event.preventDefault();
-                await axios({
-                    method: 'post',
-                    url: 'http://localhost:3000/api/login',
-                    data: {
-                        email: email.value,
-                        password: password.value,
-                    }
-                }).then(result => {
-                    console.log(result.data.message);
-                    if (result.data.message) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: result.data.message,
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            console.log(window.location.origin);
-                            window.location.replace(
-                                'http://localhost:3000/'
-                            )
-                        })
 
-                    }
-                }).catch(error => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: error.response.data.message,
-                        // footer: '<a href="">Why do I have this issue?</a>'
-                    })
-                });
-            }
-        </script>
 
 </body>
 

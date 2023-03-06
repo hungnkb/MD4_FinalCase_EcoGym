@@ -1,46 +1,33 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import Wallet from "../schemas/Waller.model";
-import axios from "axios";
-import walletApiController from "./api/wallet.api.controller";
+import Wallet from "../schemas/Wallet.model";
 import token from "./user.controller";
-import categoryApiController from "./api/category.api.controller";
-
+import Transaction from "../schemas/Transaction";
+import User from "../schemas/User.model";
+import Category from './../schemas/Category.model';
+import walletController from "./wallet.controller";
 class homeController {
   showHome = async (req: Request, res: Response) => {
-    // check User has wallet or not
     let id = token.getIdUser(req, res);
+    // check User has wallet or not
     let wallets = await Wallet.find({ idUser: id });
-    // create new Category package for new User
-    try {
-      await categoryApiController.createCategoryPackage(req, res);
+    const listTrans = await Transaction.find({ idUser: id});
+    console.log("listTrans: ", listTrans);
+    
+    const userDataAll = await User.find({ _id: id });
+    console.log("userDataAll: ",userDataAll);
+    
+    
+    // get category default from db
+      const defaultCategory = await Category.find({ idUser: null});
+      console.log("defaultCategory: ",defaultCategory);
       
-    } catch (error) {
-      console.log(error);
-    }
-     
-
     // if User has no wallet => create new wallet default
-    if (wallets.length === 0) {
-      axios({
-        method: "post",
-        url: `http://localhost:${process.env.PORT}/api/wallet`,
-        data: {
-          idUser: id,
-          walletName: "1st Wallet",
-          icon: 1,
-          totalMoneyLeft: 0,
-        },
-      })
-        .then((wallet) => {
-          res.send({ wallet });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    res.render("home");
+    if (wallets.length === 0) { 
+      walletController.createWalletDefault;
+    } 
+    res.render("home", {userDataAll, wallets, listTrans, categories: defaultCategory})
   };
+  
 }
 
 export default new homeController();
