@@ -12,21 +12,21 @@ class homeController {
     let wallets = await Wallet.find({ idUser: id });
     const listTrans = await Transaction.find({ idUser: id});
     const userInfo = await User.find({ _id: id });
-    const category = await Category.find({ idUser: id }); 
+    const category = await Category.find({ idUser: id });
     // get category default from db
     const defaultCategory = await Category.find({ idUser: "null"});
-      
+
     // if User has no wallet => create new wallet default
-    if (wallets.length === 0) { 
+    if (wallets.length === 0) {
       walletController.createWalletDefault(req, res, id);
-    } 
+    }
     let totalMoney = 0;
     wallets.forEach(wallet => {
       totalMoney += wallet.totalMoneyLeft
     })
     res.render("home", {userInfo, wallets, listTrans, defaultCategory, category,totalMoney })
   };
-  
+
 }
 
 export default new homeController();
