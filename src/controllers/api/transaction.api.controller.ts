@@ -28,6 +28,7 @@ class transactionApiController {
     let id = await token.getIdUser(req, res);
 
     let { nameWallet, moneyTrade, status, nameCategory, desc, timeTrade } = req.body;
+    console.log(req.body);
     
 
     let newTransaction = await Transaction.create({
@@ -40,7 +41,7 @@ class transactionApiController {
       timeTrade: timeTrade,
     });
     console.log(id);
-    
+    console.log(nameWallet, moneyTrade, status, nameCategory, desc, timeTrade);
     // update total money left in Wallet
     try {
       if (newTransaction) {
