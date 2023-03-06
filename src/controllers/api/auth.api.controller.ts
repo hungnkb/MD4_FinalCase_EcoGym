@@ -25,7 +25,7 @@ class authApiController {
           // let newUser = new User({ email, password });
           // await newUser.save();
           let newUser = await User.create({ email, password });
-      
+
           res.status(200).json({ message: "Register success", data: newUser });
         }
       } else {
@@ -80,7 +80,7 @@ class authApiController {
   getDataUser = async (req: Request, res: Response) => {
     // Get all Info + Wallets + Categories + Flows of User by idUser which is get from params
     // URL: http://localhost:3000/api/user/<idUser>
-   
+
     let idUser = req.params.idUser || token.getIdUser(req, res);
 
     try {
