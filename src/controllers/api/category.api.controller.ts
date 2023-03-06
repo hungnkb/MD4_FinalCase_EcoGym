@@ -8,7 +8,6 @@ class CategoryApiController {
     let idUser = token.getIdUser(req, res);
     try {
       let categoryList = await Category.find({ idUser: idUser });
-
       if (categoryList.length === 0) {
         let incomeCategory = [
           "Collect Interest",
