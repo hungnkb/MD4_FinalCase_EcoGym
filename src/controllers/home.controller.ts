@@ -23,7 +23,7 @@ class homeController {
       
     // if User has no wallet => create new wallet default
     if (wallets.length === 0) { 
-      walletController.createWalletDefault;
+      walletController.createWalletDefault(req, res, id);
     } 
     res.render("home", {userDataAll, wallets, listTrans, categories: defaultCategory})
   };
