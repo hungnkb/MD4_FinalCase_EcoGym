@@ -1,68 +1,31 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
-import Wallet from "../schemas/Waller.model";
-import axios from "axios";
-import walletApiController from "./api/wallet.api.controller";
+import Wallet from "../schemas/Wallet.model";
 import token from "./user.controller";
-import categoryApiController from "./api/category.api.controller";
-import transactionController from "./transaction.controller";
 import Transaction from "../schemas/Transaction";
 import User from "../schemas/User.model";
 import Category from './../schemas/Category.model';
+import walletController from "./wallet.controller";
 class homeController {
   showHome = async (req: Request, res: Response) => {
-    // check User has wallet or not
     let id = token.getIdUser(req, res);
+    // check User has wallet or not
     let wallets = await Wallet.find({ idUser: id });
-    // create new Category package for new User
-    try {
-      await categoryApiController.createCategoryPackage(req, res);
-    } catch (error) {
-      console.log(error);
-    }
-    // if User has no wallet => create new wallet default
-    // let listTrans = await axios({
-    //   method: "get",
-    //   url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
-    // })
     const listTrans = await Transaction.find({ idUser: id});
+    console.log("listTrans: ", listTrans);
+    
     const userDataAll = await User.find({ _id: id });
-    console.log(userDataAll)
-
-    // let userDataAll = await axios({
-    //   method: "get",
-    //   url: `http://localhost:${process.env.PORT}/api/user/${id}`,
-    // })
-
-    // get all User's data: userDataAll.data
-    // example: get all categories -> userDataAll.data.categories[0].categoryList
-    // let categories = userDataAll.data.categories[0].categoryList;
-    const categories = await Category.find({idUserId: id})
-    console.log(categories);
+    console.log("userDataAll: ",userDataAll);
     
     
-    
+    // get category default from db
+      const defaultCategory = await Category.find({ idUser: null});
+      console.log("defaultCategory: ",defaultCategory);
+      
+    // if User has no wallet => create new wallet default
     if (wallets.length === 0) { 
-      let firstWallet = await axios({
-        method: "post",
-        url: `http://localhost:${process.env.PORT}/api/wallet`,
-        data: {
-          idUser: id,
-          walletName: "1st Wallet",
-          icon: 1,
-          totalMoneyLeft: 0,
-        },
-      })
-      // let listTrans = await axios({
-      //   method: "get",
-      //   url: `http://localhost:${process.env.PORT}/transaction/get-list-trans`,
-      // })
-      // wallets = await Wallet.find({ idUser: id });
-      // res.render('home', {wallets: wallets, listTrans: listTrans.data, categories})
-    } else {
-      // res.render('home', {wallets, listTrans: listTrans.data, categories})
-      res.send("home");
-    }
+      walletController.createWalletDefault;
+    } 
+    res.render("home", {userDataAll, wallets, listTrans, categories: defaultCategory})
   };
   
 }

@@ -4,7 +4,7 @@ import User from "../../schemas/User.model";
 import jwt from "jsonwebtoken";
 import validateRegister from "../../middleware/validateRegister";
 import qs from "qs";
-import Wallet from "../../schemas/Waller.model";
+import Wallet from "../../schemas/Wallet.model";
 import Category from "../../schemas/Category.model";
 import token from "../user.controller";
 

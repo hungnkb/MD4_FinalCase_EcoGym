@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Wallet from "../../schemas/Waller.model";
+import Wallet from "../../schemas/Wallet.model";
 import Category from "../../schemas/Category.model";
 import token from "../user.controller";
 
