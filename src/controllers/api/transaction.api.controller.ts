@@ -26,8 +26,10 @@ class transactionApiController {
   // POST
   postTransaction = async (req: Request, res: Response) => {
     let id = await token.getIdUser(req, res);
-    let { nameWallet, moneyTrade, status, nameCategory, desc, timeTrade } =
-        req.body;
+
+    let { nameWallet, moneyTrade, status, nameCategory, desc, timeTrade } = req.body;
+    
+
     let newTransaction = await Transaction.create({
       idUser: id,
       nameWallet: nameWallet,
@@ -37,7 +39,8 @@ class transactionApiController {
       desc: desc,
       timeTrade: timeTrade,
     });
-
+    console.log(id);
+    
     // update total money left in Wallet
     try {
       if (newTransaction) {
@@ -46,7 +49,6 @@ class transactionApiController {
     } catch (err) {
       console.log(err);
     }
-
     res.status(200).json({
       errorCode: 0,
       data: newTransaction,
@@ -56,20 +58,21 @@ class transactionApiController {
   // PUT
   updateTransaction = async (req: Request, res: Response) => {
     let id = req.params.id;
-    let { nameWaller, moneyTrade, status, nameCategory, desc, timeTrade } =
-        req.body;
+
+    let { nameWallet, moneyTrade, status, nameCategory, desc, timeTrade } =
+      req.body;
     const opts = { runValidators: true };
     const transUpdated = await Transaction.updateOne(
-        { _id: id },
-        {
-          nameWaller: nameWaller,
-          moneyTrade: moneyTrade,
-          status: status,
-          nameCategory: nameCategory,
-          desc: desc,
-          timeTrade: timeTrade,
-        },
-        opts
+      { _id: id },
+      {
+        nameWallet: nameWallet,
+        moneyTrade: moneyTrade,
+        status: status,
+        nameCategory: nameCategory,
+        desc: desc,
+        timeTrade: timeTrade,
+      },
+      opts
     );
     res.status(200).json({
       errorCode: 0,
@@ -79,17 +82,16 @@ class transactionApiController {
 
   // DELETE
   deleteTransaction = async (req: Request, res: Response) => {
-    let id = req.params.id;
-    let deleteTrans = await Transaction.deleteOne({ _id: id }).exec();
-
+    let id = req.params._id;
+    let transaction = await Transaction.findOne({_id: id});
+    // let deleteTrans = await Transaction.deleteOne({ _id: id }).exec();
     // update total money left in Wallet
 
-
-
-    res.status(200).json({
-      errorCode: 0,
-      data: deleteTrans,
-    });
+res.status(200).json({message: 'oke'})
+    // res.status(200).json({
+    //   errorCode: 0,
+    //   data: deleteTrans,
+    // });
   };
 }
 

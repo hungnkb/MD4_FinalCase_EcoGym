@@ -25,6 +25,7 @@ apiRouter.get("/user/", authApiController.getDataUser);
 apiRouter.get("/user/:idUser", authApiController.getDataUser);
 apiRouter.get("/transaction/:offset", transactionApiController.showTransaction);
 apiRouter.post("/transaction", transactionApiController.postTransaction);
+apiRouter.delete("/transaction/:_id", transactionApiController.deleteTransaction);
 
 
 export default apiRouter;
