@@ -3,7 +3,7 @@ import express from "express";
 import walletApiController from "../controllers/api/wallet.api.controller";
 import categoryApiController from "../controllers/api/category.api.controller";
 import transactionApiController from "../controllers/api/transaction.api.controller";
-import transactionRouter from "./transaction.router";
+
 
 const apiRouter = express.Router();
 
@@ -23,7 +23,7 @@ apiRouter.get("/category/:idUser", categoryApiController.showCategoryByUser);
 
 apiRouter.get("/user/", authApiController.getDataUser);
 apiRouter.get("/user/:idUser", authApiController.getDataUser);
-apiRouter.get("/transaction", transactionApiController.getTransaction);
+apiRouter.get("/transaction/:offset", transactionApiController.showTransaction);
 apiRouter.post("/transaction", transactionApiController.postTransaction);
 
 

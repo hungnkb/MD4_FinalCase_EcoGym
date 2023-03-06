@@ -17,7 +17,7 @@ const userSchema = new Schema<IUser>({
   email: String,
   password: String,
   role: { type: Number, default: 2 },
-  
+
   google: {
     id: {
       type: String,

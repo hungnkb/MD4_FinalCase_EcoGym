@@ -11,13 +11,13 @@ const authRouter = express.Router();
 
 authRouter.get("/login", authorize.guest, authController.showLogin);
 authRouter.get(
-  "/login/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+    "/login/google",
+    passport.authenticate("google", { scope: ["profile", "email"] })
 );
 authRouter.get(
-  "/google/callback",
-  passport.authenticate("google", { session: false }),
-  authController.loginOverGoogle
+    "/google/callback",
+    passport.authenticate("google", { session: false }),
+    authController.loginOverGoogle
 );
 
 authRouter.get("/register", authorize.guest, authController.showRegister);

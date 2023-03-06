@@ -8,7 +8,7 @@ import cookieParser from 'cookie-parser';
 import connectDB from './src/config/connectDB';
 import configViewEngine from './src/config/viewengine';
 dotenv.config();
-import profileRoutes from './src/routers/profile.router';
+
 
 
 

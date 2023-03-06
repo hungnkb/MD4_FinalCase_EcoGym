@@ -41,13 +41,13 @@ class apiController {
       bcrypt.compare(password, user.password, (err, result) => {
         if (result) {
           let token = jwt.sign(
-            {
-              iss: "Book Store",
-              sub: user.id,
-              iat: new Date().getTime(),
-            },
-            process.env.USER_CODE_SECRET,
-            { expiresIn: 604800000 }
+              {
+                iss: "Book Store",
+                sub: user.id,
+                iat: new Date().getTime(),
+              },
+              process.env.USER_CODE_SECRET,
+              { expiresIn: 604800000 }
           );
           res.cookie("authorization", "Bearer " + token, { signed: true });
           res.status(200).json({ message: "Login success", user, token });

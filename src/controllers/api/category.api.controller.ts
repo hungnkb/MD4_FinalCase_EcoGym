@@ -13,8 +13,8 @@ class CategoryApiController {
       let doneCategory = await newCategory.save();
       if (doneCategory) {
         res
-          .status(200)
-          .json({ message: "Create category success", doneCategory });
+            .status(200)
+            .json({ message: "Create category success", doneCategory });
       } else {
         res.status(500).json({ message: "Create category fail" });
       }
@@ -29,14 +29,14 @@ class CategoryApiController {
 
     try {
       await Category.find({ idUser: idUser })
-        .then((data) => {
-          console.log(data);
+          .then((data) => {
+            console.log(data);
 
-          res.status(200).json({ categoryList: data });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+            res.status(200).json({ categoryList: data });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     } catch (error) {
       console.log(error);
     }
@@ -53,14 +53,14 @@ class CategoryApiController {
     try {
     } catch (error) {}
     let updateCategory = await Category.findOneAndUpdate(
-      { idUser: idUser, categoryName: currentNameCategory },
-      { $set: { nameCategory: newNameCategory } },
-      { new: true }
+        { idUser: idUser, categoryName: currentNameCategory },
+        { $set: { nameCategory: newNameCategory } },
+        { new: true }
     );
     if (updateCategory) {
       res
-        .status(200)
-        .json({ message: "Update category success", updateCategory });
+          .status(200)
+          .json({ message: "Update category success", updateCategory });
     } else {
       res.status(500).json({ message: "Update category fail" });
     }

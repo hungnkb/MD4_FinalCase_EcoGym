@@ -7,7 +7,7 @@ interface IWallet {
     totalMoneyLeft: number,
 }
 const walletSchema = new Schema<IWallet>({
-    idUser: String, 
+    idUser: String,
     walletName: String,
     icon: String,
     totalMoneyLeft: Number,
