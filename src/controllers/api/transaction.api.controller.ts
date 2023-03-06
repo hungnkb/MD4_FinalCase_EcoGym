@@ -9,9 +9,7 @@ class transactionApiController {
     let offset = 0;
     if (req.params.offset) {
       offset = Number(req.params.offset) * 5;
-    } else {
-      offset = 0;
-    }
+    }    
 
     try {
       let totalTransactions = await Transaction.find({idUser: idUser, timeTrade: req.params.period});
