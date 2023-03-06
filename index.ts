@@ -15,7 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 8888;
 
 mongoose.set('strictQuery', true);
- 
+
 app.set('view engine', 'ejs');
 app.set('views', './src/views');
 
