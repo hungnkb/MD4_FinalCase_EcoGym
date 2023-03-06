@@ -13,6 +13,7 @@ apiRouter.post("/login", authApiController.login);
 apiRouter.get("/logout", authApiController.logout);
 
 apiRouter.post("/wallet", walletApiController.createWallet);
+apiRouter.get("/wallet",walletApiController.getWalletInfo);
 
 apiRouter.post("/category", categoryApiController.createNewCategory);
 // apiRouter.get("/category", categoryApiController.showCategoryByUser);
