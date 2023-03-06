@@ -1,9 +1,9 @@
-
 import { Router } from 'express';
 const profileRoutes = Router();
 import { Profile } from "../schemas/Profile.model";
 import multer from 'multer';
 const upload = multer();
+import token from '../controllers/user.controller'
 
 
 
@@ -61,22 +61,24 @@ profileRoutes.post('/update', upload.none(), async (req, res) => {
 
 
 profileRoutes.get('/', async (req, res) => {
-    try {
-        console.log(req.query)
-        let limit: number;
-        let offset: number;
-        if(!req.query.offset || !req.query.limit) {
-            limit = 3;
-            offset = 0;
-        } else {
-            limit = Number(req.query.limit as string);
-            offset = Number(req.query.offset as string);
-        }
-        const profiles = await Profile.find().limit(limit).skip(offset);
-        res.render("listProfile", { profiles: profiles });
-    } catch {
-        res.render("error");
-    }
+    let idUser = token.getIdUser(req, res);
+    console.log(idUser)
+    // try {
+    //     console.log(req.query)
+    //     let limit: number;
+    //     let offset: number;
+    //     if(!req.query.offset || !req.query.limit) {
+    //         limit = 3;
+    //         offset = 0;
+    //     } else {
+    //         limit = Number(req.query.limit as string);
+    //         offset = Number(req.query.offset as string);
+    //     }
+    //     const profiles = await Profile.find().limit(limit).skip(offset);
+    //     res.render("listProfile", { profiles: profiles });
+    // } catch {
+    //     res.render("error");
+    // }
 });
 //
 // profileRoutes.get('/delete/:id', async (req, res) => {
