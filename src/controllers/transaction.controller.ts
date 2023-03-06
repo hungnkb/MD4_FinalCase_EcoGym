@@ -13,9 +13,9 @@ class transactionController {
 
     try {
       let updateTotalMoneyLeft = await Wallet.findOneAndUpdate(
-        { idUser: id },
-        { $set: { totalMoneyLeft: totalMoneyLeft } },
-        { new: true }
+          { idUser: id },
+          { $set: { totalMoneyLeft: totalMoneyLeft } },
+          { new: true }
       );
     } catch (err) {
       console.log(err);

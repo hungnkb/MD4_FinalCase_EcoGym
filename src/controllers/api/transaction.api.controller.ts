@@ -15,8 +15,8 @@ class transactionApiController {
 
     try {
       let transactions = Transaction.find({ idUser: idUser })
-        .skip(offset)
-        .limit(5);
+          .skip(offset)
+          .limit(5);
       res.status(200).json(transactions);
     } catch (err) {
       console.log(err);
@@ -26,8 +26,10 @@ class transactionApiController {
   // POST
   postTransaction = async (req: Request, res: Response) => {
     let id = await token.getIdUser(req, res);
+
     let { nameWallet, moneyTrade, status, nameCategory, desc, timeTrade } = req.body;
     
+
     let newTransaction = await Transaction.create({
       idUser: id,
       nameWallet: nameWallet,
@@ -38,7 +40,7 @@ class transactionApiController {
       timeTrade: timeTrade,
     });
     console.log(id);
-    
+    console.log(nameWallet, moneyTrade, status, nameCategory, desc, timeTrade);
     // update total money left in Wallet
     try {
       if (newTransaction) {
@@ -47,7 +49,6 @@ class transactionApiController {
     } catch (err) {
       console.log(err);
     }
-
     res.status(200).json({
       errorCode: 0,
       data: newTransaction,
@@ -57,6 +58,7 @@ class transactionApiController {
   // PUT
   updateTransaction = async (req: Request, res: Response) => {
     let id = req.params.id;
+
     let { nameWallet, moneyTrade, status, nameCategory, desc, timeTrade } =
       req.body;
     const opts = { runValidators: true };
@@ -82,12 +84,8 @@ class transactionApiController {
   deleteTransaction = async (req: Request, res: Response) => {
     let id = req.params._id;
     let transaction = await Transaction.findOne({_id: id});
-    console.log(transaction);
-    
     // let deleteTrans = await Transaction.deleteOne({ _id: id }).exec();
-
     // update total money left in Wallet
-
 
 res.status(200).json({message: 'oke'})
     // res.status(200).json({

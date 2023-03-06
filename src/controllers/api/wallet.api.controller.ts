@@ -24,8 +24,8 @@ class walletApiController {
 
       if (saveWallet) {
         res
-          .status(200)
-          .json({ message: "Create wallet success", data: saveWallet });
+            .status(200)
+            .json({ message: "Create wallet success", data: saveWallet });
       } else {
         res.status(400).json("Wallet name is exist, please try again");
       }
