@@ -10,10 +10,16 @@ import configViewEngine from './src/config/viewengine';
 dotenv.config();
 
 
+
 const app = express();
 const PORT = process.env.PORT || 8888;
 
 mongoose.set('strictQuery', true);
+ 
+app.set('view engine', 'ejs');
+app.set('views', './src/views');
+
+
 
 
 // config templat engine
@@ -27,6 +33,7 @@ app.use(cookieParser(process.env.USER_CODE_SECRET));
 
 route(app);
 
+
 (async()=> {
   try {
     await connectDB();
@@ -39,3 +46,4 @@ route(app);
 })()
 
 
+//npm run start:dev

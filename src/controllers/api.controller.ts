@@ -5,7 +5,7 @@ import passport from "passport";
 import jwt from "jsonwebtoken";
 import validateRegister from "../middleware/validateRegister";
 import qs from "qs";
-import { Wallet } from "../schemas/Waller.model";
+import Wallet from '../schemas/Wallet.model'
 
 class apiController {
   register = async (req: Request, res: Response): Promise<any> => {
@@ -55,7 +55,7 @@ class apiController {
           res.status(400).json({ message: "Wrong password, please try again" });
         }
       });
-      
+
       res.status(400).json({ message: "Email is not exist, please try again" });
     }
   };
@@ -67,14 +67,12 @@ class apiController {
   };
 
   createWallet = async (req: Request, res: Response) => {
-    let {idUser, walletName, icon, totalMoneyLeft} = req.body;
+    let { idUser, walletName, icon, totalMoneyLeft } = req.body;
     let wallet = await Wallet.find({ walletName: walletName });
-    if(wallet) {
-      res.status(400).json('Wallet name is exist, please try again');
+    if (wallet) {
+      res.status(400).json("Wallet name is exist, please try again");
     } else {
-      
     }
-
   };
 }
 
