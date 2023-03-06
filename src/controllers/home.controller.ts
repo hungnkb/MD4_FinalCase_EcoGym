@@ -33,7 +33,6 @@ class homeController {
     // get all User's data: userDataAll.data
     // example: get all categories -> userDataAll.data.categories[0].categoryList
     let categories = userDataAll.data.categories[0].categoryList;
-    console.log(wallets);
     
     if (wallets.length === 0) { 
       let firstWallet = await axios({
