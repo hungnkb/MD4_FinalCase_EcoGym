@@ -359,11 +359,18 @@
                     });
             }
 
-            let defaultTransListToday = () => {
+            let defaultTransListToday = (offset) => {
+                if (!offset) {
+                    offset = 0;
+                }
+                console.log(offset);
+                document.querySelector('#today').innerHTML = '';
+                document.querySelector('#page-list-number').innerHTML = '';
+
                 let today = new Date().toISOString().split('T')[0];
                 axios({
                     method: 'get',
-                    url: 'http://localhost:3000/api/transaction/0&' + today,
+                    url: `http://localhost:3000/api/transaction/${offset}&${today}`,
                 }).then(result => {
                     result.data.transactions.forEach(transaction => {
                         document.querySelector('#today').innerHTML += `
@@ -392,13 +399,18 @@
                     let total = Math.ceil(result.data.total / 5);
                     for (let i = 0; i < total; i++) {
                         document.querySelector('#page-list-number').innerHTML += `
-                        <li class="page-item"><a class="page-link" href="/">${i+1}</a></li>
+                        <li class="page-item"><div onclick="defaultTransListToday(${i})">${i+1}</div></li>
                         `
                     }
                 })
             }
 
             defaultTransListToday();
+
+            transListToday = (offset) => {
+
+            }
+
         </script>
 </body>
 
