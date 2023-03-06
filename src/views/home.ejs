@@ -35,7 +35,9 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <p class="mt-2" id="totalMoney" style="color: green"><%=totalMoney%></p>
+                            <p class="mt-2" id="totalMoney" style="color: green">
+                                <%=totalMoney%>
+                            </p>
                         </li>
                     </ul>
                 </div>
@@ -151,27 +153,19 @@
                 </div>
             </div>
             <div id="week" class="trans-content mt-3 d-none">1</div>
+
             <div id="today" class="trans-content mt-3">
-                <div class="trans-item mb-2 p-3"
-                    style="border-top: 2px solid grey; background-color: rgb(226, 226, 226);">
-                    <div class="trans-category mt-2 d-flex justify-content-between">
-                        <h3 class="trans-category-name">Cafe</h3>
-                        <div class="trans-btn">
-                            <button type="button" class="btn btn-primary">Edit</button>
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </div>
-                    </div>
-                    <div class="trans-info">
-                        <div class="trans-info-top d-flex justify-content-between mt-2">
-                            <p class="trans-time">04/03/2023</p>
-                            <h5 class="money">-20000</h5>
-                        </div>
-                        <div class="trans-info-bot d-flex justify-content-start mt-2">
-                            <p class="trans-desc">đen đá không đường</p>
-                        </div>
-                    </div>
-                </div>
+
             </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                   <div id="page-list-number">
+
+                   </div>
+                        
+                   
+                </ul>
+            </nav>
             <div id="month" class=" trans-content mt-3 d-none">3</div>
         </section>
 
@@ -351,21 +345,60 @@
                         let walletName = event.target;
                         let totalMoney = 0;
                         if (walletName == 'all-wallet') {
-                            for (let i = 0; i< wallets.length; i++) {
+                            for (let i = 0; i < wallets.length; i++) {
                                 totalMoney += wallets[i].totalMoneyLeft;
                             }
                             document.querySelector('#totalMoney').innerHTML = totalMoney;
                         } else {
-                            for (let i = 0; i< wallets.length; i++) {
+                            for (let i = 0; i < wallets.length; i++) {
                                 if (wallets[i].walletName == walletName) {
                                     document.querySelector('#totalMoney').innerHTML = wallets[i].totalMoneyLeft;
                                 }
                             }
                         }
                     });
-
-
             }
+
+            let defaultTransListToday = () => {
+                let today = new Date().toISOString().split('T')[0];
+                axios({
+                    method: 'get',
+                    url: 'http://localhost:3000/api/transaction/0&' + today,
+                }).then(result => {
+                    result.data.transactions.forEach(transaction => {
+                        document.querySelector('#today').innerHTML += `
+                        <div class="trans-item mb-2 p-3"
+                    style="border-top: 2px solid grey; background-color: rgb(226, 226, 226);">
+                    <div class="trans-category mt-2 d-flex justify-content-between">
+                        <h3 class="trans-category-name">${transaction.nameCategory}</h3>
+                        <div class="trans-btn">
+                            <button type="button" class="btn btn-primary">Edit</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </div>
+                    </div>
+                    <div class="trans-info">
+                        <div class="trans-info-top d-flex justify-content-between mt-2">
+                            <p class="trans-time">${transaction.timeTrade.split('T')[0]}</p>
+                            <h5 class="money">${transaction.moneyTrade}</h5>
+                        </div>
+                        <div class="trans-info-bot d-flex justify-content-start mt-2">
+                            <p class="trans-desc">${transaction.desc}</p>
+                        </div>
+                    </div>
+                </div>
+                        `
+                    });
+
+                    let total = Math.ceil(result.data.total / 5);
+                    for (let i = 0; i < total; i++) {
+                        document.querySelector('#page-list-number').innerHTML += `
+                        <li class="page-item"><a class="page-link" href="/">${i+1}</a></li>
+                        `
+                    }
+                })
+            }
+
+            defaultTransListToday();
         </script>
 </body>
 

@@ -21,7 +21,7 @@ apiRouter.get("/category/:idUser", categoryApiController.showCategoryByUser);
 
 apiRouter.get("/user/", authApiController.getDataUser);
 apiRouter.get("/user/:idUser", authApiController.getDataUser);
-apiRouter.get("/transaction/:offset", transactionApiController.showTransaction);
+apiRouter.get("/transaction/:offset&:period", transactionApiController.showTransaction);
 apiRouter.post("/transaction", transactionApiController.postTransaction);
 apiRouter.delete("/transaction/:_id", transactionApiController.deleteTransaction);
 
