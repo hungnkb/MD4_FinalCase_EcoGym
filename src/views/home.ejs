@@ -111,7 +111,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Add</button>
+                            <button type="submit" onclick="submitTransaction(event)" class="btn btn-primary">Add</button>
                         </div>
                     </form>
                 </div>
@@ -173,18 +173,6 @@
             <div id="month" class=" trans-content mt-3 d-none">3</div>
         </section>
 
-        <!-- Transactions Modal -->
-        <div class="modal fade" id="transactions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
     </section>
 
 
@@ -304,10 +292,11 @@
             let status = form.querySelector('#category');
             let desc = form.querySelector('#desc');
             event.preventDefault();
+            console.log(moneyTrade);
 
             // check if required inputs are filled then send data through API. 
             // URL and Method are given from form-transaction attribute
-            if (moneyTrade.value && timeTrade.value && nameCategory && status) {
+            if (moneyTrade.value && timeTrade.value && nameCategory.value && status.value) {
                 axios({
                     method: form.method,
                     url: form.action,
