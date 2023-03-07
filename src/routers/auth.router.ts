@@ -19,7 +19,7 @@ authRouter.get(
     passport.authenticate("google", { session: false }),
     authController.loginOverGoogle
 );
-
 authRouter.get("/register", authorize.guest, authController.showRegister);
+authRouter.get("/profile", authorize.user, authController.showProfile);
 
 export default authRouter;

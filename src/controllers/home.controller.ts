@@ -19,7 +19,8 @@ class homeController {
 
     // if User has no wallet => create new wallet default
     if (wallets.length == 0) {
-      await walletController.createWalletDefault(id);
+      let firstWallet = await walletController.createWalletDefault(id);
+      console.log(firstWallet);
     }
 
     // recall wallets

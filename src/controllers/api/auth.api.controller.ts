@@ -45,26 +45,26 @@ class authApiController {
         bcrypt.compare(password, user.password, (err, result) => {
           if (result) {
             let token = jwt.sign(
-                {
-                  iss: "Book Store",
-                  sub: user.id,
-                  iat: new Date().getTime(),
-                },
-                process.env.USER_CODE_SECRET,
-                { expiresIn: 604800000 }
+              {
+                iss: "Book Store",
+                sub: user.id,
+                iat: new Date().getTime(),
+              },
+              process.env.USER_CODE_SECRET,
+              { expiresIn: 604800000 }
             );
             res.cookie("authorization", "Bearer " + token, { signed: true });
             res.status(200).json({ message: "Login success", user, token });
           } else {
             res
-                .status(400)
-                .json({ message: "Wrong password, please try again" });
+              .status(400)
+              .json({ message: "Wrong password, please try again" });
           }
         });
       } else {
         res
-            .status(400)
-            .json({ message: "Email is not exist, please try again" });
+          .status(400)
+          .json({ message: "Email is not exist, please try again" });
       }
     } catch (err) {
       console.log(err);
@@ -93,6 +93,40 @@ class authApiController {
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "Fail" });
+    }
+  };
+
+  changePassword = async (req: Request, res: Response) => {
+    let id = token.getIdUser(req, res);
+    let newPassword = req.body.newPassword;
+    let currentPassword = req.body.currentPassword;
+    let user = await User.findOne({ idUser: id });
+    if (user != null) {
+      console.log(currentPassword);
+      
+      bcrypt.compare(currentPassword, user.password, async (err, result) => {
+        if (result) {       
+          const salt = await bcrypt.genSaltSync(10);
+          newPassword = await bcrypt.hashSync(newPassword, salt);
+          console.log(123);
+          
+          let updateUser = await User.findOneAndUpdate({idUser: id}, {$set: {newPassword}});
+                    
+          let token = jwt.sign(
+            {
+              iss: "Book Store",
+              sub: user.id,
+              iat: new Date().getTime(),
+            },
+            process.env.USER_CODE_SECRET,
+            { expiresIn: 604800000 }
+          );
+          res.cookie("authorization", "Bearer " + token, { signed: true });
+          res.status(200).json({ message: "Change password success", user, token });
+        } else {
+          res.status(400).json({ message: "Current password is wrong, please try again" });
+        }
+      });
     }
   };
 }
