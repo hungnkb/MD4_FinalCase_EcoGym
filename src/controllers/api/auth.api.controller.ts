@@ -102,7 +102,6 @@ class authApiController {
     let currentPassword = req.body.currentPassword;
     let user = await User.findOne({ idUser: id });
     if (user != null) {
-      console.log(currentPassword);
       
       bcrypt.compare(currentPassword, user.password, async (err, result) => {
         if (result) {       
@@ -129,6 +128,13 @@ class authApiController {
       });
     }
   };
+
+  updateUser = async (req: Request, res: Response) => {
+    let id = token.getIdUser(req, res);
+    let {name, phoneNumber, address} = req.body;
+    let updateUser = await User.findOneAndUpdate({idUser: id}, {$set: {name: name, phoneNumber: phoneNumber, address: address}});
+    res.status(200).json({message: 'update success'});
+  }
 }
 
 export default new authApiController();

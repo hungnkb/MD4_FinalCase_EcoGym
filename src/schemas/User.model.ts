@@ -10,6 +10,9 @@ interface IUser {
       type: string;
     }
   },
+  name: string,
+  phoneNumber: string,
+  address: string,
 }
 
 const userSchema = new Schema<IUser>({
@@ -23,6 +26,9 @@ const userSchema = new Schema<IUser>({
       type: String,
     },
   },
+  name: String,
+  phoneNumber: String,
+  address: String,
 });
 
 const User = model<IUser>("User", userSchema);

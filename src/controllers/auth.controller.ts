@@ -32,7 +32,9 @@ class authController {
 
   showProfile = async (req: Request, res: Response) => {
     let id = token.getIdUser(req, res);
-    let userInfo = await User.findOne({ _id: id });
+    let userInfo = await User.findById({_id: id });
+    console.log(userInfo);
+    
     res.render("profile", {userInfo});
   };
 }
