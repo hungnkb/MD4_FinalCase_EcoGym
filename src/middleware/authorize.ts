@@ -32,6 +32,7 @@ class Authorize {
             } else {
                 let id = user.sub
                 let userData = await User.findById({_id: id});
+                
                 let role = Number(userData.role);
 
                 if (role === 2 || role === 1 || req.signedCookies.authorization === null) {
