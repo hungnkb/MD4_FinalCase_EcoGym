@@ -8,10 +8,87 @@
 </head>
 
 <body>
+    <%= listCategory%>
     <main class="container">
-        
+        <h2>Category Manager</h2>
+        <button onclick="categoryPickDefault(event)" type="button" style="width: 100%;" class="btn btn-primary"
+            data-toggle="modal" data-target="#exampleModalCenter">
+            Add new Category
+        </button>
+        <!-- Modal add new transaction -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">New Category</h1>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/api/category" method="post" id="form-add-new-category">
+                        <div class="modal-body">
+                            <div class="mb-3" style="display: none;">
+                                <label class="form-label"></label>
+                                <input required type="text" class="form-control" id="idUser" value="<%= idUser %>">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <select class="custom-select mb-3" id="status">
+                                    <option>Choose Category's status</option>
+                                    <option value="income">Income</option>
+                                    <option value="outcome">Outcome</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category's name</label>
+                                <input required type="text" class="form-control" id="categoryName">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" onclick="submitCategory(event)" class="btn btn-primary">Add new
+                                Category</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </main>
     <%- include("layouts/b5script.ejs") %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        async function submitCategory(event) {
+            let form = document.querySelector('#form-add-new-category');
+            let idUser = form.querySelector('#idUser').value;
+            console.log(idUser);
+            let status = form.querySelector('#status').value;
+            let categoryName = form.querySelector('#categoryName').value;
+            event.preventDefault();
+            if (status && categoryName) {
+                try {
+                    await Category.create({ idUser, categoryName, status });
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Add transaction success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    window.location.replace(
+                        `http://${window.location.hostname}:${window.location.port}/api/category`
+                    )
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill all field before save changes'
+                    })
+                    console.log(error);
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>
