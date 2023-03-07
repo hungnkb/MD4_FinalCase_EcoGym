@@ -24,13 +24,27 @@ class walletApiController {
 
       if (saveWallet) {
         res
-          .status(200)
-          .json({ message: "Create wallet success", data: saveWallet });
+            .status(200)
+            .json({ message: "Create wallet success", data: saveWallet });
       } else {
         res.status(400).json("Wallet name is exist, please try again");
       }
     }
   };
+
+  getWalletInfo = async (req: Request, res: Response) => {
+    try {
+      let id = token.getIdUser(req, res);
+      let wallets = await Wallet.find({idUser: id})
+      if (wallets) {
+        res.status(200).json({wallets: wallets});
+      } else {
+        res.status(400).json({error: 1});
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 export default new walletApiController();

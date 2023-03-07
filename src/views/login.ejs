@@ -3,88 +3,150 @@
 
 <head>
     <%- include("layouts/header.ejs") %>
+    <title>EcoGYM Login</title>
+    <link rel="stylesheet" href="../../style/register.css">
 
 </head>
 
+
 <body>
-
-
-    <div class="container">
-        <div class="row mt-5" style="text-align: center;">
-            <div class="col-3"></div>
-            <div class="col-6">
-                <h1>Login</h1>
+    <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <div class="container">
+            <div class="card login-card">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="../../images/login.jpg" alt="login" class="login-card-img">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <div class="brand-wrapper">
+                                <h2 class="m-0 p-0"><i style="color: green"><b>E</b>co</i><i
+                                        style="color: orange">GYM</i></h2>
+                                <i style="font-family: monospace; font-size: 16px;">Smart financial management</i>
+                            </div>
+                            <div class="container">
+                                <div class="row mt-5" style="text-align: center;">
+                                    <div class="col-3"></div>
+                                    <div class="col-6">
+                                        <h1>Register</h1>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3"></div>
+                                    <div class="col-6">
+                                        <form action="/api/login" method="post">
+                                            <div class="form-group">
+                                                <label for="email" class="sr-only">Email</label>
+                                                <input type="email" name="email" id="email" class="form-control"
+                                                    placeholder="Email address">
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label for="password" class="sr-only">Password</label>
+                                                <input type="password" name="password" id="password"
+                                                    class="form-control" placeholder="***********">
+                                            </div>
+                                            <input onclick="handleSubmit()" name="login" id="login"
+                                                class="btn btn-block login-btn mb-4" type="button" value="Login">
+                                        </form>
+                                        <button class="btn btn-block login-btn mb-4">
+                                            <a class="button google" id="login-google" href="/auth/login/google"
+                                                style="text-decoration: none; color: white;">Sign in with
+                                                Google</a></button>
+                                        <p class="login-card-footer-text text-reset">Don't have an account? <a
+                                                href="/auth/register" style="color: orange;">Register here</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row mt-5">
-            <div class="col-3"></div>
-            <div class="col-6">
-                <form action="/api/login" method="post" id="login-form">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email</label>
-                        <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp">
+    </main>
+    <!-- <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <div class="container">
+            <div class="card login-card">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="../../images/login.jpg" alt="login" class="login-card-img">
                     </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input name="password" type="password" class="form-control" id="password">
-                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <div class="brand-wrapper">
+                                <h2 class="m-0 p-0"><i style="color: green"><b>E</b>co</i><i
+                                        style="color: orange">GYM</i></h2>
+                                <i style="font-family: monospace; font-size: 16px;">Smart financial management</i>
+                            </div>
+                            <p class="login-card-description">Login</p>
+                            <form action="/api/login" method="post">
+                                <div class="form-group">
+                                    <label for="email" class="sr-only">Email</label>
+                                    <input type="email" name="email" id="email" class="form-control"
+                                        placeholder="Email address">
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label for="password" class="sr-only">Password</label>
+                                    <input type="password" name="password" id="password" class="form-control"
+                                        placeholder="***********">
+                                </div>
+                                <input onclick="handleSubmit()" name="login" id="login"
+                                    class="btn btn-block login-btn mb-4" type="button" value="Login">
+                            </form>
+                            <a class="button google" href="/auth/login/google">Sign in with Google</a><br>
+                            <p class="login-card-footer-text">Don't have an account? <a href="/auth/register"
+                                    class="text-reset">Register here</a></p>
 
-                    <div style="text-align: center;">
-                        <button onclick="handleSubmit(event)" type="submit" class="btn btn-primary">Login</button>
+                        </div>
                     </div>
-
-                </form>
-                <a class="button google" href="/auth/login/google">Sign in with Google</a>
+                </div>
             </div>
-        </div>
 
-    </div>
+        </div>
+    </main> -->
+    <script>
+        let form = document.querySelector('#login-form');
+        let email = document.querySelector('#email');
+        let password = document.querySelector('#password');
+        let handleSubmit = async () => {
+            await axios({
+                method: 'post',
+                url: 'http://localhost:3000/api/login',
+                data: {
+                    email: email.value,
+                    password: password.value,
+                }
+            }).then(result => {
+                console.log(`1`)
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: result.data.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    console.log(window.location.origin);
+                    console.log(window.location)
+                    window.location.replace(
+                        'http://localhost:3000/'
+                    )
+                })
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.response.data.message,
+                    // footer: '<a href="">Why do I have this issue?</a>'
+                })
+            });
+        }
+    </script>
 
 
     <%- include("layouts/b5script.ejs") %>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <script>
-            let form = document.querySelector('#login-form');
-            let email = form.querySelector('#email');
-            let password = form.querySelector('#password');
-            let handleSubmit = async event => {
-                event.preventDefault();
-                await axios({
-                    method: 'post',
-                    url: 'http://localhost:3000/api/login',
-                    data: {
-                        email: email.value,
-                        password: password.value,
-                    }
-                }).then(result => {
-                    console.log(result.data.message);
-                    if (result.data.message) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: result.data.message,
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            console.log(window.location.origin);
-                            window.location.replace(
-                                window.location.origin
-                            )
-                        })
 
-                    }
-                }).catch(error => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: error.response.data.message,
-                        // footer: '<a href="">Why do I have this issue?</a>'
-                    })
-                });
-            }
-        </script>
 
 </body>
 
