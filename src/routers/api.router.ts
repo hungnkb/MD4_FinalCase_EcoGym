@@ -23,7 +23,9 @@ apiRouter.get("/user/:idUser", authApiController.getDataUser);
 apiRouter.patch("/user", authApiController.changePassword)
 
 
-apiRouter.get("/transaction/:offset&:period", transactionApiController.showTransaction);
+// apiRouter.get("/transaction/:offset&:period&:walletName&:fromDate&:toDate", transactionApiController.showTransaction);
+// Test 2:54 pm
+apiRouter.get("/transaction/:offset&:walletName&:fromDate&:toDate", transactionApiController.showTransaction);
 apiRouter.post("/transaction", transactionApiController.postTransaction);
 apiRouter.delete("/transaction/:_id", transactionApiController.deleteTransaction);
 
