@@ -22,4 +22,5 @@ authRouter.get(
 authRouter.get("/register", authorize.guest, authController.showRegister);
 authRouter.get("/profile", authorize.user, authController.showProfile);
 
+
 export default authRouter;

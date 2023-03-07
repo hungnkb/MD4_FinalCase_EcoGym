@@ -53,7 +53,7 @@
                             <a class="dropdown-item" href="auth/profile">Profile</a>
                             <a class="dropdown-item" href="#">Wallet Manager</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/api/category/<%= userInfo[0]._id %>">Category Manager</a>
+                            <a class="dropdown-item" href="/category">Category Manager</a>
                         </div>
                     </li>
                 </ul>
@@ -83,11 +83,10 @@
                             <label class="form-label">Wallet</label>
                             <select class="custom-select mb-3" id="wallet">
                                 <% wallets.forEach(w=> { %>
-                                    <option value="<%=w.walletName%>">
-                                        <%=w.walletName%>
-                                    </option>
-                                    <% }) %>
-                                        <option value=""></option>
+                                <option value="<%=w.walletName%>">
+                                    <%=w.walletName%>
+                                </option>
+                                <% }) %>
                             </select>
                             <label class="form-label">Category</label>
                             <select id="category" class="custom-select mb-3" onfocus="categoryPick(event)"
@@ -126,7 +125,7 @@
             <div>
                 <ul class="nav nav-tabs d-flex justify-content-around mt-5">
                     <li class="nav-item">
-                        <a class="nav-link link-trans active" href="#allTransactions"
+                        <a id="linkToday" class="nav-link link-trans" href="#allTransactions"
                             onclick="getTransactions(event, 0,'today')">Today</a>
                     </li>
                     <li class="nav-item">
@@ -154,32 +153,31 @@
 
     <!-- script -->
     <%- include("layouts/b5script.ejs") %>
-        <script>
-            // active class transaction
-            let transContents = document.querySelectorAll(".trans-content");
-            let btnLinks = document.querySelectorAll(".link-trans");
-            function addDnoneClass(listContent) {
-                listContent.forEach(content => {
-                    content.classList.add("d-none")
+    <script>
+
+        // active class transaction
+        let transContents = document.querySelector("#allTransactions");
+        let btnLinks = document.querySelectorAll(".link-trans");
+        function addDnoneClass(content) {
+            content.classList.add("d-none")
+        }
+        function removeActiveClass(listBtn) {
+            listBtn.forEach(btn => {
+                btn.classList.remove("active");
+            })
+        }
+        function activeTrans() {
+            for (let i = 0; i < btnLinks.length; i++) {
+                btnLinks[i].addEventListener('click', () => {
+                    addDnoneClass(transContents)
+                    removeActiveClass(btnLinks)
+                    transContents.classList.remove("d-none");
+                    btnLinks[i].classList.add("active");
                 })
             }
-            function removeActiveClass(listBtn) {
-                listBtn.forEach(btn => {
-                    btn.classList.remove("active");
-                })
-            }
-            function activeTrans() {
-                for (let i = 0; i < btnLinks.length; i++) {
-                    btnLinks[i].addEventListener('click', () => {
-                        addDnoneClass(transContents)
-                        removeActiveClass(btnLinks)
-                        btnLinks[i].classList.add("active");
-                        transContents[i].classList.remove("d-none")
-                    })
-                }
-            }
-            activeTrans()
-            // logout
+        }
+        activeTrans()
+        // logout
 
             let logout = () => {
                 axios({
@@ -650,10 +648,10 @@
                     // xử lý custom
 
 
-                    let total = Math.ceil(result.data.total / 5);
-                    for (let i = 0; i < total; i++) {
-                        document.querySelector('#page-list-number').innerHTML += `
-                        <li class="page-item"><span onclick="getTransactions(${i})">${i + 1}</span></li>
+                let total = Math.ceil(result.data.total / 5);
+                for (let i = 0; i < total; i++) {
+                    document.querySelector('#page-list-number').innerHTML += `
+                        <li class="page-item"><span style="cursor: pointer" onclick="getTransactions(event,${i}, ${period})">${i + 1}</span></li>
                         `
                     }
                 })
@@ -661,11 +659,7 @@
 
             getTransactions();
 
-            transListToday = (offset) => {
-
-            }
-
-        </script>
+    </script>
 </body>
 
 </html>
