@@ -100,16 +100,15 @@ class authApiController {
     let id = token.getIdUser(req, res);
     let newPassword = req.body.newPassword;
     let currentPassword = req.body.currentPassword;
-    let user = await User.findOne({ idUser: id });
+    let user = await User.findById({ _id: id });
     if (user != null) {
       
       bcrypt.compare(currentPassword, user.password, async (err, result) => {
         if (result) {       
           const salt = await bcrypt.genSaltSync(10);
           newPassword = await bcrypt.hashSync(newPassword, salt);
-          console.log(123);
           
-          let updateUser = await User.findOneAndUpdate({idUser: id}, {$set: {newPassword}});
+          let updateUser = await User.findOneAndUpdate({_id: id}, {$set: {password: newPassword}});
                     
           let token = jwt.sign(
             {
@@ -132,8 +131,8 @@ class authApiController {
   updateUser = async (req: Request, res: Response) => {
     let id = token.getIdUser(req, res);
     let {name, phoneNumber, address} = req.body;
-    let updateUser = await User.findOneAndUpdate({idUser: id}, {$set: {name: name, phoneNumber: phoneNumber, address: address}});
-    res.status(200).json({message: 'update success'});
+    let updateUser = await User.findOneAndUpdate({_id: id}, {$set: {name: name, phoneNumber: phoneNumber, address: address}});
+    res.status(200).json({message: 'update success', data: updateUser});
   }
 }
 
