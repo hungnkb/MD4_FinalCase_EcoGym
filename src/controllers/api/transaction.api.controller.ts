@@ -5,19 +5,19 @@ import token from "../user.controller";
 class transactionApiController {
   // GET
   showTransaction = async (req: Request, res: Response) => {
-    let idUser = token.getIdUser(req, res);
+    let idUser = token.getIdUser(req, res);    
     let offset = 0;
-    if (req.params) {
-      offset = Number(req.params) * 5;
-    } else {
-      offset = 0;
-    }
+    if (req.params.offset) {
+      offset = Number(req.params.offset) * 5;
+    }    
 
     try {
-      let transactions = Transaction.find({ idUser: idUser })
+      let totalTransactions = await Transaction.find({idUser: idUser, timeTrade: req.params.period});
+      let total = totalTransactions.length;
+      let transactions = await Transaction.find({ idUser: idUser, timeTrade: req.params.period})
           .skip(offset)
           .limit(5);
-      res.status(200).json(transactions);
+      res.status(200).json({transactions, total});
     } catch (err) {
       console.log(err);
     }

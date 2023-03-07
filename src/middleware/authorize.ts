@@ -1,17 +1,17 @@
-import { ObjectId } from "bson";
+import { ObjectID, ObjectId } from "bson";
 import { Request, Response, NextFunction } from "express";
 import User from "../schemas/User.model";
 import jwt from "jsonwebtoken";
 
 class Authorize {
-    admin = (req: Request, res: Response, next: NextFunction): void => {
-        let role = req.body.role;
-        if (role === 1) {
-            next();
-        } else {
-            res.redirect("/");
-        }
-    };
+  admin = (req: Request, res: Response, next: NextFunction): void => {
+    let role = req.body.role;
+    if (role === 1) {
+      next();
+    } else {
+      res.redirect("/");
+    }
+  };
 
     user = async (
         req: Request,

@@ -3,17 +3,12 @@ import Wallet from "../schemas/Wallet.model";
 import token from "./user.controller"
 
 class walletController {
-    createWalletDefault = async(req, res, id) => {
-        let isUser = id
-        let walletName = "Default Wallet";
-        let totalMoney = 0
-        try {
-            await Wallet.create({isUser, walletName, totalMoney});
-            console.log("successfully created");
-        } catch (error) {
-            console.log(error);
-        }
-    }
+  createWalletDefault = async (id: string): Promise<void> => {
+    let idUser = id;
+    let walletName = "Default Wallet";
+    let totalMoney = 0;
+    await Wallet.create({idUser, walletName, totalMoneyLeft: totalMoney})
+  };
 }
 
 export default new walletController();
