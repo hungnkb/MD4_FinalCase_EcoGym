@@ -8,15 +8,67 @@
 </head>
 
 <body>
-    <%= listCategory%>
-    <main class="container">
-        <h2>Category Manager</h2>
-        <button onclick="categoryPickDefault(event)" type="button" style="width: 100%;" class="btn btn-primary"
-            data-toggle="modal" data-target="#exampleModalCenter">
+    <header>
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <h2 class="mr-5">EcoGym</h2>
+                <div class="collapse navbar-collapse ms-5" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">Transactions</a>
+                        </li>
+                        <li class="nav-item">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 mr-4">
+                                <li class="nav-item dropdown">
+                                    <select class="form-control custom-select" style="border: none" id="walletInHome"
+                                        onfocus="totalMoneyByWallet(event)"
+                                        onchange="totalMoneyByWallet(event); getTransactions(event, 0, 'today')">
+                                        <option class="walletName" value="all-wallet" selected="selected">All wallet
+                                        </option>
+                                        <% wallets.forEach( (wallet)=> { %>
+                                        <option class="walletName" value="<%= wallet.walletName%>">
+                                            <%= wallet.walletName%>
+                                        </option>
+                                        <% }) %>
+                                    </select>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <p class="mt-2" id="totalMoney" style="color: green">
+                                <%=totalMoney%>
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mr-4">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <%= userInfo[0].email %>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="auth/profile">Profile</a>
+                            <a class="dropdown-item" href="#">Wallet Manager</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/category">Category Manager</a>
+                        </div>
+                    </li>
+                </ul>
+                <button type="button" onclick="logout()" class="btn btn-secondary">Logout</button>
+            </div>
+        </nav>
+    </header>
+    <main class="container d-flex flex-column">
+        <h2 style="text-align: center;">Category Manager</h2>
+        <button type="button" style="width: 900px; margin: auto;" class="btn btn-primary" data-toggle="modal"
+            data-target="#exampleModalCenter">
             Add new Category
         </button>
         <!-- Modal add new transaction -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        <div class="modal fade mt-3" id="exampleModalCenter" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -35,7 +87,6 @@
                             <div class="mb-3">
                                 <label class="form-label">Category</label>
                                 <select class="custom-select mb-3" id="status">
-                                    <option>Choose Category's status</option>
                                     <option value="income">Income</option>
                                     <option value="outcome">Outcome</option>
                                 </select>
@@ -54,30 +105,101 @@
                 </div>
             </div>
         </div>
+        <!-- table category -->
+        <div class="listCategory mt-3" style="width: 900px; margin: auto;">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Name Category</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <% listCategory.forEach( category=> { %>
+                <tr>
+                    <td><%= category.categoryName %></td>
+                    <td><%= category.status %></td>
+                    <% if (category.idUser === "null") {%>
+                    <td>
+                        <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="right"
+                            title="Can't action">
+                            Default
+                        </button>
+                    </td>
+                    <% } else { %>
+                    <td>
+                        <button class="btn btn-primary"
+                            onclick="renderInfoCategory(event, '<%= category.categoryName %>', '<%= category.status %>', 'category-<%= category._id %>', '<%= category._id %>')"
+                            data-toggle="modal" data-target="#category-<%= category._id %>"
+                            data-name="edit-form">Edit</button>
+                        <button class="btn btn-danger"
+                            onclick="renderInfoCategory(event, '<%= category.categoryName %>', '<%= category.status %>', 'category-<%= category._id %>', '<%= category._id %>')"
+                            data-toggle="modal" data-target="#category-<%= category._id %>"
+                            data-name="delete-form">Delete</button>
+                    </td>
+                    <% } %>
+
+
+                </tr>
+                <% }) %>
+            </table>
+            <!-- popup edit form -->
+            <div class="modal modal-edit fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="title-modal"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/api/category" id="editForm">
+                            <div class="modal-body">
+
+
+                            </div>
+                        </form>
+                        <div class="modal-footer" id="modal-footer">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </main>
     <%- include("layouts/b5script.ejs") %>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- add new category -->
     <script>
         async function submitCategory(event) {
             let form = document.querySelector('#form-add-new-category');
             let idUser = form.querySelector('#idUser').value;
-            console.log(idUser);
             let status = form.querySelector('#status').value;
             let categoryName = form.querySelector('#categoryName').value;
             event.preventDefault();
             if (status && categoryName) {
                 try {
-                    await Category.create({ idUser, categoryName, status });
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Add transaction success',
-                        showConfirmButton: false,
-                        timer: 1500
+                    axios({
+                        method: 'post',
+                        url: "http://localhost:3000/api/category",
+                        data: {
+                            idUser: idUser,
+                            status: status,
+                            categoryName: categoryName
+                        }
+                    }).then(result => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Add category success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        window.location.replace(
+                            `http://localhost:3000/category`
+                        )
                     })
-                    window.location.replace(
-                        `http://${window.location.hostname}:${window.location.port}/api/category`
-                    )
                 } catch (error) {
                     Swal.fire({
                         icon: 'error',
@@ -87,6 +209,125 @@
                     console.log(error);
                 }
             }
+        }
+    </script>
+    <!-- edit data -->
+    <script>
+        const renderInfoCategory = (event, categoryName, categoryStatus, idModal, idCategory) => {
+            console.log("idModal",idModal);
+            if (event.target.dataset.name === "edit-form") {
+                document.querySelector("#title-modal").innerHTML = "Edit category"
+                let modal = document.querySelectorAll(".modal-edit");
+                modal[0].id = idModal;
+                let form = document.querySelector("#editForm");
+                form.method = "PUT"
+                // form.querySelector("#categoryName").value = categoryName;
+                // form.querySelector("#status").value = categoryStatus;
+                form.querySelectorAll(".modal-body")[0].innerHTML = `
+                                <div class="mb-3">
+                                    <label class="form-label">Name Category</label>
+                                    <input required type="text" class="form-control" id="categoryName" value="${categoryName}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select id="status" class="custom-select mb-3">
+                                        <option value="income">Income</option>
+                                        <option value="outcome">Outcome</option>
+                                    </select>
+                                </div>`;
+                document.querySelector("#modal-footer").innerHTML = `
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-idCategory="${idCategory}" onclick="submitEditFrom(event)">Save changes</button>
+                `
+
+
+            } else {
+                document.querySelector("#title-modal").innerHTML = "Are you sure?"
+                document.querySelectorAll(".modal-edit")[0].id = idModal;
+                let form = document.querySelector("#editForm");
+                form.method = "DELETE";
+                form.querySelectorAll(".modal-body")[0].innerHTML = `
+                                <div class="mb-3">
+                                    <label class="form-label">Name Category</label>
+                                    <input required type="text" class="form-control" id="categoryName" readonly value="${categoryName}">
+                                </div>`
+                document.querySelector("#modal-footer").innerHTML = `
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-idCategory="${idCategory}" onclick="submitDeleteForm(event)">Delete</button>
+                `
+            }
+
+        }
+        const submitDeleteForm = (event) => {
+            console.log(event);
+            let form = document.querySelector("#editForm");
+            let id = event.target.dataset.idcategory;
+            // console.log("id", id);
+            if (id) {
+                try {
+                    axios({
+                        method: "delete",
+                        url: form.action,
+                        data: {
+                            idCategory: id
+                        }
+                    }).then(result => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Delete category success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        window.location.replace(
+                            `http://localhost:3000/category`
+                        )
+                    })
+                } catch {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill all field before save changes'
+                    })
+                    console.log(error);
+                }
+            }
+        }
+        const submitEditFrom = (event) => {
+            let form = document.querySelector("#editForm");
+            let categoryName = form.querySelector("#categoryName").value;
+            let status = form.querySelector("#status").value;
+            let idCategory = event.target.dataset.idcategory;
+            if (categoryName && status && idCategory)
+                try {
+                    axios({
+                        method: "put",
+                        url: form.action,
+                        data: {
+                            idCategory: idCategory,
+                            categoryName: categoryName,
+                            status: status
+                        }
+                    }).then(result => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Edit category success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        window.location.replace(
+                            `http://localhost:3000/category`
+                        )
+                    })
+                } catch {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill all field before save changes'
+                    })
+                    console.log(error);
+                }
         }
     </script>
 </body>

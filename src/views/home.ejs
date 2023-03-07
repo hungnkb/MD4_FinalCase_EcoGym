@@ -53,7 +53,7 @@
                             <a class="dropdown-item" href="auth/profile">Profile</a>
                             <a class="dropdown-item" href="#">Wallet Manager</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/api/category/<%= userInfo[0]._id %>">Category Manager</a>
+                            <a class="dropdown-item" href="/category">Category Manager</a>
                         </div>
                     </li>
                 </ul>
@@ -87,7 +87,6 @@
                                         <%=w.walletName%>
                                     </option>
                                     <% }) %>
-                                        <option value=""></option>
                             </select>
                             <label class="form-label">Category</label>
                             <select id="category" class="custom-select mb-3" onfocus="categoryPick(event)"
@@ -126,7 +125,7 @@
             <div>
                 <ul class="nav nav-tabs d-flex justify-content-around mt-5">
                     <li class="nav-item">
-                        <a class="nav-link link-trans active" href="#allTransactions"
+                        <a id="linkToday" class="nav-link link-trans" href="#allTransactions"
                             onclick="getTransactions(event, 0,'today')">Today</a>
                     </li>
                     <li class="nav-item">
@@ -135,33 +134,34 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link link-trans" href="#allTransactions"
-                            onclick="getTransactions(event, 0,'custom')">Custom</a>
+                            onclick="getTransactions(event, 0,'custom'); openCustom()">Custom</a>
                     </li>
                 </ul>
-            </div>
 
+            </div>
+            <div id="open-custom"></div>
             <div id="allTransactions" class="trans-content mt-3">
 
             </div>
             <!-- count page -->
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <div id="page-list-number"></div>
-                </ul>
-            </nav>
+            
         </section>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <div id="page-list-number"></div>
+            </ul>
+        </nav>
     </main>
 
     <!-- script -->
     <%- include("layouts/b5script.ejs") %>
         <script>
+
             // active class transaction
-            let transContents = document.querySelectorAll(".trans-content");
+            let transContents = document.querySelector("#allTransactions");
             let btnLinks = document.querySelectorAll(".link-trans");
-            function addDnoneClass(listContent) {
-                listContent.forEach(content => {
-                    content.classList.add("d-none")
-                })
+            function addDnoneClass(content) {
+                content.classList.add("d-none")
             }
             function removeActiveClass(listBtn) {
                 listBtn.forEach(btn => {
@@ -173,8 +173,8 @@
                     btnLinks[i].addEventListener('click', () => {
                         addDnoneClass(transContents)
                         removeActiveClass(btnLinks)
+                        transContents.classList.remove("d-none");
                         btnLinks[i].classList.add("active");
-                        transContents[i].classList.remove("d-none")
                     })
                 }
             }
@@ -458,17 +458,16 @@
 
             let categoryPickEditDefault = (event, status, categoryName, id) => {
                 // let category = event.target.value;
-                console.log(status, categoryName);
                 if (status == 'income') {
                     document.querySelector(`#statusEditList-${id}`).innerHTML = `
-                        <select class="custom-select mb-3" onfocus="categoryPickEdit(event)" onchange="categoryPickEdit(event)" id="categoryEdit-${id}">
+                        <select class="custom-select mb-3" onfocus="categoryPickEdit(event, '${id}')" onchange="categoryPickEdit(event, '${id}')" id="categoryEdit-${id}">
                                 <option value="income">Income</option>
                                 <option value="outcome">Outcome</option>
                             </select>
                         `
                 } else {
                     document.querySelector(`#statusEditList-${id}`).innerHTML = `
-                        <select class="custom-select mb-3" onfocus="categoryPickEdit(event)" onchange="categoryPickEdit(event)" id="categoryEdit-${id}">
+                        <select class="custom-select mb-3" onfocus="categoryPickEdit(event, '${id}')" onchange="categoryPickEdit(event, '${id}')" id="categoryEdit-${id}">
                                 <option value="outcome">Outcome</option>
                                 <option value="income">Income</option>
                             </select>
@@ -482,24 +481,23 @@
                                         <option value="<%= ic.categoryName %>"><%= ic.categoryName %></option>
                                         <% } %>
                                     <% }) %>
+
+
                                     <% category.forEach(ic => { %>
-                                        <% defaultCategory.forEach(id => { %>
-                                            <% if (ic.categoryName !== id.categoryName){ %>
+                                           
                                             <option value="<%= ic.categoryName %>"><%= ic.categoryName %></option>
-                                            <% } %>
-                                        <% }) %>
+                                         
+                                
                                     <% }) %>
                                 </select>
                         `
-
-
             }
 
             // check category income/outcome then render nameCategory input in Add transaction modal
-            let categoryPickEdit = event => {
+            let categoryPickEdit = (event, id) => {
                 let category = event.target.value;
                 if (category == 'income') {
-                    document.querySelector('#categoryNameEditList').innerHTML = `
+                    document.querySelector(`#categoryNameEditList-${id}`).innerHTML = `
                 <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
                                         <% if (ic.status ==="income") {%>
@@ -507,16 +505,14 @@
                                         <% } %>
                                     <% }) %>
                                     <% category.forEach(ic => { %>
-                                        <% defaultCategory.forEach(id => { %>
-                                            <% if (ic.categoryName !== id.categoryName){ %>
+                                       
                                             <option value="<%= ic.categoryName %>"><%= ic.categoryName %></option>
-                                            <% } %>
-                                        <% }) %>
+                                        
                                     <% }) %>
                                 </select>
                         `
                 } else {
-                    document.querySelector('#categoryNameEditList').innerHTML = `
+                    document.querySelector(`#categoryNameEditList-${id}`).innerHTML = `
                 <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
                                         <% if (ic.status ==="outcome") {%>
@@ -524,11 +520,9 @@
                                         <% } %>
                                     <% }) %>
                                     <% category.forEach(ic => { %>
-                                        <% defaultCategory.forEach(id => { %>
-                                            <% if (ic.categoryName !== id.categoryName){ %>
+                                
                                             <option value="<%= ic.categoryName %>"><%= ic.categoryName %></option>
-                                            <% } %>
-                                        <% }) %>
+                                      
                                     <% }) %>
                                 </select>
                         `
@@ -583,7 +577,6 @@
             }
 
             let submitDeleteTransaction = (event, id, currentMoney, status, nameWallet) => {
-                console.log(nameWallet);
                 event.preventDefault();
                 axios({
                     method: 'delete',
@@ -610,6 +603,24 @@
                 })
             }
 
+            let openCustom = () => {
+                document.querySelector('#open-custom').innerHTML = `
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">From</label>
+                    <input type="date" class="form-control" id="fromDate" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">To</label>
+                    <input type="date" class="form-control" id="toDate" aria-describedby="emailHelp">
+                </div>
+                <button type="submit" onfocus="pickDate(event)" class="btn btn-primary btn-sm">Apply</button>
+                `;
+            }
+
+            let pickDate = (event) => {
+                getTransactions(event, 0, 'custom');
+            }
+
             let getTransactions = (event, offset, period) => {
                 if (!offset) {
                     offset = 0;
@@ -622,14 +633,20 @@
                 if (period == 'today') {
                     fromDate = new Date().toISOString().split('T')[0];
                     toDate = new Date().toISOString().split('T')[0];
+
                 } else if (period == 'month') {
-                    let month = new Date().getMonth()
+                    let month = new Date().getMonth() + 1
                     let year = new Date().getFullYear();
-                    fromDate = new Date(`${year}-${month}-1`).getTime();
-                    toDate = new Date(`${year}-${month}-31`).getTime();
+                    fromDate = new Date(`${year}-${month}-1`);
+                    toDate = new Date(`${year}-${month}-31`);
+
+
+                } else if (period == 'custom') {
+                    fromDate = document.querySelector('#fromDate').value;
+                    toDate = document.querySelector('#toDate').value;
                 }
 
-                console.log(fromDate, toDate);
+                console.log(fromDate, '---', toDate);
                 document.querySelector('#allTransactions').innerHTML = '';
                 // document.querySelector('#custom').innerHTML = `
                 //     <div class="timePick">
@@ -651,20 +668,15 @@
 
 
                     let total = Math.ceil(result.data.total / 5);
-                    console.log(total, result.data.total);
                     for (let i = 0; i < total; i++) {
                         document.querySelector('#page-list-number').innerHTML += `
-                        <li class="page-item"><span onclick="getTransactions(${i})">${i + 1}</span></li>
+                            <li class="page-item"><span style="cursor: pointer" onclick="getTransactions(event,${i}, ${period})">${i + 1}</span></li>
                         `
                     }
                 })
             }
 
             getTransactions();
-
-            transListToday = (offset) => {
-
-            }
 
         </script>
 </body>

@@ -5,12 +5,12 @@ import token from "../user.controller";
 class CategoryApiController {
   createNewCategory = async (req: Request, res: Response) => {
     let id = token.getIdUser(req, res);
-    let idUser = req.body.idUser || id;
+    let idUser = id;
     let { categoryName, status } = req.body;
 
-    let newCategory = new Category(idUser, categoryName, status);
+    // let newCategory = new Category(idUser, categoryName, status);
     try {
-      let doneCategory = await newCategory.save();
+      let doneCategory = await Category.create ({idUser, status, categoryName})
       if (doneCategory) {
         res
             .status(200)
@@ -23,46 +23,31 @@ class CategoryApiController {
     }
   };
 
-  showCategoryByUser = async (req: Request, res: Response) => {
-    // get id user
-    let id = token.getIdUser(req, res);
-    // let idUser = req.body.idUser || req.params.idUser || id ;
-    // get default category
-    let listDefault = await Category.find({idUser: "null"});
-    let listDefaultName = [];
-    listDefault.forEach( category => {
-      listDefaultName.push(category.categoryName);
-    })
-    let userCategory = await Category.find({idUser: id});
-    let listUserCategory = []
-    userCategory.forEach( category => {
-      listUserCategory.push(category.categoryName);
-    })
-    let listCategory = []
-    listUserCategory.forEach(categoryName => {
-      for (let i = 0; i < listDefaultName.length; i++) {
-        if (categoryName === listDefaultName[i]) {
-          listDefaultName.splice(i, 1);
-        }
-      }
-    })
-    listCategory = [...listDefaultName,...listUserCategory]
-    res.render('categoryManager', {listCategory, idUser: id})
-  };
+  deleteCategory = async (req: Request, res: Response) => {
+    let id = req.body.idCategory; 
+    console.log(id);
+    
+    try {
+      await Category.deleteOne({_id: id});
+      res.status(200).json({ message: "Category deleted"})
+    } catch(error) {
+      console.log(error);
+      
+    }
+  }
 
   updateCategory = async (req: Request, res: Response) => {
     // check if category exist -> update/edit
     // Frontend have to send current "nameCategory" and "newNameCategory"
 
     let id = token.getIdUser(req, res);
-    let idUser = req.body.idUser || id;
-    let { newNameCategory, status, currentNameCategory } = req.body;
+    let idUser =  id;
+    let idCategory = req.body.idCategory
 
-    try {
-    } catch (error) {}
+    let { categoryName, status } = req.body;
     let updateCategory = await Category.findOneAndUpdate(
-        { idUser: idUser, categoryName: currentNameCategory },
-        { $set: { nameCategory: newNameCategory } },
+        { idUser: idUser, _id: idCategory},
+        { $set: { categoryName: categoryName, status: status } },
         { new: true }
     );
     if (updateCategory) {

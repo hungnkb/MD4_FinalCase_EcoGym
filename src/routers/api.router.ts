@@ -16,7 +16,8 @@ apiRouter.post("/wallet", walletApiController.createWallet);
 apiRouter.get("/wallet",walletApiController.getWalletInfo);
 
 apiRouter.post("/category", categoryApiController.createNewCategory);
-apiRouter.get("/category/:idUser", categoryApiController.showCategoryByUser);
+apiRouter.put("/category", categoryApiController.updateCategory);
+apiRouter.delete("/category", categoryApiController.deleteCategory);
 
 apiRouter.get("/user/", authApiController.getDataUser);
 apiRouter.get("/user/:idUser", authApiController.getDataUser);

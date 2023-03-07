@@ -16,6 +16,7 @@ class transactionApiController {
 
     let from: any = req.params.fromDate;
     let to: any = req.params.toDate;
+console.log(from, to);
 
     // let from = new Date().toISOString().split('T')[0];
     // let to = new Date().toISOString().split('T')[0];
@@ -119,7 +120,7 @@ class transactionApiController {
   // PUT
   updateTransaction = async (req: Request, res: Response) => {
     let id = token.getIdUser(req, res);
-
+    
     try {
       let {
         _id,
@@ -131,6 +132,15 @@ class transactionApiController {
         timeTrade,
         currentMoney,
       } = req.body;
+      console.log(_id,
+        nameWallet,
+        moneyTrade,
+        status,
+        nameCategory,
+        desc,
+        timeTrade,
+        currentMoney,);
+      
       let updateTransaction = await Transaction.findByIdAndUpdate(
         { _id: _id },
         {
