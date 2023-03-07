@@ -24,21 +24,30 @@ class CategoryApiController {
   };
 
   showCategoryByUser = async (req: Request, res: Response) => {
+    // get id user
     let id = token.getIdUser(req, res);
-    let idUser = req.body.idUser || req.params.idUser || id ;
-
-    try {
-      await Category.find({ idUser: idUser })
-          .then((data) => {
-            console.log(data);
-            res.status(200).json({ categoryList: data });
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    } catch (error) {
-      console.log(error);
-    }
+    // let idUser = req.body.idUser || req.params.idUser || id ;
+    // get default category
+    let listDefault = await Category.find({idUser: "null"});
+    let listDefaultName = [];
+    listDefault.forEach( category => {
+      listDefaultName.push(category.categoryName);
+    })
+    let userCategory = await Category.find({idUser: id});
+    let listUserCategory = []
+    userCategory.forEach( category => {
+      listUserCategory.push(category.categoryName);
+    })
+    let listCategory = []
+    listUserCategory.forEach(categoryName => {
+      for (let i = 0; i < listDefaultName.length; i++) {
+        if (categoryName === listDefaultName[i]) {
+          listDefaultName.splice(i, 1);
+        }
+      }
+    })
+    listCategory = [...listDefaultName,...listUserCategory]
+    res.render('categoryManager', {listCategory, idUser: id})
   };
 
   updateCategory = async (req: Request, res: Response) => {
