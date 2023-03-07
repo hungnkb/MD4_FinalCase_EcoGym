@@ -46,10 +46,13 @@ class transactionApiController {
         } else {
           period = "custom";
         }
-
+        let transactionsTotal = await Transaction.find({
+          idUser: idUser,
+          timeTrade: { $lte: from, $gte: to },
+        })
         res
           .status(200)
-          .json({ transactions, total: transactions.length, period: period });
+          .json({ transactions, total: transactionsTotal.length, period: period });
       } else {
         let walletName = req.params.walletName;
         let transactions = await Transaction.find({
@@ -69,10 +72,14 @@ class transactionApiController {
         // } else {
         //   period = "custom"
         // }
-
+        let transactionsTotal = await Transaction.find({
+          idUser: idUser,
+          walletName: walletName,
+          timeTrade: { $lte: from, $gte: to },
+        })
         res
           .status(200)
-          .json({ transactions, total: transactions.length, period: period });
+          .json({ transactions, total: transactionsTotal.length, period: period });
       }
     } catch (err) {
       console.log(err);

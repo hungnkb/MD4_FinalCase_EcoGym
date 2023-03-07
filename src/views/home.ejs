@@ -651,6 +651,7 @@
 
 
                     let total = Math.ceil(result.data.total / 5);
+                    console.log(total, result.data.total);
                     for (let i = 0; i < total; i++) {
                         document.querySelector('#page-list-number').innerHTML += `
                         <li class="page-item"><span onclick="getTransactions(${i})">${i + 1}</span></li>
