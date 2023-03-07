@@ -3,13 +3,192 @@
 
 <head>
     <%- include("layouts/header.ejs") %>
-    <title>User Manager</title>
+        <title>EcoGYM</title>
 </head>
 
 <body>
-<h1>User Manager</h1>
-<!-- script -->
-<%- include("layouts/b5script.ejs") %>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <h2 class="mr-5">EcoGym</h2>
+                <div class="collapse navbar-collapse ms-5" id="navbarSupportedContent">
+                </div>
+
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mr-4">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <%= userInfo.email %>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="auth/profile">Profile</a>
+                            <a class="dropdown-item" href="#">Wallet Manager</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/api/category/">Category Manager</a>
+                        </div>
+                    </li>
+                </ul>
+                <button type="button" onclick="logout()" class="btn btn-secondary">Logout</button>
+            </div>
+        </nav>
+
+        <main class="body-page container d-flex justify-content-center flex-column">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                <input value="<%=userInfo.email%>" type="email" class="form-control" id="exampleFormControlInput1">
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Name</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1">
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Phonenumber</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1">
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Address</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1">
+            </div>
+            <a class="mb-3" href="#" data-bs-toggle="modal" data-bs-target="#change-password">Change password</a>
+            <div class="trans-btn">
+                <button type="submit" class="btn btn-primary">Save
+                    changes</button>
+            </div>
+        </main>
+
+        <!-- Modal -->
+        <div class="modal fade" id="change-password" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Change Password</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="/api/user" method="patch" id="form-change-password">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="currentPassword">
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">New Password</label>
+                                <input type="password" class="form-control" onfocus="removeValidate(event)"
+                                    onblur="validatePassword(event)" id="password">
+                                <div class="invalid-feedback">
+                                    Password includes at least: 8 words, 1 UPPERCASE, 1 lowercase, 1
+                                    special
+                                    symbol (!@#$?%^&*-)
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Re Password</label>
+                                <input type="password" class="form-control" onfocus="removeValidate(event)"
+                                    onblur="checkRePassword(event)" id="rePassword">
+                                <div class="invalid-feedback">
+                                    Passwords are not same. Please try again
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" onclick="submitChangePassword(event)" class="btn btn-primary">Save
+                                changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+    </main>
+
+    <!-- script -->
+    <%- include("layouts/b5script.ejs") %>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            let checkPassword = (password) => {
+                return new Promise((resolve, reject) => {
+                    let regexp = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-1])(?=.*[!@#$%^?&*-])[a-zA-Z\d!@#$?%^&*-].{8,}$/);
+                    let validate = regexp.test(password);
+                    if (validate) {
+                        resolve('is-valid');
+                    } else {
+                        resolve('is-invalid');
+                    }
+                })
+            }
+
+            let checkRePassword = (event) => {
+                let password = document.querySelector('#password');
+                let obj = event.target.value;
+                if (obj === password.value) {
+                    document.querySelector('#rePassword').className = 'is-valid form-control'
+                } else {
+                    document.querySelector('#rePassword').className = 'is-invalid form-control'
+                }
+            }
+
+            let validatePassword = async (event) => {
+                let obj = event.target.value;
+                let result = await checkPassword(obj);
+                if (result === 'is-valid') {
+                    document.querySelector('#password').className = 'is-valid form-control';
+                } else {
+                    document.querySelector('#password').className = 'is-invalid form-control';
+                }
+            }
+
+            let removeValidate = (event) => {
+                event.target.className = 'form-control';
+            }
+
+            let submitChangePassword = async (event) => {
+                event.preventDefault();
+                let form = document.querySelector('#form-change-password');
+                let currentPassword = document.querySelector('#currentPassword');
+                let resultValidatePassword = await checkPassword(password.value);
+                let resultCheckRePassword = document.querySelector('#rePassword');
+                console.log(form.method);
+                if (resultValidatePassword === 'is-valid' && resultCheckRePassword.className === 'is-valid form-control') {
+                    axios({
+                        method: 'patch',
+                        url: 'http://localhost:3000/api/user/',
+                        data: {
+                            currentPassword: currentPassword.value,
+                            newPassword: password.value,
+                        }
+                    }).then(result => {
+                        if (result.data.message) {
+                            
+                        }
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Change password success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(result => {
+                            window.location.replace(
+                                'http://localhost:3000/auth/profile'
+                            )
+                        })
+                    }).catch(err => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Current password is wrong, please try again',
+                                // footer: '<a href="">Why do I have this issue?</a>'
+                            })
+                        })
+                }
+            }
+        </script>
+
 </body>
 
 </html>

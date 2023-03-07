@@ -13,14 +13,17 @@ apiRouter.post("/login", authApiController.login);
 apiRouter.get("/logout", authApiController.logout);
 
 apiRouter.post("/wallet", walletApiController.createWallet);
+apiRouter.get("/wallet",walletApiController.getWalletInfo);
 
 apiRouter.post("/category", categoryApiController.createNewCategory);
-// apiRouter.get("/category", categoryApiController.showCategoryByUser);
 apiRouter.get("/category/:idUser", categoryApiController.showCategoryByUser);
 
 apiRouter.get("/user/", authApiController.getDataUser);
 apiRouter.get("/user/:idUser", authApiController.getDataUser);
-apiRouter.get("/transaction/:offset", transactionApiController.showTransaction);
+apiRouter.patch("/user", authApiController.changePassword)
+
+
+apiRouter.get("/transaction/:offset&:period", transactionApiController.showTransaction);
 apiRouter.post("/transaction", transactionApiController.postTransaction);
 apiRouter.delete("/transaction/:_id", transactionApiController.deleteTransaction);
 
