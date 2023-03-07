@@ -6,14 +6,27 @@ class transactionController {
     id: string,
     nameWallet: string,
     status: string,
-    moneyTrade: number
+    currentMoney: number,
+    moneyTrade: number,
+    action: string,
   ) => {
     let wallet = await Wallet.findOne({ idUser: id, walletName: nameWallet });
     let totalMoneyLeft = wallet.totalMoneyLeft;
-    if (status == "income") {
-      totalMoneyLeft = totalMoneyLeft + moneyTrade;
-    } else {
-      totalMoneyLeft = totalMoneyLeft - moneyTrade;
+
+    if (action == "add") {
+      if (status == "income") {
+        totalMoneyLeft = Number(totalMoneyLeft) + Number(moneyTrade);
+      } else {
+        totalMoneyLeft = Number(totalMoneyLeft) - Number(moneyTrade);
+      }
+    } else if (action == 'remove') {
+      if (status == 'income') {
+        totalMoneyLeft = Number(totalMoneyLeft) - Number(moneyTrade);
+      } else {
+        totalMoneyLeft = Number(totalMoneyLeft) + Number(moneyTrade);
+      }
+    } else if (action == 'update') {
+          totalMoneyLeft = totalMoneyLeft - Number(currentMoney) + Number(moneyTrade);
     }
 
     try {

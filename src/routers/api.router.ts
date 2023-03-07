@@ -28,7 +28,9 @@ apiRouter.put("/user", authApiController.updateUser);
 // Test 2:54 pm
 apiRouter.get("/transaction/:offset&:walletName&:fromDate&:toDate", transactionApiController.showTransaction);
 apiRouter.post("/transaction", transactionApiController.postTransaction);
-apiRouter.delete("/transaction/:_id", transactionApiController.deleteTransaction);
+apiRouter.delete("/transaction/:_id&:status&:moneyTrade&:nameWallet", transactionApiController.deleteTransaction);
+apiRouter.put("/transaction", transactionApiController.updateTransaction);
+
 
 
 export default apiRouter;
