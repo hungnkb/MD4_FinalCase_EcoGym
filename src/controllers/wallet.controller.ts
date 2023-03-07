@@ -7,7 +7,7 @@ class walletController {
     let idUser = id;
     let walletName = "Default Wallet";
     let totalMoney = 0;
-    let newWallet = await Wallet.create({idUser, walletName, totalMoneyLeft: totalMoney})
+    await Wallet.create({idUser, walletName, totalMoneyLeft: totalMoney})
   };
 }
 

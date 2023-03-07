@@ -64,7 +64,7 @@
             console.log(idUser);
             let status = form.querySelector('#status').value;
             let categoryName = form.querySelector('#categoryName').value;
-            // event.preventDefault();
+            event.preventDefault();
             if (status && categoryName) {
                 try {
                     await Category.create({ idUser, categoryName, status });
