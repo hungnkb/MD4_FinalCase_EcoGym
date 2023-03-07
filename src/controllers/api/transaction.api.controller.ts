@@ -38,10 +38,10 @@ class transactionApiController {
           // let toDate = new Date(to);
       
           if (from === to) {
-            console.log(1);
             period = "today";
-          } else if (monthFrom === monthTo && dateFrom === 1 && dateTo === 31){
-            period = "month"
+          } else if (monthFrom === monthTo && (dateFrom === 1 && dateTo === 31)){
+            period = "month";
+
           } else {
             period = "custom"
           }

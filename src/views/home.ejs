@@ -53,7 +53,7 @@
                             <a class="dropdown-item" href="auth/profile">Profile</a>
                             <a class="dropdown-item" href="#">Wallet Manager</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/api/category/<%= userInfo[0]._id %>">Category Manager</a>
+                            <a class="dropdown-item" href="/category">Category Manager</a>
                         </div>
                     </li>
                 </ul>
@@ -87,11 +87,10 @@
                                     <%=w.walletName%>
                                 </option>
                                 <% }) %>
-                                <option value=""></option>
                             </select>
                             <label class="form-label">Category</label>
                             <select id="category" class="custom-select mb-3" onfocus="categoryPick(event)"
-                                onchange="categoryPick(event)" id="category">
+                                onchange="categoryPick(event)">
                                 <option value="incomeCategory">Income</option>
                                 <option value="outcomeCategory">Outcome</option>
                             </select>
@@ -126,7 +125,7 @@
             <div>
                 <ul class="nav nav-tabs d-flex justify-content-around mt-5">
                     <li class="nav-item">
-                        <a class="nav-link link-trans active" href="#allTransactions"
+                        <a id="linkToday" class="nav-link link-trans" href="#allTransactions"
                             onclick="getTransactions(event, 0,'today')">Today</a>
                     </li>
                     <li class="nav-item">
@@ -155,13 +154,12 @@
     <!-- script -->
     <%- include("layouts/b5script.ejs") %>
     <script>
+
         // active class transaction
-        let transContents = document.querySelectorAll(".trans-content");
+        let transContents = document.querySelector("#allTransactions");
         let btnLinks = document.querySelectorAll(".link-trans");
-        function addDnoneClass(listContent) {
-            listContent.forEach(content => {
-                content.classList.add("d-none")
-            })
+        function addDnoneClass(content) {
+            content.classList.add("d-none")
         }
         function removeActiveClass(listBtn) {
             listBtn.forEach(btn => {
@@ -173,8 +171,8 @@
                 btnLinks[i].addEventListener('click', () => {
                     addDnoneClass(transContents)
                     removeActiveClass(btnLinks)
+                    transContents.classList.remove("d-none");
                     btnLinks[i].classList.add("active");
-                    transContents[i].classList.remove("d-none")
                 })
             }
         }
@@ -195,6 +193,7 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+
         // set default nameCategory input in Add transaction modal
         let categoryPickDefault = (event) => {
             let category = event.target.value;
@@ -421,21 +420,16 @@
                 }
                 // xử lý custom
 
-
                 let total = Math.ceil(result.data.total / 5);
                 for (let i = 0; i < total; i++) {
                     document.querySelector('#page-list-number').innerHTML += `
-                        <li class="page-item"><span onclick="getTransactions(${i})">${i + 1}</span></li>
+                        <li class="page-item"><span style="cursor: pointer" onclick="getTransactions(event,${i}, ${period})">${i + 1}</span></li>
                         `
                 }
             })
         }
 
         getTransactions();
-
-        transListToday = (offset) => {
-
-        }
 
     </script>
 </body>

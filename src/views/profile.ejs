@@ -33,30 +33,34 @@
         </nav>
 
         <main class="body-page container d-flex justify-content-center flex-column">
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                <input value="<%=userInfo.email%>" type="email" class="form-control" readonly id="exampleFormControlInput1">
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">Name</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1">
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">Phonenumber</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1">
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">Address</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1">
-            </div>
-            <a class="mb-3" href="#" data-bs-toggle="modal" data-bs-target="#change-password">Change password</a>
-            <div class="trans-btn">
-                <button type="submit" class="btn btn-primary">Save
-                    changes</button>
-            </div>
+            <form id="form-update-profile" action="/api/user" method="patch">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                    <input value="<%=userInfo.email%>" readonly type="email" class="form-control"
+                        id="exampleFormControlInput1">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Name</label>
+                    <input value="<%=userInfo.name%>" type="text" class="form-control" id="name">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Phone number</label>
+                    <input value="<%=userInfo.phoneNumber%>" type="text" class="form-control" id="phoneNumber">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Address</label>
+                    <input value="<%=userInfo.address%>" type="text" class="form-control" id="address">
+                </div>
+                <a class="mb-3" href="#" data-bs-toggle="modal" data-bs-target="#change-password">Change password</a>
+                <div class="trans-btn">
+                    <button onclick="submitUpdateProfile(event)" type="submit" class="btn btn-primary">Save
+                        changes</button>
+                </div>
+            </form>
+
         </main>
 
-        <!-- Modal -->
+        <!-- Modal Change Password -->
         <div class="modal fade" id="change-password" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -164,7 +168,7 @@
                         }
                     }).then(result => {
                         if (result.data.message) {
-                            
+
                         }
                         Swal.fire({
                             position: 'center',
@@ -178,14 +182,72 @@
                             )
                         })
                     }).catch(err => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Current password is wrong, please try again',
-                                // footer: '<a href="">Why do I have this issue?</a>'
-                            })
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Current password is wrong, please try again',
+                            // footer: '<a href="">Why do I have this issue?</a>'
                         })
+                    })
                 }
+            }
+
+            let logout = () => {
+                console.log("123");
+                axios({
+                    method: 'get',
+                    url: 'http://localhost:3000/api/logout',
+                }).then(result => {
+                    window.location.replace(
+                        `http://${window.location.hostname}:${window.location.port}/auth/login`
+                    )
+                })
+            }
+
+            let submitUpdateProfile = event => {
+                let form = document.querySelector('#form-update-profile');
+                let name = document.querySelector('#name');
+                let phoneNumber = document.querySelector('#phoneNumber');
+                let address = document.querySelector('#address');
+                event.preventDefault();
+                axios({
+                    method: 'put',
+                    url: 'http://localhost:3000/api/user',
+                    data: {
+                        name: name.value,
+                        phoneNumber: phoneNumber.value,
+                        address: address.value,
+                    }
+                }).then(result => {
+                    if (result) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Update success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then((result) => {
+                            window.location.replace(
+                                `http://localhost:3000/auth/profile`
+                            )
+                        })
+                    } else {
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something goes wrong, please try again',
+                        // footer: '<a href="">Why do I have this issue?</a>'
+                    })
+                    }
+                }).catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something goes wrong, please try again',
+                        // footer: '<a href="">Why do I have this issue?</a>'
+                    })
+                    console.log(error);
+                })
             }
         </script>
 
