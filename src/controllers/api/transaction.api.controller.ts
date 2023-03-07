@@ -10,14 +10,62 @@ class transactionApiController {
     if (req.params.offset) {
       offset = Number(req.params.offset) * 5;
     }    
-
+    // let from = new Date(req.params.fromDate);
+    // let to = new Date(req.params.toDate);
+    let period;
+    console.log("req.params"+req.params);
+    
+    let from = req.params.fromDate;
+    let to = req.params.toDate;
+    
+    // let from = new Date().toISOString().split('T')[0];
+    // let to = new Date().toISOString().split('T')[0];
+    // console.log("fromDate: " + from + " toDate: " + to);
+    
     try {
-      let totalTransactions = await Transaction.find({idUser: idUser, timeTrade: req.params.period});
-      let total = totalTransactions.length;
-      let transactions = await Transaction.find({ idUser: idUser, timeTrade: req.params.period})
+      if (req.params.walletName == "all-wallet"){
+        let transactions = await Transaction.find({ idUser: idUser, timeTrade: {$lte: from, $gte: to}})
           .skip(offset)
           .limit(5);
-      res.status(200).json({transactions, total});
+          let arrFrom = from.split("-");
+          let monthFrom =  parseInt(arrFrom[1],10);
+          let dateFrom = parseInt(arrFrom[2]);
+          
+          let arrTo = to.split("-");
+          let monthTo =  parseInt(arrTo[1],10);
+          let dateTo = parseInt(arrTo[2]);
+          // let fromDate = new Date(from);
+          // let toDate = new Date(to);
+      
+          if (from === to) {
+            console.log(1);
+            period = "today";
+          } else if (monthFrom === monthTo && dateFrom === 1 && dateTo === 31){
+            period = "month"
+          } else {
+            period = "custom"
+          }
+          
+      res.status(200).json({transactions, total: transactions.length, period: period});
+      } else {
+        let walletName = req.params.walletName
+        let transactions = await Transaction.find({ idUser: idUser, walletName: walletName, timeTrade: {$lte: from, $gte: to}})
+          .skip(offset)
+          .limit(5);
+          // let fromDate = new Date(from);
+          // let toDate = new Date(to);
+          // console.log("fromDate", fromDate, "toDate", toDate);
+          
+          // if (fromDate == toDate) {
+          //   period = "today";
+          // } else if (fromDate.getMonth() == toDate.getMonth() && fromDate.getDate() == 1 && toDate.getDate() == 31){
+          //   period = "month"
+          // } else {
+          //   period = "custom"
+          // }
+      res.status(200).json({transactions, total: transactions.length, period: period});
+      }
+      
     } catch (err) {
       console.log(err);
     }
