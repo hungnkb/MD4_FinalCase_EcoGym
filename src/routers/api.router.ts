@@ -14,6 +14,8 @@ apiRouter.get("/logout", authApiController.logout);
 
 apiRouter.post("/wallet", walletApiController.createWallet);
 apiRouter.get("/wallet",walletApiController.getWalletInfo);
+apiRouter.put("/wallet",walletApiController.updateWallet)
+apiRouter.delete("/wallet",walletApiController.deleteWallet)
 
 apiRouter.post("/category", categoryApiController.createNewCategory);
 apiRouter.put("/category", categoryApiController.updateCategory);
@@ -31,6 +33,8 @@ apiRouter.get("/transaction/:offset&:walletName&:fromDate&:toDate", transactionA
 apiRouter.post("/transaction", transactionApiController.postTransaction);
 apiRouter.delete("/transaction/:_id&:status&:moneyTrade&:nameWallet", transactionApiController.deleteTransaction);
 apiRouter.put("/transaction", transactionApiController.updateTransaction);
+
+
 
 
 
