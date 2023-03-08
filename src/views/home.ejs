@@ -3,14 +3,17 @@
 
 <head>
     <%- include("layouts/header.ejs") %>
-        <title>EcoGYM</title>
+    <title>EcoGYM</title>
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
-                <h2 class="mr-5">EcoGym</h2>
+                <div class="brand-wrapper">
+                    <h2 class="m-0 p-0"><i style="color: green"><b>E</b>co</i><i style="color: orange">GYM</i></h2>
+                    <i style="font-family: monospace; font-size: 16px;">Smart financial management</i>
+                </div>
                 <div class="collapse navbar-collapse ms-5" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
@@ -26,10 +29,10 @@
                                         <option class="walletName" value="all-wallet" selected="selected">All wallet
                                         </option>
                                         <% wallets.forEach( (wallet)=> { %>
-                                            <option class="walletName" value="<%= wallet.walletName%>">
-                                                <%= wallet.walletName%>
-                                            </option>
-                                            <% }) %>
+                                        <option class="walletName" value="<%= wallet.walletName%>">
+                                            <%= wallet.walletName%>
+                                        </option>
+                                        <% }) %>
                                     </select>
                                 </li>
 
@@ -83,10 +86,10 @@
                             <label class="form-label">Wallet</label>
                             <select class="custom-select mb-3" id="wallet">
                                 <% wallets.forEach(w=> { %>
-                                    <option value="<%=w.walletName%>">
-                                        <%=w.walletName%>
-                                    </option>
-                                    <% }) %>
+                                <option value="<%=w.walletName%>">
+                                    <%=w.walletName%>
+                                </option>
+                                <% }) %>
                             </select>
                             <label class="form-label">Category</label>
                             <select id="category" class="custom-select mb-3" onfocus="categoryPick(event)"
@@ -144,7 +147,7 @@
 
             </div>
             <!-- count page -->
-            
+
         </section>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
@@ -155,49 +158,49 @@
 
     <!-- script -->
     <%- include("layouts/b5script.ejs") %>
-        <script>
+    <script>
 
-            // active class transaction
-            let transContents = document.querySelector("#allTransactions");
-            let btnLinks = document.querySelectorAll(".link-trans");
-            function addDnoneClass(content) {
-                content.classList.add("d-none")
-            }
-            function removeActiveClass(listBtn) {
-                listBtn.forEach(btn => {
-                    btn.classList.remove("active");
+        // active class transaction
+        let transContents = document.querySelector("#allTransactions");
+        let btnLinks = document.querySelectorAll(".link-trans");
+        function addDnoneClass(content) {
+            content.classList.add("d-none")
+        }
+        function removeActiveClass(listBtn) {
+            listBtn.forEach(btn => {
+                btn.classList.remove("active");
+            })
+        }
+        function activeTrans() {
+            for (let i = 0; i < btnLinks.length; i++) {
+                btnLinks[i].addEventListener('click', () => {
+                    addDnoneClass(transContents)
+                    removeActiveClass(btnLinks)
+                    transContents.classList.remove("d-none");
+                    btnLinks[i].classList.add("active");
                 })
             }
-            function activeTrans() {
-                for (let i = 0; i < btnLinks.length; i++) {
-                    btnLinks[i].addEventListener('click', () => {
-                        addDnoneClass(transContents)
-                        removeActiveClass(btnLinks)
-                        transContents.classList.remove("d-none");
-                        btnLinks[i].classList.add("active");
-                    })
-                }
-            }
-            activeTrans()
-            // logout
+        }
+        activeTrans()
+        // logout
 
-            let logout = () => {
-                axios({
-                    method: 'get',
-                    url: 'http://localhost:3000/api/logout',
-                }).then(result => {
-                    window.location.replace(
-                        `http://${window.location.hostname}:${window.location.port}/auth/login`
-                    )
-                })
-            }
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            // set default nameCategory input in Add transaction modal
-            let categoryPickDefault = (event) => {
-                let category = event.target.value;
-                document.querySelector('#categoryNameList').innerHTML = `
+        let logout = () => {
+            axios({
+                method: 'get',
+                url: 'http://localhost:3000/api/logout',
+            }).then(result => {
+                window.location.replace(
+                    `http://${window.location.hostname}:${window.location.port}/auth/login`
+                )
+            })
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // set default nameCategory input in Add transaction modal
+        let categoryPickDefault = (event) => {
+            let category = event.target.value;
+            document.querySelector('#categoryNameList').innerHTML = `
                         <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
                                         <% if (ic.status ==="income") {%>
@@ -213,13 +216,13 @@
                                     <% }) %>
                                 </select>
                         `
-            }
+        }
 
-            // check category income/outcome then render nameCategory input in Add transaction modal
-            let categoryPick = event => {
-                let category = event.target.value;
-                if (category == 'income') {
-                    document.querySelector('#categoryNameList').innerHTML = `
+        // check category income/outcome then render nameCategory input in Add transaction modal
+        let categoryPick = event => {
+            let category = event.target.value;
+            if (category == 'income') {
+                document.querySelector('#categoryNameList').innerHTML = `
                 <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
                                         <% if (ic.status ==="income") {%>
@@ -235,8 +238,8 @@
                                     <% }) %>
                                 </select>
                         `
-                } else {
-                    document.querySelector('#categoryNameList').innerHTML = `
+            } else {
+                document.querySelector('#categoryNameList').innerHTML = `
                 <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
                                         <% if (ic.status ==="outcome") {%>
@@ -252,94 +255,94 @@
                                     <% }) %>
                                 </select>
                         `
-                }
             }
+        }
 
-            // send data-form
-            let submitTransaction = (event) => {
-                let form = document.querySelector('#form-transaction');
-                let nameWallet = document.querySelector('#wallet');
-                let moneyTrade = document.querySelector('#amount');
-                let nameCategory = document.querySelector('#categoryName');
-                let timeTrade = document.querySelector('#date');
-                let status = document.querySelector('#category');
-                let desc = document.querySelector('#desc');
-                event.preventDefault();
+        // send data-form
+        let submitTransaction = (event) => {
+            let form = document.querySelector('#form-transaction');
+            let nameWallet = document.querySelector('#wallet');
+            let moneyTrade = document.querySelector('#amount');
+            let nameCategory = document.querySelector('#categoryName');
+            let timeTrade = document.querySelector('#date');
+            let status = document.querySelector('#category');
+            let desc = document.querySelector('#desc');
+            event.preventDefault();
 
-                // check if required inputs are filled then send data through API. 
-                // URL and Method are given from form-transaction attribute
-                if (moneyTrade.value && timeTrade.value && nameCategory.value && status.value) {
+            // check if required inputs are filled then send data through API. 
+            // URL and Method are given from form-transaction attribute
+            if (moneyTrade.value && timeTrade.value && nameCategory.value && status.value) {
 
-                    axios({
-                        method: 'post',
-                        url: 'http://localhost:3000/api/transaction',
-                        data: {
-                            nameWallet: nameWallet.value,
-                            moneyTrade: moneyTrade.value,
-                            nameCategory: nameCategory.value,
-                            timeTrade: timeTrade.value,
-                            status: status.value,
-                            desc: desc.value
-                        }
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:3000/api/transaction',
+                    data: {
+                        nameWallet: nameWallet.value,
+                        moneyTrade: moneyTrade.value,
+                        nameCategory: nameCategory.value,
+                        timeTrade: timeTrade.value,
+                        status: status.value,
+                        desc: desc.value
+                    }
+                }).then(result => {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Create transaction success',
+                        showConfirmButton: false,
+                        timer: 1500
                     }).then(result => {
+                        window.location.replace(
+                            `http://${window.location.hostname}:${window.location.port}/`
+                        )
+                    }).catch(error => {
                         Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: 'Create transaction success',
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(result => {
-                            window.location.replace(
-                                `http://${window.location.hostname}:${window.location.port}/`
-                            )
-                        }).catch(error => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'Please fill all field before save changes',
-                                // footer: '<a href="">Why do I have this issue?</a>'
-                            })
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Please fill all field before save changes',
+                            // footer: '<a href="">Why do I have this issue?</a>'
                         })
                     })
-
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Please fill all field before save changes',
-                        // footer: '<a href="">Why do I have this issue?</a>'
-                    })
-                }
-            }
-
-            const totalMoneyByWallet = (event) => {
-                event.preventDefault();
-                axios({
-                    method: 'get',
-                    url: 'http://localhost:3000/api/wallet',
                 })
-                    .then(function (result) {
-                        let wallets = result.data.wallets;
-                        let walletName = event.target;
-                        let totalMoney = 0;
-                        if (walletName == 'all-wallet') {
-                            for (let i = 0; i < wallets.length; i++) {
-                                totalMoney += wallets[i].totalMoneyLeft;
-                            }
-                            document.querySelector('#totalMoney').innerHTML = totalMoney;
-                        } else {
-                            for (let i = 0; i < wallets.length; i++) {
-                                if (wallets[i].walletName == walletName) {
-                                    document.querySelector('#totalMoney').innerHTML = wallets[i].totalMoneyLeft;
-                                }
+
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please fill all field before save changes',
+                    // footer: '<a href="">Why do I have this issue?</a>'
+                })
+            }
+        }
+
+        const totalMoneyByWallet = (event) => {
+            event.preventDefault();
+            axios({
+                method: 'get',
+                url: 'http://localhost:3000/api/wallet',
+            })
+                .then(function (result) {
+                    let wallets = result.data.wallets;
+                    let walletName = event.target;
+                    let totalMoney = 0;
+                    if (walletName == 'all-wallet') {
+                        for (let i = 0; i < wallets.length; i++) {
+                            totalMoney += wallets[i].totalMoneyLeft;
+                        }
+                        document.querySelector('#totalMoney').innerHTML = totalMoney;
+                    } else {
+                        for (let i = 0; i < wallets.length; i++) {
+                            if (wallets[i].walletName == walletName) {
+                                document.querySelector('#totalMoney').innerHTML = wallets[i].totalMoneyLeft;
                             }
                         }
-                    });
-            }
+                    }
+                });
+        }
 
-            // render today and month function
-            const getTransTodayAndMonth = (transactions) => {
-                document.querySelector("#allTransactions").innerHTML = `<div class="flow mt-2">
+        // render today and month function
+        const getTransTodayAndMonth = (transactions) => {
+            document.querySelector("#allTransactions").innerHTML = `<div class="flow mt-2">
                 <div class="inflow d-flex justify-content-between">
                     <p>Inflow</p>
                     <p class="money-in">40000</p>
@@ -354,8 +357,8 @@
                 </div>
             </div>`
 
-                transactions.forEach(transaction => {
-                    document.querySelector('#allTransactions').innerHTML += `
+            transactions.forEach(transaction => {
+                document.querySelector('#allTransactions').innerHTML += `
                         <div class="trans-item mb-2 p-3"
                     style="border-top: 2px solid grey; background-color: rgb(226, 226, 226);">
                     <div class="trans-category mt-2 d-flex justify-content-between">
@@ -453,27 +456,27 @@
             
             
             `
-                });
-            }
+            });
+        }
 
-            let categoryPickEditDefault = (event, status, categoryName, id) => {
-                // let category = event.target.value;
-                if (status == 'income') {
-                    document.querySelector(`#statusEditList-${id}`).innerHTML = `
+        let categoryPickEditDefault = (event, status, categoryName, id) => {
+            // let category = event.target.value;
+            if (status == 'income') {
+                document.querySelector(`#statusEditList-${id}`).innerHTML = `
                         <select class="custom-select mb-3" onfocus="categoryPickEdit(event, '${id}')" onchange="categoryPickEdit(event, '${id}')" id="categoryEdit-${id}">
                                 <option value="income">Income</option>
                                 <option value="outcome">Outcome</option>
                             </select>
                         `
-                } else {
-                    document.querySelector(`#statusEditList-${id}`).innerHTML = `
+            } else {
+                document.querySelector(`#statusEditList-${id}`).innerHTML = `
                         <select class="custom-select mb-3" onfocus="categoryPickEdit(event, '${id}')" onchange="categoryPickEdit(event, '${id}')" id="categoryEdit-${id}">
                                 <option value="outcome">Outcome</option>
                                 <option value="income">Income</option>
                             </select>
                         `
-                }
-                document.querySelector(`#categoryNameEditList-${id}`).innerHTML = `
+            }
+            document.querySelector(`#categoryNameEditList-${id}`).innerHTML = `
                         <select id="categoryEditName-${id}" class="custom-select mb-3">
                             <option value="${categoryName}">${categoryName}</option>
                                     <% defaultCategory.forEach(ic => { %>
@@ -491,13 +494,13 @@
                                     <% }) %>
                                 </select>
                         `
-            }
+        }
 
-            // check category income/outcome then render nameCategory input in Add transaction modal
-            let categoryPickEdit = (event, id) => {
-                let category = event.target.value;
-                if (category == 'income') {
-                    document.querySelector(`#categoryNameEditList-${id}`).innerHTML = `
+        // check category income/outcome then render nameCategory input in Add transaction modal
+        let categoryPickEdit = (event, id) => {
+            let category = event.target.value;
+            if (category == 'income') {
+                document.querySelector(`#categoryNameEditList-${id}`).innerHTML = `
                 <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
                                         <% if (ic.status ==="income") {%>
@@ -511,8 +514,8 @@
                                     <% }) %>
                                 </select>
                         `
-                } else {
-                    document.querySelector(`#categoryNameEditList-${id}`).innerHTML = `
+            } else {
+                document.querySelector(`#categoryNameEditList-${id}`).innerHTML = `
                 <select id="categoryName" class="custom-select mb-3">
                                     <% defaultCategory.forEach(ic => { %>
                                         <% if (ic.status ==="outcome") {%>
@@ -526,85 +529,85 @@
                                     <% }) %>
                                 </select>
                         `
-                }
             }
+        }
 
-            let submitEditTransaction = (event, id, currentMoney) => {
-                event.preventDefault();
-                let form = document.querySelector('#form-edit-transaction');
-                let nameWallet = document.querySelector(`#walletEdit-${id}`);
-                let status = document.querySelector(`#categoryEdit-${id}`);
-                let nameCategory = document.querySelector(`#categoryEditName-${id}`);
-                let moneyTrade = document.querySelector(`#amountEdit-${id}`);
-                let timeTrade = document.querySelector(`#dateEdit-${id}`);
-                let desc = document.querySelector(`#descEdit-${id}`);
+        let submitEditTransaction = (event, id, currentMoney) => {
+            event.preventDefault();
+            let form = document.querySelector('#form-edit-transaction');
+            let nameWallet = document.querySelector(`#walletEdit-${id}`);
+            let status = document.querySelector(`#categoryEdit-${id}`);
+            let nameCategory = document.querySelector(`#categoryEditName-${id}`);
+            let moneyTrade = document.querySelector(`#amountEdit-${id}`);
+            let timeTrade = document.querySelector(`#dateEdit-${id}`);
+            let desc = document.querySelector(`#descEdit-${id}`);
 
-                if (nameWallet.value && status.value && nameCategory.value && moneyTrade.value && timeTrade.value) {
+            if (nameWallet.value && status.value && nameCategory.value && moneyTrade.value && timeTrade.value) {
+            }
+            axios({
+                method: 'put',
+                url: 'http://localhost:3000/api/transaction/',
+                data: {
+                    _id: id,
+                    nameWallet: nameWallet.value,
+                    moneyTrade: moneyTrade.value,
+                    status: status.value,
+                    nameCategory: nameCategory.value,
+                    timeTrade: timeTrade.value,
+                    desc: desc.value,
+                    currentMoney: currentMoney,
                 }
-                axios({
-                    method: 'put',
-                    url: 'http://localhost:3000/api/transaction/',
-                    data: {
-                        _id: id,
-                        nameWallet: nameWallet.value,
-                        moneyTrade: moneyTrade.value,
-                        status: status.value,
-                        nameCategory: nameCategory.value,
-                        timeTrade: timeTrade.value,
-                        desc: desc.value,
-                        currentMoney: currentMoney,
-                    }
+            }).then(result => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Update transaction success',
+                    showConfirmButton: false,
+                    timer: 1500
                 }).then(result => {
+                    window.location.replace(
+                        `http://${window.location.hostname}:${window.location.port}/`
+                    )
+                }).catch(error => {
                     Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Update transaction success',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(result => {
-                        window.location.replace(
-                            `http://${window.location.hostname}:${window.location.port}/`
-                        )
-                    }).catch(error => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Please fill all field before save changes',
-                            // footer: '<a href="">Why do I have this issue?</a>'
-                        })
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill all field before save changes',
+                        // footer: '<a href="">Why do I have this issue?</a>'
                     })
                 })
-            }
+            })
+        }
 
-            let submitDeleteTransaction = (event, id, currentMoney, status, nameWallet) => {
-                event.preventDefault();
-                axios({
-                    method: 'delete',
-                    url: `http://localhost:3000/api/transaction/${id}&${status}&${currentMoney}&${nameWallet}`,
+        let submitDeleteTransaction = (event, id, currentMoney, status, nameWallet) => {
+            event.preventDefault();
+            axios({
+                method: 'delete',
+                url: `http://localhost:3000/api/transaction/${id}&${status}&${currentMoney}&${nameWallet}`,
+            }).then(result => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Delete transaction success',
+                    showConfirmButton: false,
+                    timer: 1500
                 }).then(result => {
+                    window.location.replace(
+                        `http://${window.location.hostname}:${window.location.port}/`
+                    )
+                }).catch(error => {
                     Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Delete transaction success',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(result => {
-                        window.location.replace(
-                            `http://${window.location.hostname}:${window.location.port}/`
-                        )
-                    }).catch(error => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something goes wrong, please try again',
-                            // footer: '<a href="">Why do I have this issue?</a>'
-                        })
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something goes wrong, please try again',
+                        // footer: '<a href="">Why do I have this issue?</a>'
                     })
                 })
-            }
+            })
+        }
 
-            let openCustom = () => {
-                document.querySelector('#open-custom').innerHTML = `
+        let openCustom = () => {
+            document.querySelector('#open-custom').innerHTML = `
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">From</label>
                     <input type="date" class="form-control" id="fromDate" aria-describedby="emailHelp">
@@ -615,70 +618,70 @@
                 </div>
                 <button type="submit" onfocus="pickDate(event)" class="btn btn-primary btn-sm">Apply</button>
                 `;
+        }
+
+        let pickDate = (event) => {
+            getTransactions(event, 0, 'custom');
+        }
+
+        let getTransactions = (event, offset, period) => {
+            if (!offset) {
+                offset = 0;
+            }
+            let walletName = document.querySelector("#walletInHome");
+            // check period
+            let fromDate = new Date('2023-03-08T00:00:00.000Z');
+            let toDate = new Date('2023-03-08T00:00:00.000Z');
+
+            if (period == 'today') {
+                fromDate = new Date().toISOString().split('T')[0];
+                toDate = new Date().toISOString().split('T')[0];
+
+            } else if (period == 'month') {
+                let month = new Date().getMonth() + 1
+                let year = new Date().getFullYear();
+                fromDate = new Date(`${year}-${month}-1`);
+                toDate = new Date(`${year}-${month}-31`);
+
+
+            } else if (period == 'custom') {
+                fromDate = document.querySelector('#fromDate').value;
+                toDate = document.querySelector('#toDate').value;
             }
 
-            let pickDate = (event) => {
-                getTransactions(event, 0, 'custom');
-            }
-
-            let getTransactions = (event, offset, period) => {
-                if (!offset) {
-                    offset = 0;
+            console.log(fromDate, '---', toDate);
+            document.querySelector('#allTransactions').innerHTML = '';
+            // document.querySelector('#custom').innerHTML = `
+            //     <div class="timePick">
+            //         <label class="form-label" for="fromTime">From: </label>
+            //         <input required type="date" name="fromTime" class="form-control" id="fromTime">
+            //         <label class="form-label" for="toTime">To: </label>
+            //         <input required type="date" name="toTime" class="form-control" id="toTime">
+            //     </div>
+            // `;
+            document.querySelector('#page-list-number').innerHTML = '';
+            axios({
+                method: 'get',
+                url: `http://localhost:3000/api/transaction/${offset}&${walletName.value}&${fromDate}&${toDate}`,
+            }).then(result => {
+                if (result.data.period == "today" || result.data.period == "month") {
+                    getTransTodayAndMonth(result.data.transactions)
                 }
-                let walletName = document.querySelector("#walletInHome");
-                // check period
-                let fromDate = new Date('2023-03-08T00:00:00.000Z');
-                let toDate = new Date('2023-03-08T00:00:00.000Z');
-
-                if (period == 'today') {
-                    fromDate = new Date().toISOString().split('T')[0];
-                    toDate = new Date().toISOString().split('T')[0];
-
-                } else if (period == 'month') {
-                    let month = new Date().getMonth() + 1
-                    let year = new Date().getFullYear();
-                    fromDate = new Date(`${year}-${month}-1`);
-                    toDate = new Date(`${year}-${month}-31`);
+                // xử lý custom
 
 
-                } else if (period == 'custom') {
-                    fromDate = document.querySelector('#fromDate').value;
-                    toDate = document.querySelector('#toDate').value;
-                }
-
-                console.log(fromDate, '---', toDate);
-                document.querySelector('#allTransactions').innerHTML = '';
-                // document.querySelector('#custom').innerHTML = `
-                //     <div class="timePick">
-                //         <label class="form-label" for="fromTime">From: </label>
-                //         <input required type="date" name="fromTime" class="form-control" id="fromTime">
-                //         <label class="form-label" for="toTime">To: </label>
-                //         <input required type="date" name="toTime" class="form-control" id="toTime">
-                //     </div>
-                // `;
-                document.querySelector('#page-list-number').innerHTML = '';
-                axios({
-                    method: 'get',
-                    url: `http://localhost:3000/api/transaction/${offset}&${walletName.value}&${fromDate}&${toDate}`,
-                }).then(result => {
-                    if (result.data.period == "today" || result.data.period == "month") {
-                        getTransTodayAndMonth(result.data.transactions)
-                    }
-                    // xử lý custom
-
-
-                    let total = Math.ceil(result.data.total / 5);
-                    for (let i = 0; i < total; i++) {
-                        document.querySelector('#page-list-number').innerHTML += `
+                let total = Math.ceil(result.data.total / 5);
+                for (let i = 0; i < total; i++) {
+                    document.querySelector('#page-list-number').innerHTML += `
                             <li class="page-item"><span style="cursor: pointer" onclick="getTransactions(event,${i}, ${period})">${i + 1}</span></li>
                         `
-                    }
-                })
-            }
+                }
+            })
+        }
 
-            getTransactions();
+        getTransactions();
 
-        </script>
+    </script>
 </body>
 
 </html>
