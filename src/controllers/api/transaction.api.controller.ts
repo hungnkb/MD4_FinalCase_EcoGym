@@ -16,10 +16,25 @@ class transactionApiController {
     // let to = new Date(req.params.toDate);
     let period = "";
     
+
     let from = req.params.fromDate;
     let to = req.params.toDate;
    
+    let dateFrom = new Date(req.params.fromDate).getDate();
+    let monthTo = new Date(req.params.toDate).getMonth() + 1;
+    let dateTo = new Date(req.params.toDate).getDate();
+    let monthFrom = new Date(req.params.fromDate).getMonth() + 1;
 
+    if (from === to) {
+
+      period = "today";
+    } else if (monthFrom === monthTo && dateFrom == 1 && dateTo == 31) {
+
+      period = "month";
+    } else {
+
+      period = "custom";
+    }
     // let fromStr = new Date().toISOString().split("T")[0];
     // let toStr = new Date().toISOString().split("T")[0];
 
@@ -32,21 +47,7 @@ class transactionApiController {
           .skip(offset)
           .limit(5);
 
-        let dateFrom = new Date(req.params.fromDate).getDate();
-        let monthTo = new Date(req.params.toDate).getMonth() + 1;
-        let dateTo = new Date(req.params.toDate).getDate();
-        let monthFrom = new Date(req.params.fromDate).getMonth() + 1;
-
-        if (from === to) {
-
-          period = "today";
-        } else if (monthFrom === monthTo && dateFrom == 1 && dateTo == 31) {
-
-          period = "month";
-        } else {
-
-          period = "custom";
-        }
+       
 
         let transactionsTotal = await Transaction.find({
           idUser: idUser,
@@ -65,15 +66,17 @@ class transactionApiController {
             period: period,
           });
       } else {
+        console.log(req.params.walletName, period);
+        
         let walletName = req.params.walletName;
         let transactions = await Transaction.find({
           idUser: idUser,
-          walletName: walletName,
+          nameWallet: walletName,
           timeTrade: { $gte: from, $lte: to },
         })
           .skip(offset)
           .limit(5);
-
+        
           let transactionsTotal = await Transaction.find({
             idUser: idUser,
             walletName: walletName,
@@ -82,6 +85,8 @@ class transactionApiController {
               $lte: to,
             },
           });
+          console.log(transactions);
+          
           res.status(200).json({
             transactions,
             total: transactionsTotal.length,
