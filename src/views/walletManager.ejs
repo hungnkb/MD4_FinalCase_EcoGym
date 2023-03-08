@@ -1,52 +1,293 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+
+    <title>Wallet Manager</title>
+    <%- include("layouts/header.ejs") %>
 </head>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-<body class="bg-light">
-<div class="container-fluid p-0">
-    <h2>List Wallet</h2>
-    <div class="p-2 bd-highlight">
-        <a href="/wallets/create"><button type="button" class="btn btn-info">Add New A Wallet</button></a>
-    </div>
-    <% for(const wallet of wallets) { %>
-        <p>
-            IdUser: <%= wallet.idUser %>
-        </p>
-        <p>
-            Wallet Name: <%= wallet.walletName %>
-        </p>
-        <p>
-            Icon: <%= wallet.icon %>
-        </p>
-        <p>
-            Total MoneyLeft: <%= wallet.totalMoneyLeft %>
-        </p>
-        <a href="/wallets/update/<%= wallet.id %>" class="btn btn-primary">Update</a>
-        <a onclick="return confirm('Are you sure you want to delete this wallet?')"
-           href="/wallets/delete/<%= wallet.id %>" class="btn btn-danger">Delete</a>
-        </br>
-    <% } %>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <h2 class="mr-5">EcoGym</h2>
+                <div class="collapse navbar-collapse ms-5" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/">Transactions</a>
+                        </li>
+                    </ul>
+                </div>
 
-</div>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mr-4">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <%= userInfo[0].email %>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="auth/profile">Profile</a>
+                            <a class="dropdown-item" href="#">Wallet Manager</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/wallet">wallet Manager</a>
+                        </div>
+                    </li>
+                </ul>
+                <button type="button" onclick="logout()" class="btn btn-secondary">Logout</button>
+            </div>
+        </nav>
+    </header>
+    <main class="container d-flex flex-column">
+        <h2 style="text-align: center;">Wallet Manager</h2>
+        <button type="button" style="width: 900px; margin: auto;" class="btn btn-primary" data-toggle="modal"
+            data-target="#exampleModalCenter">
+            Add new Wallet
+        </button>
+        <!-- Modal add new wallet -->
+        <div class="modal fade mt-3" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">New Wallet</h1>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/api/wallet" method="post" id="form-add-new-wallet">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Wallet's name</label>
+                                <input required type="text" class="form-control" id="addWalletName">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Money</label>
+                                <input required type="number" class="form-control" id="money">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" onclick="submitAddWallet(event)" class="btn btn-primary">Add new
+                                Wallet</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- table wallet -->
+        <div class="listWallet mt-3" style="width: 900px; margin: auto;">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Name wallet</th>
+                        <th scope="col">Total money left</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <% wallets.forEach( wallet=> { %>
+                <tr>
+                    <td><%= wallet.walletName %></td>
+                    <td><%= wallet.totalMoneyLeft %></td>
+                    <td>
+                        <button class="btn btn-primary"
+                            onclick="renderInfoWallet(event, '<%= wallet.walletName %>', '<%= wallet.totalMoneyLeft %>', 'wallet-<%= wallet._id %>', '<%= wallet._id %>')"
+                            data-toggle="modal" data-target="#wallet-<%= wallet._id %>"
+                            data-name="edit-form">Edit</button>
+                        <button class="btn btn-danger"
+                            onclick="renderInfoWallet(event, '<%= wallet.walletName %>', '<%= wallet.status %>', 'wallet-<%= wallet._id %>', '<%= wallet._id %>')"
+                            data-toggle="modal" data-target="#wallet-<%= wallet._id %>"
+                            data-name="delete-form">Delete</button>
+                    </td>
+
+
+                </tr>
+                <% }) %>
+            </table>
+            <!-- popup edit form -->
+            <div class="modal modal-edit fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="title-modal"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/api/wallet" id="editForm">
+                            <div class="modal-body">
+
+
+                            </div>
+                        </form>
+                        <div class="modal-footer" id="modal-footer">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <%- include("layouts/b5script.ejs") %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- add new wallet -->
+    <script>
+        let submitAddWallet = (event) => {
+            let form = document.querySelector('#form-add-new-wallet');
+            let totalMoneyLeft = document.querySelector('#money').value;
+            let walletName = document.querySelector('#addWalletName').value;
+            event.preventDefault();
+            if (totalMoneyLeft && walletName) {
+                try {
+                    axios({
+                        method: 'post',
+                        url: "http://localhost:3000/api/wallet",
+                        data: {
+                            walletName: walletName,
+                            totalMoneyLeft: totalMoneyLeft
+                        }
+                    }).then(result => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Add wallet success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        window.location.replace(
+                            `http://localhost:3000/wallet`
+                        )
+                    })
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill all field before save changes'
+                    })
+                    console.log(error);
+                }
+            }
+        }
+    </script>
+    <script>
+        const renderInfoWallet = (event, walletName, totalMoneyLeft, idModal, idWallet) => {
+            if (event.target.dataset.name === "edit-form") {
+                document.querySelector("#title-modal").innerHTML = "Edit wallet"
+                let modal = document.querySelectorAll(".modal-edit");
+                modal[0].id = idModal;
+                let form = document.querySelector("#editForm");
+                form.method = "PUT"
+                // form.querySelector("#walletName").value = walletName;
+                // form.querySelector("#status").value = walletStatus;
+                form.querySelectorAll(".modal-body")[0].innerHTML = `
+                                <div class="mb-3">
+                                    <label class="form-label">Name wallet</label>
+                                    <input required type="text" class="form-control" id="walletName" value="${walletName}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Total money left</label>
+                                    <input required type="text" class="form-control" id="totalMoneyLeft" value="${totalMoneyLeft}">
+                                </div>`;
+                document.querySelector("#modal-footer").innerHTML = `
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-idWallet="${idWallet}" onclick="submitEditForm(event)">Save changes</button>
+                `
+
+
+            } else {
+                document.querySelector("#title-modal").innerHTML = "Are you sure?"
+                document.querySelectorAll(".modal-edit")[0].id = idModal;
+                let form = document.querySelector("#editForm");
+                form.method = "DELETE";
+                form.querySelectorAll(".modal-body")[0].innerHTML = `
+                                <div class="mb-3">
+                                    <label class="form-label">Name wallet</label>
+                                    <input required type="text" class="form-control" id="walletName" readonly value="${walletName}">
+                                </div>`
+                document.querySelector("#modal-footer").innerHTML = `
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-idWallet="${idWallet}" onclick="submitDeleteForm(event)">Delete</button>
+                `
+            }
+
+        }
+        const submitDeleteForm = (event) => {
+            console.log(event);
+            let form = document.querySelector("#editForm");
+            let id = event.target.dataset.idwallet;
+            // console.log("id", id);
+            if (id) {
+                try {
+                    axios({
+                        method: "delete",
+                        url: form.action,
+                        data: {
+                            idWallet: id
+                        }
+                    }).then(result => {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Delete wallet success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        window.location.replace(
+                            `http://localhost:3000/wallet`
+                        )
+                    })
+                } catch {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill all field before save changes'
+                    })
+                    console.log(error);
+                }
+            }
+        }
+        const submitEditForm = (event) => {
+            let walletName = document.querySelector("#walletName").value;
+            console.log("walletName", walletName);
+            let totalMoneyLeft = document.querySelector("#totalMoneyLeft").value;
+            console.log("totalMoneyLeft", totalMoneyLeft);
+            let idWallet = event.target.dataset.idwallet;
+            console.log("idWallet", idWallet);
+            if (walletName && totalMoneyLeft && idWallet)
+                try {
+                    axios({
+                        method: "put",
+                        url: 'http://localhost:3000/api/wallet',
+                        data: {
+                            idWallet: idWallet,
+                            walletName: walletName,
+                            totalMoneyLeft: totalMoneyLeft
+                        }
+                    }).then(result => {
+                        console.log(result);
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Edit wallet success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        window.location.replace(
+                            `http://localhost:3000/wallet`
+                        )
+                    })
+                } catch {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill all field before save changes'
+                    })
+                    console.log(error);
+                }
+        }
+    </script>
+
 </body>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
-        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"
-        crossorigin="anonymous"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 </html>
